@@ -27,7 +27,18 @@
      user yang eksplisit ("Button button ini juga bisa ga dibuat 3d
      aja" / "Keknya bakal lebih bagus ga sih").
    - Scrim netral di atas foto hero: satu-satunya pengecualian gradien yang
-     diizinkan design.md, dipakai hanya di atas foto agar teks terbaca. */
+     diizinkan design.md, dipakai hanya di atas foto agar teks terbaca.
+   - Warna tombol dan gradient (23 Nov 2026, atas permintaan user:
+     "Soal tombol juga jangan monoton di warna putih polos" dan
+     "Sama bisa ga websitenya jadi gradient gradient gitu"): tombol
+     sekunder bukan lagi putih polos, tiap jenis tombol punya warna
+     sendiri (hijau daun, emas, pasir, hijau tua), dan gradient dipakai
+     halus di tombol, hero, Filosofi, footer, dan latar. Ini
+     penyimpangan yang disengaja dari larangan gradien di design.md,
+     atas perintah user yang eksplisit; gradient hanya aksen, teks
+     tetap kontras minimal AA (dihitung: emas #e8b64a dengan ink
+     8,46:1; hijau daun #2e7d5b dengan putih 4,92:1; pasir dengan ink
+     12,75:1; semua warna tombol primer 9,9:1 ke atas). */
 :root {
   --ground: #faf7f1;
   --surface: #fffdf9;
@@ -40,6 +51,25 @@
   --accent-ink: #fffdf9;
   --accent-deep: #122e23;
   --accent-soft: #e7efe9;
+  --leaf: #2e7d5b;
+  --leaf-deep: #1d5c40;
+  --gold: #c98f2d;
+  --gold-bright: #e8b64a;
+  --gold-deep: #9a6b1a;
+  --gold-soft: #f6e8c8;
+  --sand: #efe6d2;
+  --sand-deep: #e3d3ae;
+  --grad-primary: linear-gradient(135deg, #2e7d5b 0%, #1d4a38 55%, #122e23 100%);
+  --grad-primary-hover: linear-gradient(135deg, #1d4a38 0%, #122e23 70%, #0e2a1e 100%);
+  --grad-gold: linear-gradient(135deg, #e8b64a 0%, #c98f2d 100%);
+  --grad-gold-hover: linear-gradient(135deg, #c98f2d 0%, #9a6b1a 100%);
+  --grad-cream: linear-gradient(135deg, #fffdf9 0%, #f6ead0 100%);
+  --grad-sand: linear-gradient(135deg, #efe6d2 0%, #e3d3ae 100%);
+  --grad-dark: linear-gradient(135deg, #23392e 0%, #122e23 100%);
+  --grad-leaf: linear-gradient(135deg, #2e7d5b 0%, #1d5c40 100%);
+  --grad-ground: linear-gradient(180deg, #faf7f1 0%, #f3ecdd 38%, #faf7f1 100%);
+  --grad-philosophy: linear-gradient(135deg, #1d4a38 0%, #122e23 60%, #0e2a1e 100%);
+  --grad-footer: linear-gradient(180deg, #122e23 0%, #0e2a1e 100%);
   --line: #e3ddd0;
   --line-strong: #cfc6b2;
   --winner: #e7efe9;
@@ -64,7 +94,8 @@ html { overflow-x: clip; scroll-behavior: smooth; }
 body { overflow-x: clip; }
 body {
   margin: 0;
-  background: var(--ground);
+  background: var(--grad-ground);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: var(--sans);
   font-size: 17px;
@@ -160,14 +191,14 @@ img { max-width: 100%; display: block; height: auto; }
 .site-nav a.nav-login { box-shadow: 0 4px 0 var(--accent-deep); }
 .site-nav a.nav-login:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .header-action {
-  background: var(--accent-deep); color: var(--accent-ink); text-decoration: none;
+  background: var(--grad-gold); color: var(--ink); text-decoration: none;
   padding: 10px 20px; font-weight: 700; font-size: 16px;
-  white-space: nowrap; border: 1px solid var(--accent-deep); border-radius: 999px;
-  box-shadow: 0 4px 0 rgba(20, 38, 31, 0.35);
+  white-space: nowrap; border: 1px solid var(--gold-deep); border-radius: 999px;
+  box-shadow: 0 4px 0 var(--gold-deep);
   transition: background 200ms, color 200ms, border-color 200ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.header-action:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(20, 38, 31, 0.35); }
-.header-action:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(20, 38, 31, 0.35); }
+.header-action:hover { background: var(--grad-gold-hover); color: var(--ink); border-color: var(--gold-deep); transform: translateY(-2px); box-shadow: 0 6px 0 var(--gold-deep); }
+.header-action:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--gold-deep); }
 /* Tombol hamburger: pil hitam kecil dengan 3 garis putih (ala Umano),
    hanya tampil di layar sempit. Menu bekerja tanpa JavaScript lewat
    checkbox hack: input tersembunyi + label sebagai tombol. */
@@ -249,7 +280,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 
 /* Filosofi: satu field hijau gelap penuh, teks gading, tenang. */
 .philosophy {
-  background: var(--accent-deep); color: var(--accent-ink);
+  background: var(--grad-philosophy); color: var(--accent-ink);
   padding: 64px 48px; margin-bottom: 96px;
 }
 .philosophy h2 { color: var(--accent-ink); }
@@ -357,31 +388,49 @@ section > h2 { padding-top: 0; }
    bayangan mengecil saat ditekan. Hanya transform (dan bayangan yang
    mengikutinya), 150-250ms. Radius 6px tetap. */
 .btn, button {
-  background: var(--accent); color: var(--accent-ink); border: 0;
+  background: var(--grad-primary); color: var(--accent-ink); border: 0;
   padding: 12px 22px; font-family: var(--sans-alt); font-weight: 700; cursor: pointer;
   text-decoration: none; display: inline-block; min-height: 48px;
   font-size: 16px; white-space: nowrap;
   box-shadow: 0 4px 0 var(--accent-deep);
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.btn:hover, button:hover { background: var(--accent-deep); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-deep); }
+.btn:hover, button:hover { background: var(--grad-primary-hover); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-deep); }
 .btn:active, button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .btn-quiet {
-  background: transparent; color: var(--ink);
+  background: var(--grad-cream); color: var(--ink);
   border: 1px solid var(--ink); padding: 11px 21px;
   box-shadow: 0 4px 0 var(--ink);
 }
-.btn-quiet:hover { background: var(--ink); color: var(--surface); box-shadow: 0 6px 0 var(--ink); }
+.btn-quiet:hover { background: var(--grad-sand); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
 .btn-quiet:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ink); }
-.btn[aria-pressed="true"] { background: var(--ink); color: var(--surface); box-shadow: 0 4px 0 var(--accent-deep); }
+.btn[aria-pressed="true"] { background: var(--grad-primary); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
 .btn[aria-pressed="true"]:hover { box-shadow: 0 6px 0 var(--accent-deep); }
 .btn[aria-pressed="true"]:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .btn-sm { padding: 10px 16px; min-height: 44px; font-size: 14px; }
 
+/* Varian warna tombol (23 Nov 2026, atas permintaan user): tiap jenis
+   tombol punya warna sendiri, tetap dalam palet TripRank, efek 3D
+   dipertahankan. Kontras dihitung: emas dengan ink 8,46:1, daun
+   dengan putih 4,92:1, pasir dengan ink 12,75:1, gelap dengan putih
+   12,19:1. */
+.btn-leaf { background: var(--grad-leaf); color: var(--accent-ink); box-shadow: 0 4px 0 var(--leaf-deep); }
+.btn-leaf:hover { background: var(--grad-primary); color: var(--accent-ink); box-shadow: 0 6px 0 var(--leaf-deep); }
+.btn-leaf:active { box-shadow: 0 2px 0 var(--leaf-deep); }
+.btn-gold { background: var(--grad-gold); color: var(--ink); box-shadow: 0 4px 0 var(--gold-deep); }
+.btn-gold:hover { background: var(--grad-gold-hover); color: var(--ink); box-shadow: 0 6px 0 var(--gold-deep); }
+.btn-gold:active { box-shadow: 0 2px 0 var(--gold-deep); }
+.btn-sand { background: var(--grad-sand); color: var(--ink); border: 1px solid var(--ink); box-shadow: 0 4px 0 var(--ink); }
+.btn-sand:hover { background: var(--grad-cream); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
+.btn-sand:active { box-shadow: 0 2px 0 var(--ink); }
+.btn-dark { background: var(--grad-dark); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
+.btn-dark:hover { background: var(--grad-primary-hover); color: var(--accent-ink); box-shadow: 0 6px 0 var(--accent-deep); }
+.btn-dark:active { box-shadow: 0 2px 0 var(--accent-deep); }
+
 /* Chip paket di tabel ranking: persegi hijau muda, satu baris, bisa diklik. */
 .chip {
   display: inline-block; white-space: nowrap; text-decoration: none;
-  background: var(--accent-soft); color: var(--accent-deep);
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--gold-soft) 100%); color: var(--accent-deep);
   border: 1px solid var(--accent);
   padding: 6px 14px; min-height: 36px; line-height: 1.4; font-weight: 700; font-size: 14px;
   box-shadow: 0 2px 0 var(--accent);
@@ -442,7 +491,7 @@ td.action .btn { white-space: nowrap; }
 }
 .pagination .page-btn:hover { background: var(--field); color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 0 var(--line-strong); }
 .pagination .page-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-strong); }
-.pagination .page-btn[aria-current="page"] { background: var(--ink); color: var(--surface); border-color: var(--ink); box-shadow: 0 3px 0 var(--accent-deep); }
+.pagination .page-btn[aria-current="page"] { background: var(--grad-primary); color: var(--accent-ink); border-color: var(--accent-deep); box-shadow: 0 3px 0 var(--accent-deep); }
 .pagination .page-btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
 
 /* Panel tahap hitungan: <details> asli, garis 1px. */
@@ -536,7 +585,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .photo-strip figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
 /* Footer (v4 r2): hijau gelap, wordmark besar, 3 kolom, ikon di tiap tautan. */
-.site-footer { background: var(--accent-deep); color: var(--accent-ink); margin-top: 40px; }
+.site-footer { background: var(--grad-footer); color: var(--accent-ink); margin-top: 40px; }
 .site-footer .footer-inner { max-width: var(--measure-wide); margin: 0 auto; padding: 56px 24px 32px; }
 .site-footer .footer-word {
   font-family: var(--brand); font-size: clamp(48px, 10vw, 96px); font-weight: 400;
@@ -689,7 +738,7 @@ input, select, textarea { border-radius: var(--radius); }
 .trip-loader img { width: 96px; height: auto; border-radius: var(--radius); animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 .trip-loader .loader-word { font-family: var(--brand); font-size: 30px; font-weight: 400; animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both; }
 .trip-loader .loader-bar { width: 160px; height: 2px; background: var(--line); overflow: hidden; border-radius: 2px; }
-.trip-loader .loader-bar i { display: block; height: 100%; width: 0; background: var(--accent); animation: loaderBar 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.trip-loader .loader-bar i { display: block; height: 100%; width: 0; background: var(--grad-gold); animation: loaderBar 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @keyframes loaderRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes loaderBar { to { width: 100%; } }
 
@@ -797,7 +846,7 @@ input, select, textarea { border-radius: var(--radius); }
   .site-nav a:hover { background: var(--field); }
   .site-nav a[aria-current="page"] { background: var(--accent-soft); }
   .site-nav a.nav-login {
-    display: block; background: var(--accent); color: var(--accent-ink);
+    display: block; background: var(--grad-gold); color: var(--ink);
     text-align: center; font-weight: 700; margin-top: 6px;
   }
   .nav-toggle-input:checked ~ .site-nav { display: flex; }
@@ -830,7 +879,7 @@ input, select, textarea { border-radius: var(--radius); }
   .site-nav a:hover { background: var(--field); }
   .site-nav a[aria-current="page"] { background: var(--accent-soft); }
   .site-nav a.nav-login {
-    display: block; background: var(--accent); color: var(--accent-ink);
+    display: block; background: var(--grad-gold); color: var(--ink);
     text-align: center; font-weight: 700; margin-top: 6px;
   }
   .nav-toggle-input:checked ~ .site-nav { display: flex; }
@@ -877,7 +926,7 @@ input, select, textarea { border-radius: var(--radius); }
   h1 { font-size: 40px; }
   .hero img { aspect-ratio: 4 / 3; }
   .hero .hero-body, .hero-banner .hero-body {
-    position: static; background: var(--accent-deep); padding: 28px 20px 24px;
+    position: static; background: var(--grad-philosophy); padding: 28px 20px 24px;
   }
   .hero-banner img { aspect-ratio: 4 / 3; }
   .steps { grid-template-columns: 1fr; }
