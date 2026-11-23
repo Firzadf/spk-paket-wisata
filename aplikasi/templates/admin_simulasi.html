@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Simulasi Bobot — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Simulasi Bobot</h1>
+  <p class="lede">Hitung ranking dengan bobot sementara. Bobot asli tidak berubah dan tidak ada yang disimpan.</p>
+</div>
+<form method="post">
+  <p class="field">
+    <label for="kota">Kota</label>
+    <select id="kota" name="kota">{% for nama in ['Jakarta','Yogyakarta','Bandung','Semarang','Surabaya'] %}<option value="{{ nama }}" {% if kota==nama %}selected{% endif %}>{{ nama }}</option>{% endfor %}</select>
+  </p>
+  <div class="form-row">
+  {% for i in range(1,6) %}
+    <p class="field">
+      <label for="bobot_C{{ i }}">Bobot C{{ i }} ({{ kriteria[i-1].nama }})</label>
+      <input type="number" step="0.01" min="0" max="1" id="bobot_C{{ i }}" name="bobot_C{{ i }}" value="{{ weights[i-1] }}" required aria-describedby="simulasi-hint">
+    </p>
+  {% endfor %}
+  </div>
+  <p class="hint" id="simulasi-hint">Total kelima bobot harus 1,00.</p>
+  <p><button type="submit">Hitung simulasi</button></p>
+</form>
+{% if hasil %}
+<section aria-labelledby="hasil-simulasi">
+  <h2 id="hasil-simulasi">Hasil simulasi: {{ kota }}</h2>
+  <p class="section-note">Bobot simulasi: {{ weights|join(', ') }}. Bobot asli tidak berubah.</p>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="simulasi-caption">
+  <table data-sortable>
+    <caption id="simulasi-caption">Hasil simulasi {{ kota }}</caption>
+    <thead><tr>
+      <th scope="col" data-type="number">Paket</th>
+      <th scope="col" data-type="number">Ranking SAW</th>
+      <th scope="col" data-type="number">Vi</th>
+      <th scope="col" data-type="number">Ranking TOPSIS</th>
+      <th scope="col" data-type="number">Ci</th>
+    </tr></thead>
+    <tbody>
+    {% for i in range(hasil.packages|length) %}
+    <tr>
+      <th scope="row" data-value="{{ hasil.packages[i].nomor_paket }}">Paket {{ hasil.packages[i].nomor_paket }}</th>
+      <td class="num" data-value="{{ hasil.saw.ranks[i] }}">{{ hasil.saw.ranks[i] }}</td>
+      <td class="num" data-value="{{ hasil.saw['values'][i] }}">{{ '%.4f'|format(hasil.saw['values'][i]) }}</td>
+      <td class="num" data-value="{{ hasil.topsis.ranks[i] }}">{{ hasil.topsis.ranks[i] }}</td>
+      <td class="num" data-value="{{ hasil.topsis['values'][i] }}">{{ '%.4f'|format(hasil.topsis['values'][i]) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="visually-hidden" data-sort-status role="status"></p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

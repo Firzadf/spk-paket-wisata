@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Paket Wisata {{ kota }} — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>{{ kota }}</h1>
+  <p class="lede"><strong>{{ packages|length }} paket</strong> wisata di kota ini. Cari nama tempat, lalu klik nama kolom untuk mengurutkan berdasarkan nilai kriteria. Tanpa JavaScript pun seluruh tabel tetap tampil.</p>
+  <p><a class="btn" href="{{ url_for('rekomendasi', kota=kota, metode='keduanya') }}">Lihat rekomendasi SAW dan TOPSIS</a></p>
+</div>
+<section aria-labelledby="daftar-paket">
+  <h2 id="daftar-paket">Daftar Paket</h2>
+  <div class="toolbar">
+    <p class="field">
+      <label for="cari-paket">Cari tempat atau paket</label>
+      <input type="search" id="cari-paket" data-filter-table="tabel-paket" placeholder="Contoh: Monas, museum, pantai" autocomplete="off">
+    </p>
+    <p class="count" data-filter-count>{{ packages|length }} dari {{ packages|length }} paket cocok.</p>
+  </div>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="paket-caption">
+  <table id="tabel-paket" data-sortable>
+    <caption id="paket-caption">Paket wisata {{ kota }} beserta nilai kriteria</caption>
+    <thead><tr>
+      <th scope="col" data-type="number">Paket</th>
+      <th scope="col" data-type="text">Tempat Wisata</th>
+      <th scope="col" data-type="number">C1 Harga (Cost)</th>
+      <th scope="col" data-type="number">C2 Fasilitas</th>
+      <th scope="col" data-type="number">C3 Aksesibilitas</th>
+      <th scope="col" data-type="number">C4 Popularitas</th>
+      <th scope="col" data-type="number">C5 Jumlah</th>
+    </tr></thead>
+    <tbody>
+    {% for p in packages %}
+    <tr>
+      <th scope="row" data-value="{{ p.nomor_paket }}"><a href="{{ url_for('paket_detail', paket_id=p.id) }}">Paket {{ p.nomor_paket }}</a></th>
+      <td>{{ p.tempat|join(', ') }}</td>
+      <td class="num" data-value="{{ p.matrix[0] }}">{{ '%.2f'|format(p.matrix[0]) }}</td>
+      <td class="num" data-value="{{ p.matrix[1] }}">{{ '%.2f'|format(p.matrix[1]) }}</td>
+      <td class="num" data-value="{{ p.matrix[2] }}">{{ '%.2f'|format(p.matrix[2]) }}</td>
+      <td class="num" data-value="{{ p.matrix[3] }}">{{ '%.2f'|format(p.matrix[3]) }}</td>
+      <td class="num" data-value="{{ p.matrix[4] }}">{{ p.matrix[4]|int }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="visually-hidden" data-sort-status role="status"></p>
+  </div>
+</section>
+{% endblock %}

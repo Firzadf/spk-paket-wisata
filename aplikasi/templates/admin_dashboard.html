@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Dasbor Admin — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Dasbor Admin</h1>
+  <p class="lede">Kelola kriteria, nilai paket, dan simulasi bobot. Perubahan di sini mengubah ranking yang dilihat pengunjung.</p>
+</div>
+<div class="kv" aria-label="Ringkasan data admin">
+  <div><span class="num">{{ total_paket }}</span><span class="lbl">total paket</span></div>
+  <div><span class="num">{{ kota|length }}</span><span class="lbl">kota</span></div>
+  <div><span class="num">{{ kriteria|length }}</span><span class="lbl">kriteria</span></div>
+</div>
+<nav class="admin-actions" aria-label="Tugas admin">
+  <a href="{{ url_for('admin_kriteria') }}"><strong>Kriteria dan Bobot</strong><span>Ubah tipe dan bobot, total harus 1,00.</span></a>
+  <a href="{{ url_for('admin_paket') }}"><strong>Paket dan Nilai</strong><span>Ubah nilai C1 sampai C5 tiap paket.</span></a>
+  <a href="{{ url_for('admin_simulasi') }}"><strong>Simulasi Bobot</strong><span>Hitung ranking dengan bobot sementara, tanpa menyimpan.</span></a>
+</nav>
+<section aria-labelledby="paket-per-kota">
+  <h2 id="paket-per-kota">Paket per Kota</h2>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="admin-kota-caption">
+  <table>
+    <caption id="admin-kota-caption">Jumlah paket tiap kota</caption>
+    <thead><tr><th scope="col">Kota</th><th scope="col" class="num">Jumlah Paket</th></tr></thead>
+    <tbody>
+    {% for k in kota %}<tr><th scope="row">{{ k.nama }}</th><td class="num" data-value="{{ k.jumlah }}">{{ k.jumlah }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endblock %}

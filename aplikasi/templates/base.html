@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Sistem Pendukung Keputusan rekomendasi paket wisata di 5 kota besar Indonesia dengan metode SAW dan TOPSIS.">
+<title>{% block title %}SPK Paket Wisata{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#konten">Lewati ke konten utama</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href="{{ url_for('index') }}">SPK Paket Wisata</a>
+    <nav class="site-nav" aria-label="Utama">
+      <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
+      <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint and request.endpoint.startswith('admin') %}aria-current="page"{% endif %}>Admin</a>
+      {% if session.get('admin') %}
+      <a href="{{ url_for('admin_logout') }}">Keluar ({{ session.get('admin') }})</a>
+      {% endif %}
+    </nav>
+    {% if not session.get('admin') %}
+    <a class="header-action" href="{{ url_for('admin_login') }}">Masuk Admin</a>
+    {% endif %}
+  </div>
+</header>
+<main id="konten" tabindex="-1">
+{% with messages = get_flashed_messages() %}
+{% if messages %}{% for m in messages %}<div class="success" role="status">{{ m }}</div>{% endfor %}{% endif %}
+{% endwith %}
+{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-word">SPK Paket Wisata</p>
+    <p>Metode SAW dan TOPSIS. Ranking dihitung per kota, 20 paket per kota. Nilai C1 sampai C4 adalah skor rubrik tim dari Langkah 2, C5 adalah jumlah tempat dari dataset. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
+    <p><a href="{{ url_for('index') }}">Beranda</a> &nbsp;·&nbsp; <a href="{{ url_for('admin_dashboard') }}">Admin</a></p>
+  </div>
+</footer>
+</body>
+</html>

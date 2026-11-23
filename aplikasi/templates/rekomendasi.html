@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}Rekomendasi {{ kota }} — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Rekomendasi {{ kota }}</h1>
+  <p class="lede">Bobot: C1 {{ '%.2f'|format(weights[0]) }} Cost, C2 {{ '%.2f'|format(weights[1]) }}, C3 {{ '%.2f'|format(weights[2]) }}, C4 {{ '%.2f'|format(weights[3]) }}, C5 {{ '%.2f'|format(weights[4]) }}. C2 sampai C5 adalah Benefit. Klik nama kolom untuk mengurutkan tabel, atau pilih metode di bawah.</p>
+  <p role="group" aria-label="Pilih metode">
+    <a class="btn {% if metode == 'saw' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='saw') }}" {% if metode == 'saw' %}aria-pressed="true"{% endif %}>Hanya SAW</a>
+    <a class="btn {% if metode == 'topsis' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='topsis') }}" {% if metode == 'topsis' %}aria-pressed="true"{% endif %}>Hanya TOPSIS</a>
+    <a class="btn {% if metode == 'keduanya' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='keduanya') }}" {% if metode == 'keduanya' %}aria-pressed="true"{% endif %}>Keduanya</a>
+  </p>
+</div>
+
+{% if metode in ('saw', 'keduanya') %}
+{% set saw_top = packages[saw.order[0]] %}
+<section aria-labelledby="ranking-saw">
+  <h2 id="ranking-saw">Ranking SAW</h2>
+  <p class="section-note">Vi tertinggi adalah yang terbaik. Pemenang SAW {{ kota }}: <strong>Paket {{ saw_top.nomor_paket }}</strong>, Vi {{ '%.4f'|format(saw['values'][saw.order[0]]) }}.</p>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="saw-caption">
+  <table data-sortable>
+    <caption id="saw-caption">Ranking SAW {{ kota }}</caption>
+    <thead><tr>
+      <th scope="col" data-type="number">Ranking</th>
+      <th scope="col" data-type="number">Paket</th>
+      <th scope="col" data-type="text">Tempat Wisata</th>
+      <th scope="col" data-type="number">Vi</th>
+    </tr></thead>
+    <tbody>
+    {% for idx in saw.order %}
+    {% set p = packages[idx] %}
+    <tr class="{{ 'winner' if saw.ranks[idx] == 1 else '' }}">
+      <th scope="row" data-value="{{ saw.ranks[idx] }}">{{ saw.ranks[idx] }}</th>
+      <td data-value="{{ p.nomor_paket }}"><a href="{{ url_for('paket_detail', paket_id=p.id) }}">Paket {{ p.nomor_paket }}</a></td>
+      <td>{{ p.tempat|join(', ') }}</td>
+      <td class="num" data-value="{{ saw['values'][idx] }}">{{ '%.4f'|format(saw['values'][idx]) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="visually-hidden" data-sort-status role="status"></p>
+  </div>
+  <details>
+    <summary>Lihat tahap SAW: matriks dan normalisasi</summary>
+    <div class="details-body">
+      <h4>Matriks Keputusan</h4>
+      <div class="table-wrapper" tabindex="0" role="region" aria-label="Matriks keputusan SAW">
+      <table>
+        <thead><tr><th scope="col">Paket</th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th><th scope="col">C5</th></tr></thead>
+        <tbody>
+        {% for p in packages %}<tr><th scope="row">Paket {{ p.nomor_paket }}</th>{% for v in p.matrix %}<td class="num">{{ '%.2f'|format(v) }}</td>{% endfor %}</tr>{% endfor %}
+        </tbody>
+      </table>
+      </div>
+      <h4>Normalisasi SAW</h4>
+      <div class="table-wrapper" tabindex="0" role="region" aria-label="Normalisasi SAW">
+      <table>
+        <thead><tr><th scope="col">Paket</th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th><th scope="col">C5</th></tr></thead>
+        <tbody>
+        {% for i in range(packages|length) %}<tr><th scope="row">Paket {{ packages[i].nomor_paket }}</th>{% for v in saw.normalized[i] %}<td class="num">{{ '%.4f'|format(v) }}</td>{% endfor %}</tr>{% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+</section>
+{% endif %}
+
+{% if metode in ('topsis', 'keduanya') %}
+{% set topsis_top = packages[topsis.order[0]] %}
+<section aria-labelledby="ranking-topsis">
+  <h2 id="ranking-topsis">Ranking TOPSIS</h2>
+  <p class="section-note">Ci tertinggi adalah yang terbaik. Pemenang TOPSIS {{ kota }}: <strong>Paket {{ topsis_top.nomor_paket }}</strong>, Ci {{ '%.4f'|format(topsis['values'][topsis.order[0]]) }}.</p>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="topsis-caption">
+  <table data-sortable>
+    <caption id="topsis-caption">Ranking TOPSIS {{ kota }}</caption>
+    <thead><tr>
+      <th scope="col" data-type="number">Ranking</th>
+      <th scope="col" data-type="number">Paket</th>
+      <th scope="col" data-type="text">Tempat Wisata</th>
+      <th scope="col" data-type="number">D+</th>
+      <th scope="col" data-type="number">D-</th>
+      <th scope="col" data-type="number">Ci</th>
+    </tr></thead>
+    <tbody>
+    {% for idx in topsis.order %}
+    {% set p = packages[idx] %}
+    <tr class="{{ 'winner' if topsis.ranks[idx] == 1 else '' }}">
+      <th scope="row" data-value="{{ topsis.ranks[idx] }}">{{ topsis.ranks[idx] }}</th>
+      <td data-value="{{ p.nomor_paket }}"><a href="{{ url_for('paket_detail', paket_id=p.id) }}">Paket {{ p.nomor_paket }}</a></td>
+      <td>{{ p.tempat|join(', ') }}</td>
+      <td class="num" data-value="{{ topsis.distances_pos[idx] }}">{{ '%.4f'|format(topsis.distances_pos[idx]) }}</td>
+      <td class="num" data-value="{{ topsis.distances_neg[idx] }}">{{ '%.4f'|format(topsis.distances_neg[idx]) }}</td>
+      <td class="num" data-value="{{ topsis['values'][idx] }}">{{ '%.4f'|format(topsis['values'][idx]) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="visually-hidden" data-sort-status role="status"></p>
+  </div>
+  <details>
+    <summary>Lihat tahap TOPSIS: normalisasi, matriks terbobot, dan solusi ideal</summary>
+    <div class="details-body">
+      <h4>Normalisasi TOPSIS</h4>
+      <div class="table-wrapper" tabindex="0" role="region" aria-label="Normalisasi TOPSIS">
+      <table>
+        <thead><tr><th scope="col">Paket</th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th><th scope="col">C5</th></tr></thead>
+        <tbody>
+        {% for i in range(packages|length) %}<tr><th scope="row">Paket {{ packages[i].nomor_paket }}</th>{% for v in topsis.normalized[i] %}<td class="num">{{ '%.4f'|format(v) }}</td>{% endfor %}</tr>{% endfor %}
+        </tbody>
+      </table>
+      </div>
+      <h4>Matriks Terbobot TOPSIS</h4>
+      <div class="table-wrapper" tabindex="0" role="region" aria-label="Matriks terbobot TOPSIS">
+      <table>
+        <thead><tr><th scope="col">Paket</th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th><th scope="col">C5</th></tr></thead>
+        <tbody>
+        {% for i in range(packages|length) %}<tr><th scope="row">Paket {{ packages[i].nomor_paket }}</th>{% for v in topsis.weighted[i] %}<td class="num">{{ '%.4f'|format(v) }}</td>{% endfor %}</tr>{% endfor %}
+        </tbody>
+      </table>
+      </div>
+      <h4>Solusi Ideal</h4>
+      <div class="table-wrapper" tabindex="0" role="region" aria-label="Solusi ideal TOPSIS">
+      <table>
+        <thead><tr><th scope="col"></th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th><th scope="col">C5</th></tr></thead>
+        <tbody>
+        <tr><th scope="row">Positif (A+)</th>{% for v in topsis.ideal_pos %}<td class="num">{{ '%.4f'|format(v) }}</td>{% endfor %}</tr>
+        <tr><th scope="row">Negatif (A-)</th>{% for v in topsis.ideal_neg %}<td class="num">{{ '%.4f'|format(v) }}</td>{% endfor %}</tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </details>
+</section>
+{% endif %}
+
+{% if metode == 'keduanya' %}
+<section aria-labelledby="perbandingan">
+  <h2 id="perbandingan">Perbandingan SAW dan TOPSIS</h2>
+  <p class="section-note">Selisih adalah jarak mutlak antara ranking SAW dan ranking TOPSIS untuk paket yang sama. Di Jakarta kedua metode memilih pemenang yang berbeda, di kota lain pemenangnya sama.</p>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="banding-caption">
+  <table data-sortable>
+    <caption id="banding-caption">Perbandingan ranking SAW dan TOPSIS {{ kota }}</caption>
+    <thead><tr>
+      <th scope="col" data-type="number">Paket</th>
+      <th scope="col" data-type="number">Ranking SAW</th>
+      <th scope="col" data-type="number">Ranking TOPSIS</th>
+      <th scope="col" data-type="number">Selisih</th>
+    </tr></thead>
+    <tbody>
+    {% for i in range(packages|length) %}
+    <tr>
+      <th scope="row" data-value="{{ packages[i].nomor_paket }}">Paket {{ packages[i].nomor_paket }}</th>
+      <td class="num" data-value="{{ saw.ranks[i] }}">{{ saw.ranks[i] }}</td>
+      <td class="num" data-value="{{ topsis.ranks[i] }}">{{ topsis.ranks[i] }}</td>
+      <td class="num" data-value="{{ (saw.ranks[i] - topsis.ranks[i])|abs }}">{{ (saw.ranks[i] - topsis.ranks[i])|abs }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="visually-hidden" data-sort-status role="status"></p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

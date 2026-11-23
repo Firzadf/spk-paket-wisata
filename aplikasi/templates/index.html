@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}SPK Paket Wisata — Pilih Kota{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Pilih kota.<br>Lihat paket terbaiknya.</h1>
+  <p class="lede">Sistem ini merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
+</div>
+<div class="facts" aria-label="Ringkasan data">
+  <div><span class="num">5</span><span class="lbl">kota besar</span></div>
+  <div><span class="num">100</span><span class="lbl">paket wisata</span></div>
+  <div><span class="num">298</span><span class="lbl">tempat wisata</span></div>
+  <div><span class="num">403</span><span class="lbl">relasi paket dan tempat</span></div>
+</div>
+<section aria-labelledby="daftar-kota">
+  <h2 id="daftar-kota">Kota</h2>
+  <ol class="city-list">
+  {% for k in kota %}
+    <li>
+      <h3><a href="{{ url_for('kota_page', nama_kota=k.nama) }}">{{ k.nama }}</a></h3>
+      <span class="city-count">{{ k.jumlah }} paket</span>
+      <span class="city-actions">
+        <a class="btn btn-quiet" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
+        <a class="btn" href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}">Rekomendasi SAW dan TOPSIS</a>
+      </span>
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+<section aria-labelledby="kriteria-bobot">
+  <h2 id="kriteria-bobot">Kriteria dan Bobot</h2>
+  <p class="section-note">Total bobot 1,00. C1 Harga adalah Cost, semakin kecil semakin baik. C2 sampai C5 adalah Benefit, semakin besar semakin baik.</p>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="kriteria-caption">
+  <table>
+    <caption id="kriteria-caption">Kriteria penilaian paket wisata</caption>
+    <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col">Tipe</th><th scope="col" class="num">Bobot</th></tr></thead>
+    <tbody>
+    {% for k in kriteria %}
+    <tr><th scope="row">{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endblock %}

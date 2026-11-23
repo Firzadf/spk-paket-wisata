@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Kelola Paket dan Nilai — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Paket dan Nilai</h1>
+  <p class="lede">100 paket dari 5 kota. Klik Ubah nilai untuk mengubah C1 sampai C5 sebuah paket.</p>
+</div>
+<div class="toolbar">
+  <p class="field">
+    <label for="cari-admin-paket">Cari paket atau tempat</label>
+    <input type="search" id="cari-admin-paket" data-filter-table="tabel-admin-paket" placeholder="Contoh: Jakarta, Monas" autocomplete="off">
+  </p>
+  <p class="count" data-filter-count>100 dari 100 paket cocok.</p>
+</div>
+<div class="table-wrapper" tabindex="0" role="region" aria-labelledby="admin-paket-caption">
+<table id="tabel-admin-paket" data-sortable>
+  <caption id="admin-paket-caption">Semua paket dan nilai kriterianya</caption>
+  <thead><tr>
+    <th scope="col" data-type="number">Paket</th>
+    <th scope="col" data-type="text">Kota</th>
+    <th scope="col" data-type="text">Tempat</th>
+    <th scope="col">Aksi</th>
+  </tr></thead>
+  <tbody>
+  {% for p in packages %}
+  <tr>
+    <th scope="row" data-value="{{ p.nomor_paket }}">Paket {{ p.nomor_paket }}</th>
+    <td>{{ p.kota }}</td>
+    <td>{{ p.tempat|join(', ') }}</td>
+    <td><a href="{{ url_for('admin_nilai', paket_id=p.id) }}">Ubah nilai</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="visually-hidden" data-sort-status role="status"></p>
+</div>
+{% endblock %}
