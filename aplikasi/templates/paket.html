@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block title %}{{ detail.nama_tampil }} — SPK Paket Wisata{% endblock %}
 {% block content %}
-<div class="page-head">
-  <h1>{{ detail.nama_tampil }}</h1>
-  <p class="lede">Kota {{ detail.kota }}.</p>
-</div>
+<section class="hero-banner" aria-labelledby="judul-paket">
+  <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" alt="{{ meta.subject }}">
+  <div class="hero-body">
+    <h1 id="judul-paket">{{ detail.nama_tampil }}</h1>
+    <p>Kota {{ detail.kota }}. Foto di atas adalah foto kota, bukan foto paket, karena tidak ada foto paket asli.</p>
+  </div>
+</section>
+<p class="photo-credit">Foto: {{ meta.subject }}, foto oleh {{ meta.photographer }} ({{ meta.license }}), via <a href="{{ meta.commons_url }}">Wikimedia Commons</a>.</p>
 <div class="kv" aria-label="Ranking paket ini">
   <div><span class="num">{{ saw_rank }}</span><span class="lbl">Ranking SAW</span></div>
   <div><span class="num">{{ topsis_rank }}</span><span class="lbl">Ranking TOPSIS</span></div>
@@ -23,7 +27,7 @@
     <caption id="nilai-caption">Nilai kriteria {{ detail.nama_tampil }}</caption>
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col" class="num">Nilai</th></tr></thead>
     <tbody>
-    {% for k in kriteria %}<tr><th scope="row">{{ k.kode }}</th><td>{{ k.nama }} ({{ k.tipe }})</td><td class="num" data-value="{{ detail.nilai[k.kode] }}">{{ '%.2f'|format(detail.nilai[k.kode]) }}</td></tr>{% endfor %}
+    {% for k in kriteria %}<tr><th scope="row"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg>{{ k.kode }}</th><td>{{ k.nama }} ({{ k.tipe }})</td><td class="num" data-value="{{ detail.nilai[k.kode] }}">{{ '%.2f'|format(detail.nilai[k.kode]) }}</td></tr>{% endfor %}
     </tbody>
   </table>
   </div>

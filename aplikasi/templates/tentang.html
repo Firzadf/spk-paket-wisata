@@ -2,6 +2,7 @@
 {% block title %}Tentang Kami — SPK Paket Wisata{% endblock %}
 {% block content %}
 <div class="page-head">
+  <img class="logo-large" src="{{ url_for('static', filename='images/logo.svg') }}" width="72" height="72" alt="Logo SPK Paket Wisata">
   <h1>Tentang Kami</h1>
   <p class="lede">Situs ini adalah proyek akhir kuliah, bukan situs booking dan bukan perusahaan travel. Tujuannya membantu memilih paket wisata dengan cara yang bisa diperiksa, bukan menjual paket.</p>
 </div>
@@ -16,6 +17,24 @@
   <h2 id="tujuan">Tujuan proyek</h2>
   <p>Memilih paket wisata itu sulit karena ada banyak hal yang harus ditimbang sekaligus: harga, fasilitas, akses, popularitas, dan jumlah destinasi. Situs ini menghitung semua itu dengan dua metode, SAW dan TOPSIS, lalu menampilkan tahap hitungannya supaya siapa pun bisa memeriksa kenapa satu paket menang dan paket lain kalah.</p>
   <p><a class="btn" href="{{ url_for('cara_kerja') }}">Lihat cara kerja SAW dan TOPSIS</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+</section>
+
+<section aria-labelledby="foto-kota">
+  <h2 id="foto-kota">Foto kota</h2>
+  <p>Foto di situs ini bukan milik proyek. Semuanya dari Wikimedia Commons, dengan lisensi yang jelas, dan dipakai apa adanya.</p>
+  <div class="photo-strip">
+  {% for nama, m in city_meta.items() %}
+    <figure>
+      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" alt="{{ m.subject }}">
+      <figcaption>{{ nama }}: {{ m.subject }}</figcaption>
+    </figure>
+  {% endfor %}
+  </div>
+  <ul>
+  {% for nama, m in city_meta.items() %}
+    <li>{{ nama }}: {{ m.subject }}, foto oleh {{ m.photographer }}, lisensi <a href="{{ m.license_url }}">{{ m.license }}</a>, sumber <a href="{{ m.commons_url }}">Wikimedia Commons</a>.</li>
+  {% endfor %}
+  </ul>
 </section>
 
 <section aria-labelledby="sumber-data">

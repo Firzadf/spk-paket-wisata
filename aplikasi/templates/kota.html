@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Paket Wisata {{ kota }} — SPK Paket Wisata{% endblock %}
 {% block content %}
+<section class="hero-banner" aria-labelledby="judul-kota">
+  <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" alt="{{ meta.subject }}">
+  <div class="hero-body">
+    <h1 id="judul-kota">{{ kota }}</h1>
+    <p>{{ packages|length }} paket wisata di kota ini. Pemenang SAW: Paket {{ winners.saw_paket }}, pemenang TOPSIS: Paket {{ winners.topsis_paket }}.</p>
+  </div>
+</section>
+<p class="photo-credit">Foto: {{ meta.subject }}, foto oleh {{ meta.photographer }} ({{ meta.license }}), via <a href="{{ meta.commons_url }}">Wikimedia Commons</a>.</p>
 <div class="page-head">
-  <h1>{{ kota }}</h1>
-  <p class="lede"><strong>{{ packages|length }} paket</strong> wisata di kota ini. Cari nama tempat, lalu klik nama kolom untuk mengurutkan berdasarkan nilai kriteria. Tanpa JavaScript pun seluruh tabel tetap tampil.</p>
+  <p class="lede"><svg class="icon icon-city" aria-hidden="true"><use href="#icon-{{ meta.symbol }}"/></svg> Cari nama tempat, lalu klik nama kolom untuk mengurutkan berdasarkan nilai kriteria. Tanpa JavaScript pun seluruh tabel tetap tampil.</p>
   <p><a class="btn" href="{{ url_for('rekomendasi', kota=kota, metode='keduanya') }}">Lihat rekomendasi SAW dan TOPSIS</a></p>
 </div>
 <section aria-labelledby="daftar-paket">
@@ -30,7 +37,7 @@
     <tbody>
     {% for p in packages %}
     <tr>
-      <th scope="row" data-value="{{ p.nomor_paket }}"><a href="{{ url_for('paket_detail', paket_id=p.id) }}">Paket {{ p.nomor_paket }}</a></th>
+      <th scope="row" data-value="{{ p.nomor_paket }}"><a class="chip" href="{{ url_for('paket_detail', paket_id=p.id) }}">Paket {{ p.nomor_paket }}</a></th>
       <td>{{ p.tempat|join(', ') }}</td>
       <td class="num" data-value="{{ p.matrix[0] }}">{{ '%.2f'|format(p.matrix[0]) }}</td>
       <td class="num" data-value="{{ p.matrix[1] }}">{{ '%.2f'|format(p.matrix[1]) }}</td>

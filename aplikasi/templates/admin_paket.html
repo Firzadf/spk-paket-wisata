@@ -3,22 +3,39 @@
 {% block content %}
 <div class="page-head">
   <h1>Paket dan Nilai</h1>
-  <p class="lede">100 paket dari 5 kota. Klik Ubah nilai untuk mengubah C1 sampai C5 sebuah paket.</p>
+  <p class="lede">100 paket dari 5 kota. Klik Ubah nilai untuk mengubah C1 sampai C5 sebuah paket. Daftar ini ditampilkan 10 paket per halaman secara default, supaya tidak perlu scroll jauh.</p>
 </div>
-<div class="toolbar">
-  <p class="field">
-    <label for="cari-admin-paket">Cari paket atau tempat</label>
-    <input type="search" id="cari-admin-paket" data-filter-table="tabel-admin-paket" placeholder="Contoh: Jakarta, Monas" autocomplete="off">
-  </p>
-  <p class="count" data-filter-count>100 dari 100 paket cocok.</p>
-</div>
+<form class="filter-form" method="get" action="{{ url_for('admin_paket') }}">
+  <div class="toolbar">
+    <p class="field">
+      <label for="filter-kota">Kota</label>
+      <select id="filter-kota" name="kota">
+        <option value="" {% if not kota_filter %}selected{% endif %}>Semua kota</option>
+        {% for k in kota_list %}<option value="{{ k.nama }}" {% if kota_filter == k.nama %}selected{% endif %}>{{ k.nama }} ({{ k.jumlah }})</option>{% endfor %}
+      </select>
+    </p>
+    <p class="field">
+      <label for="filter-q">Cari paket atau tempat</label>
+      <input type="search" id="filter-q" name="q" value="{{ q }}" placeholder="Contoh: Paket 18, Monas" autocomplete="off">
+    </p>
+    <p class="field">
+      <label for="filter-per-page">Per halaman</label>
+      <select id="filter-per-page" name="per_page">
+        {% for n in [10, 20, 50] %}<option value="{{ n }}" {% if per_page == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+      </select>
+    </p>
+    <p class="field"><button type="submit">Terapkan filter</button></p>
+    {% if kota_filter or q %}<p class="field"><a class="btn btn-quiet" href="{{ url_for('admin_paket') }}">Hapus filter</a></p>{% endif %}
+  </div>
+</form>
+<p class="count">Menampilkan {{ start }}-{{ end }} dari {{ total }} paket.</p>
 <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="admin-paket-caption">
-<table id="tabel-admin-paket" data-sortable>
+<table id="tabel-admin-paket" class="compact" data-sortable>
   <caption id="admin-paket-caption">Semua paket dan nilai kriterianya</caption>
   <thead><tr>
     <th scope="col" data-type="number">Paket</th>
     <th scope="col" data-type="text">Kota</th>
-    <th scope="col" data-type="text">Tempat</th>
+    <th scope="col" data-type="text" class="hide-sm">Tempat</th>
     <th scope="col">Aksi</th>
   </tr></thead>
   <tbody>
@@ -26,12 +43,28 @@
   <tr>
     <th scope="row" data-value="{{ p.nomor_paket }}">Paket {{ p.nomor_paket }}</th>
     <td>{{ p.kota }}</td>
-    <td>{{ p.tempat|join(', ') }}</td>
-    <td><a href="{{ url_for('admin_nilai', paket_id=p.id) }}">Ubah nilai</a></td>
+    <td class="hide-sm">{{ p.tempat|join(', ') }}</td>
+    <td class="action"><a class="btn btn-sm" href="{{ url_for('admin_nilai', paket_id=p.id) }}">Ubah nilai</a></td>
   </tr>
   {% endfor %}
   </tbody>
 </table>
 <p class="visually-hidden" data-sort-status role="status"></p>
 </div>
+<nav class="pagination" aria-label="Halaman paket">
+  <span class="page-info">Halaman {{ page }} dari {{ total_pages }}</span>
+  {% if page > 1 %}
+  <a class="page-btn" href="{{ url_for('admin_paket', kota=kota_filter, q=q, per_page=per_page, page=page-1) }}">Sebelumnya</a>
+  {% else %}
+  <span class="page-btn" aria-disabled="true">Sebelumnya</span>
+  {% endif %}
+  {% for n in range(1, total_pages + 1) %}
+  <a class="page-btn" href="{{ url_for('admin_paket', kota=kota_filter, q=q, per_page=per_page, page=n) }}" {% if n == page %}aria-current="page"{% endif %}>{{ n }}</a>
+  {% endfor %}
+  {% if page < total_pages %}
+  <a class="page-btn" href="{{ url_for('admin_paket', kota=kota_filter, q=q, per_page=per_page, page=page+1) }}">Berikutnya</a>
+  {% else %}
+  <span class="page-btn" aria-disabled="true">Berikutnya</span>
+  {% endif %}
+</nav>
 {% endblock %}

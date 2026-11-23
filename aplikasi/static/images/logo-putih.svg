@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Logo SPK Paket Wisata">
+  <!-- Versi putih untuk latar gelap (footer): kotak putih, pin ink gelap, batang putih. -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#ffffff"/>
+  <path d="M32 12c-9 0-15 6.5-15 14.5C17 38 32 52 32 52s15-14 15-25.5C47 18.5 41 12 32 12z" fill="#0b0f0e"/>
+  <rect x="24" y="30" width="4" height="10" rx="1" fill="#ffffff"/>
+  <rect x="30" y="26" width="4" height="14" rx="1" fill="#ffffff"/>
+  <rect x="36" y="22" width="4" height="18" rx="1" fill="#ffffff"/>
+</svg>

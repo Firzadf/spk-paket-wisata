@@ -6,6 +6,16 @@
   <p class="lede">Dua metode, satu dataset, semua tahap hitungan bisa dibuka. Ranking di sini bukan angka asal.</p>
 </div>
 
+<section aria-labelledby="langkah">
+  <h2 id="langkah">Empat langkah</h2>
+  <ol class="steps">
+    <li><span class="step-no">1</span><strong>Pilih kota</strong><p>Lima kota besar, 20 paket per kota.</p></li>
+    <li><span class="step-no">2</span><strong>Lihat nilai kriteria</strong><p>C1 sampai C5 tiap paket, lengkap dengan tempatnya.</p></li>
+    <li><span class="step-no">3</span><strong>Bandingkan SAW dan TOPSIS</strong><p>Dua metode, dua sudut pandang yang sama-sama bisa diperiksa.</p></li>
+    <li><span class="step-no">4</span><strong>Periksa tahap hitungannya</strong><p>Matriks, normalisasi, dan solusi ideal dibuka semua.</p></li>
+  </ol>
+</section>
+
 <section aria-labelledby="saw">
   <h2 id="saw">SAW, dijumlahkan</h2>
   <p>SAW menormalisasi nilai tiap kriteria, lalu mengalikannya dengan bobot dan menjumlahkannya. Nilai akhir disebut Vi. Vi tertinggi menang. Sederhananya: paket yang nilainya bagus di kriteria berbobot besar akan naik.</p>
@@ -25,7 +35,7 @@
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col">Tipe</th><th scope="col" class="num">Bobot</th></tr></thead>
     <tbody>
     {% for k in kriteria %}
-    <tr><th scope="row">{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
+    <tr><th scope="row"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg>{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
     {% endfor %}
     </tbody>
   </table>

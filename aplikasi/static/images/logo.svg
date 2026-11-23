@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Logo SPK Paket Wisata">
+  <!-- Logo asli SPK Paket Wisata: pin lokasi + grafik ranking menaik.
+       Kotak hijau #00754a, pin putih, batang grafik hijau. Tanpa gradien, tanpa shadow. -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#00754a"/>
+  <path d="M32 12c-9 0-15 6.5-15 14.5C17 38 32 52 32 52s15-14 15-25.5C47 18.5 41 12 32 12z" fill="#ffffff"/>
+  <rect x="24" y="30" width="4" height="10" rx="1" fill="#00754a"/>
+  <rect x="30" y="26" width="4" height="14" rx="1" fill="#00754a"/>
+  <rect x="36" y="22" width="4" height="18" rx="1" fill="#00754a"/>
+</svg>

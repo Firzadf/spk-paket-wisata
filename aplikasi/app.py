@@ -21,6 +21,71 @@ import topsis as topsis_mod
 app = Flask(__name__)
 app.secret_key = os.environ.get("SPK_SECRET_KEY", "spk-demo-key-ganti-di-produksi")
 
+# Metadata foto kota (Wikimedia Commons, lisensi jelas, file lokal di static/images/).
+# Foto bukan milik proyek; kredit lengkap ditampilkan di halaman Tentang.
+CITY_META = {
+    "Jakarta": {
+        "file": "jakarta.jpg", "width": 1280, "height": 724,
+        "subject": "Monumen Nasional (Monas), Jakarta",
+        "photographer": "Ramayoni", "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "commons_url": "https://commons.wikimedia.org/wiki/File:Monumen_Nasional,_Jakarta,_Indonesia.jpg",
+        "symbol": "monas",
+    },
+    "Yogyakarta": {
+        "file": "yogyakarta.jpg", "width": 1280, "height": 854,
+        "subject": "Candi Borobudur, Jawa Tengah",
+        "photographer": "Jakub Ha\u0142un", "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "commons_url": "https://commons.wikimedia.org/wiki/File:Borobudur,_Java,_Indonesia,_20220817_1013_8739.jpg",
+        "symbol": "borobudur",
+    },
+    "Bandung": {
+        "file": "bandung.jpg", "width": 1280, "height": 757,
+        "subject": "Gedung Sate, Bandung",
+        "photographer": "Gunawan Kartapranata", "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "commons_url": "https://commons.wikimedia.org/wiki/File:Gedung_Sate_Bandung.jpg",
+        "symbol": "gedung-sate",
+    },
+    "Semarang": {
+        "file": "semarang.jpg", "width": 1280, "height": 854,
+        "subject": "Lawang Sewu, Semarang",
+        "photographer": "Philip Nalangan", "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0",
+        "commons_url": "https://commons.wikimedia.org/wiki/File:Lawang_Sewu_Semarang_Indonesia_1.jpg",
+        "symbol": "lawang-sewu",
+    },
+    "Surabaya": {
+        "file": "surabaya.jpg", "width": 1280, "height": 853,
+        "subject": "Tugu Pahlawan, Surabaya",
+        "photographer": "Eny Santiati", "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "commons_url": "https://commons.wikimedia.org/wiki/File:Tugu_Pahlawan_Surabaya_Jawa_Timur.jpg",
+        "symbol": "tugu-pahlawan",
+    },
+}
+
+
+def city_meta(nama_kota):
+    return CITY_META.get(nama_kota)
+
+
+def city_winners(nama_kota):
+    """Pemenang SAW/TOPSIS per kota, dipakai kartu kota di beranda."""
+    data = compute_city(nama_kota)
+    if data is None:
+        return None
+    saw_top = data["packages"][data["saw"]["order"][0]]
+    topsis_top = data["packages"][data["topsis"]["order"][0]]
+    return {
+        "saw_paket": saw_top["nomor_paket"],
+        "saw_vi": data["saw"]["values"][data["saw"]["order"][0]],
+        "topsis_paket": topsis_top["nomor_paket"],
+        "topsis_ci": data["topsis"]["values"][data["topsis"]["order"][0]],
+    }
+
+
 
 def login_required(view):
     @wraps(view)
@@ -56,12 +121,15 @@ def compute_city(nama_kota, weights=None, types=None):
 def index():
     kota = database.get_kota_list()
     kriteria = database.get_kriteria()
-    return render_template("index.html", kota=kota, kriteria=kriteria)
+    winners = {k["nama"]: city_winners(k["nama"]) for k in kota}
+    return render_template("index.html", kota=kota, kriteria=kriteria,
+                           winners=winners, city_meta=CITY_META)
 
 
 @app.route("/tentang")
 def tentang():
-    return render_template("tentang.html", kriteria=database.get_kriteria())
+    return render_template("tentang.html", kriteria=database.get_kriteria(),
+                           city_meta=CITY_META)
 
 
 @app.route("/cara-kerja")
@@ -74,7 +142,9 @@ def kota_page(nama_kota):
     packages = database.get_paket_by_kota(nama_kota)
     if not packages:
         return render_template("index.html", kota=database.get_kota_list(), kriteria=database.get_kriteria(), error=f"Kota {nama_kota} tidak ditemukan."), 404
-    return render_template("kota.html", kota=nama_kota, packages=packages, kriteria=database.get_kriteria())
+    return render_template("kota.html", kota=nama_kota, packages=packages,
+                           kriteria=database.get_kriteria(), meta=city_meta(nama_kota),
+                           winners=city_winners(nama_kota))
 
 
 @app.route("/rekomendasi")
@@ -86,7 +156,8 @@ def rekomendasi():
     data = compute_city(nama_kota)
     if data is None:
         return render_template("index.html", kota=database.get_kota_list(), kriteria=database.get_kriteria(), error=f"Kota {nama_kota} tidak ditemukan."), 404
-    return render_template("rekomendasi.html", kota=nama_kota, metode=metode, **data)
+    return render_template("rekomendasi.html", kota=nama_kota, metode=metode,
+                           meta=city_meta(nama_kota), **data)
 
 
 @app.route("/paket/<int:paket_id>")
@@ -101,7 +172,8 @@ def paket_detail(paket_id):
         if p["id"] == paket_id:
             saw_rank = data["saw"]["ranks"][i]
             topsis_rank = data["topsis"]["ranks"][i]
-    return render_template("paket.html", detail=detail, saw_rank=saw_rank, topsis_rank=topsis_rank, kriteria=database.get_kriteria())
+    return render_template("paket.html", detail=detail, saw_rank=saw_rank, topsis_rank=topsis_rank,
+                           kriteria=database.get_kriteria(), meta=city_meta(detail["kota"]))
 
 
 @app.route("/api/kota/<nama_kota>/saw")
@@ -184,11 +256,41 @@ def admin_kriteria():
 @app.route("/admin/paket")
 @login_required
 def admin_paket():
+    # Filter dan pagination server-side: jalan tanpa JavaScript, parameter di URL.
+    # Default 10 paket per halaman, pilihan 10/20/50. Filter tetap berlaku saat pindah halaman.
+    kota_filter = request.args.get("kota", "")
+    q = request.args.get("q", "").strip()
+    try:
+        per_page = int(request.args.get("per_page", "10"))
+    except ValueError:
+        per_page = 10
+    if per_page not in (10, 20, 50):
+        per_page = 10
+    try:
+        page = int(request.args.get("page", "1"))
+    except ValueError:
+        page = 1
     kota = database.get_kota_list()
     semua = []
     for k in kota:
         semua.extend(database.get_paket_by_kota(k["nama"]))
-    return render_template("admin_paket.html", packages=semua)
+    if kota_filter:
+        semua = [p for p in semua if p["kota"] == kota_filter]
+    if q:
+        ql = q.lower()
+        semua = [p for p in semua
+                 if ql in f"paket {p['nomor_paket']}".lower()
+                 or ql in p["kota"].lower()
+                 or ql in ", ".join(p["tempat"]).lower()]
+    total = len(semua)
+    total_pages = max(1, (total + per_page - 1) // per_page)
+    page = max(1, min(page, total_pages))
+    start = (page - 1) * per_page
+    end = min(start + per_page, total)
+    return render_template("admin_paket.html", packages=semua[start:end],
+                           kota_list=kota, kota_filter=kota_filter, q=q,
+                           page=page, per_page=per_page, total=total,
+                           total_pages=total_pages, start=start + 1 if total else 0, end=end)
 
 
 @app.route("/admin/paket/<int:paket_id>/nilai", methods=["GET", "POST"])

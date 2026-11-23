@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block title %}SPK Paket Wisata — Pilih Kota{% endblock %}
 {% block content %}
-<div class="page-head">
-  <h1>Pilih kota.<br>Lihat paket terbaiknya.</h1>
-  <p class="lede">Sistem ini merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
-</div>
+<section class="hero" aria-labelledby="judul-hero">
+  <img src="{{ url_for('static', filename='images/jakarta.jpg') }}" width="1280" height="724" fetchpriority="high" alt="Monumen Nasional (Monas) di Jakarta">
+  <div class="hero-body">
+    <h1 id="judul-hero">Pilih kota.<br>Lihat paket terbaiknya.</h1>
+    <p>Sistem ini merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
+  </div>
+</section>
+<p class="photo-credit">Foto hero: {{ city_meta['Jakarta'].subject }}, foto oleh {{ city_meta['Jakarta'].photographer }} ({{ city_meta['Jakarta'].license }}), via <a href="{{ city_meta['Jakarta'].commons_url }}">Wikimedia Commons</a>.</p>
 <div class="facts" aria-label="Ringkasan data">
   <div><span class="num">5</span><span class="lbl">kota besar</span></div>
   <div><span class="num">100</span><span class="lbl">paket wisata</span></div>
@@ -13,18 +17,38 @@
 </div>
 <section aria-labelledby="daftar-kota">
   <h2 id="daftar-kota">Kota</h2>
-  <ol class="city-list">
+  <ol class="city-cards">
   {% for k in kota %}
+    {% set m = city_meta[k.nama] %}
+    {% set w = winners[k.nama] %}
     <li>
-      <h3><a href="{{ url_for('kota_page', nama_kota=k.nama) }}">{{ k.nama }}</a></h3>
-      <span class="city-count">{{ k.jumlah }} paket</span>
-      <span class="city-actions">
-        <a class="btn btn-quiet" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
-        <a class="btn" href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}">Rekomendasi SAW dan TOPSIS</a>
-      </span>
+      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" alt="{{ m.subject }}">
+      <div class="city-card-body">
+        <div class="city-card-head">
+          <svg class="icon icon-city" aria-hidden="true"><use href="#icon-{{ m.symbol }}"/></svg>
+          <h3><a href="{{ url_for('kota_page', nama_kota=k.nama) }}">{{ k.nama }}</a></h3>
+          <span class="city-count">{{ k.jumlah }} paket</span>
+        </div>
+        <p class="city-winner">Pemenang SAW: <strong>Paket {{ w.saw_paket }}</strong> (Vi {{ '%.4f'|format(w.saw_vi) }}). Pemenang TOPSIS: <strong>Paket {{ w.topsis_paket }}</strong> (Ci {{ '%.4f'|format(w.topsis_ci) }}).</p>
+        <p class="photo-credit">Foto: {{ m.subject }}, {{ m.photographer }} ({{ m.license }}).</p>
+        <span class="city-actions">
+          <a class="btn btn-quiet" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
+          <a class="btn" href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}">Rekomendasi SAW dan TOPSIS</a>
+        </span>
+      </div>
     </li>
   {% endfor %}
   </ol>
+</section>
+<section aria-labelledby="cara-kerja-singkat">
+  <h2 id="cara-kerja-singkat">Cara Kerja</h2>
+  <ol class="steps">
+    <li><span class="step-no">1</span><strong>Pilih kota</strong><p>Lima kota besar, 20 paket per kota.</p></li>
+    <li><span class="step-no">2</span><strong>Lihat nilai kriteria</strong><p>C1 sampai C5 tiap paket, lengkap dengan tempatnya.</p></li>
+    <li><span class="step-no">3</span><strong>Bandingkan SAW dan TOPSIS</strong><p>Dua metode, dua sudut pandang yang sama-sama bisa diperiksa.</p></li>
+    <li><span class="step-no">4</span><strong>Periksa tahap hitungannya</strong><p>Matriks, normalisasi, dan solusi ideal dibuka semua.</p></li>
+  </ol>
+  <p><a class="btn btn-quiet" href="{{ url_for('cara_kerja') }}">Baca cara kerja lengkap</a></p>
 </section>
 <section aria-labelledby="bukan-booking">
   <h2 id="bukan-booking">Bukan situs booking</h2>
@@ -40,7 +64,7 @@
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col">Tipe</th><th scope="col" class="num">Bobot</th></tr></thead>
     <tbody>
     {% for k in kriteria %}
-    <tr><th scope="row">{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
+    <tr><th scope="row"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg>{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
     {% endfor %}
     </tbody>
   </table>

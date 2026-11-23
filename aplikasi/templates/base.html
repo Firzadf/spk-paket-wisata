@@ -5,14 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Sistem Pendukung Keputusan rekomendasi paket wisata di 5 kota besar Indonesia dengan metode SAW dan TOPSIS.">
 <title>{% block title %}SPK Paket Wisata{% endblock %}</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32.png') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#konten">Lewati ke konten utama</a>
+{# Ikon dan simbol SVG buatan sendiri (inline <symbol>, bukan emoji, bukan gambar situs lain).
+   Dipakai lewat <svg class="icon"><use href="#icon-c1"/></svg> di template. #}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="icon-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><polygon points="15.5,8.5 13.5,13.5 8.5,15.5 10.5,10.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="icon-c1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 11V4h7l9 9-7 7-9-9z"/><circle cx="7.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="icon-c2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 16.7l-5.4 3.1 1.1-6.1L3.2 9.4l6.1-.8L12 3z"/>
+    </symbol>
+    <symbol id="icon-c3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/>
+    </symbol>
+    <symbol id="icon-c4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>
+    </symbol>
+    <symbol id="icon-c5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>
+    </symbol>
+    <symbol id="icon-monas" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 44V22L24 8l4 14v22"/><path d="M24 4v4"/><path d="M14 44h20"/><path d="M17 38h14"/><path d="M19 30h10"/>
+    </symbol>
+    <symbol id="icon-borobudur" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 40h36"/><path d="M10 40v-4h28v4"/><path d="M14 36v-4h20v4"/><path d="M18 32a6 6 0 0 1 12 0"/><path d="M24 26V20"/><path d="M20 20h8"/><path d="M22 16h4"/>
+    </symbol>
+    <symbol id="icon-gedung-sate" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 42V20h10v22M32 42V20h10v22"/><path d="M16 42V14h16v28"/><path d="M24 14V6"/><circle cx="24" cy="5" r="1.6" fill="currentColor" stroke="none"/><path d="M19 24h4M25 24h4M19 30h4M25 30h4"/>
+    </symbol>
+    <symbol id="icon-lawang-sewu" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 42V14l18-8 18 8v28"/><path d="M6 42h36"/><path d="M12 20v6M20 20v6M28 20v6M36 20v6"/><path d="M12 32v6M20 32v6M28 32v6M36 32v6"/>
+    </symbol>
+    <symbol id="icon-tugu-pahlawan" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M24 4l5 12-3 4v22H22V20l-3-4 5-12z"/><path d="M14 42h20"/><path d="M18 36h12"/>
+    </symbol>
+  </defs>
+</svg>
 <header class="site-header">
   <div class="header-inner">
-    <a class="wordmark" href="{{ url_for('index') }}">SPK Paket Wisata</a>
+    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""> SPK Paket Wisata</a>
     <nav class="site-nav" aria-label="Utama">
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
       <a href="{{ url_for('tentang') }}" {% if request.endpoint == 'tentang' %}aria-current="page"{% endif %}>Tentang</a>
@@ -36,9 +78,10 @@
 </main>
 <footer class="site-footer">
   <div class="footer-inner">
-    <p class="footer-word">SPK Paket Wisata</p>
+    <p class="footer-word"><img class="logo-footer" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="48" height="48" alt=""> SPK Paket Wisata</p>
     <p>Metode SAW dan TOPSIS. Ranking dihitung per kota, 20 paket per kota. Nilai C1 sampai C4 adalah skor rubrik tim dari Langkah 2, C5 adalah jumlah tempat dari dataset. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
     <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi, periksa harga resmi ke penyedia paket sebelum membeli.</p>
+    <p>Foto kota: Wikimedia Commons, bukan milik proyek. Kredit lengkap ada di halaman <a href="{{ url_for('tentang') }}">Tentang</a>.</p>
     <p><a href="{{ url_for('index') }}">Beranda</a> &nbsp;·&nbsp; <a href="{{ url_for('tentang') }}">Tentang</a> &nbsp;·&nbsp; <a href="{{ url_for('cara_kerja') }}">Cara Kerja</a> &nbsp;·&nbsp; <a href="{{ url_for('admin_dashboard') }}">Admin</a> &nbsp;·&nbsp; <a href="https://github.com/Firzadf/spk-paket-wisata">GitHub</a></p>
   </div>
 </footer>
