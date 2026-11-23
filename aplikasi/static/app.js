@@ -109,20 +109,51 @@
     var loader = buildLoader();
     document.body.appendChild(loader);
     hideLoader(loader, viaNav ? 450 : 900);
+    /* Transisi 3D ganti halaman (v4 r3): halaman masuk dengan rotateY
+       kecil (class page-entering, dilepas setelah animasi selesai supaya
+       transisi keluar nanti tidak tertahan fill mode animasi), halaman
+       lama keluar dengan rotateY berlawanan saat tautan internal diklik,
+       lalu navigasi setelah 420ms. Tanpa JS, navigasi normal. */
+    document.body.classList.add("page-entering");
+    setTimeout(function () { document.body.classList.remove("page-entering"); }, 650);
     document.querySelectorAll("a[href]").forEach(function (a) {
-      a.addEventListener("click", function () {
+      a.addEventListener("click", function (e) {
         var href = a.getAttribute("href");
         if (!href || href.charAt(0) === "#" || a.target === "_blank") return;
         if (/^(https?:)?\/\//i.test(href) && a.origin !== location.origin) return;
-        try { sessionStorage.setItem("triprank-nav", "1"); } catch (e) {}
-        if (!document.querySelector(".trip-loader")) document.body.appendChild(buildLoader());
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        try { sessionStorage.setItem("triprank-nav", "1"); } catch (err) {}
+        e.preventDefault();
+        document.body.classList.add("page-leaving");
+        setTimeout(function () { location.href = a.href; }, 420);
       });
     });
     window.addEventListener("pageshow", function (e) {
+      document.body.classList.remove("page-leaving");
+      document.body.classList.remove("page-entering");
       if (e.persisted) {
         var old = document.querySelector(".trip-loader");
         if (old && old.parentNode) old.parentNode.removeChild(old);
       }
+    });
+  }
+
+  /* --- Parallax mouse untuk background 3D: bentuk di hero dan Filosofi
+     bergeser pelan mengikuti kursor. Hanya di perangkat ber-pointer. --- */
+  if (!reduced && window.matchMedia("(hover: hover)").matches) {
+    document.querySelectorAll(".hero, .philosophy").forEach(function (section) {
+      section.addEventListener("mousemove", function (e) {
+        var r = section.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        var mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        var my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        section.style.setProperty("--mx", mx.toFixed(2));
+        section.style.setProperty("--my", my.toFixed(2));
+      });
+      section.addEventListener("mouseleave", function () {
+        section.style.setProperty("--mx", 0);
+        section.style.setProperty("--my", 0);
+      });
     });
   }
 

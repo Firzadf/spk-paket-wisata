@@ -20,6 +20,12 @@
      kalimat brand. Bukan font sistem basic sebagai font utama;
      Georgia/sans sistem hanya fallback bila font web gagal dimuat.
    - Header gelap hijau tua + footer 3 kolom (v4 r2, atas permintaan user).
+   - Tombol 3D (23 Nov 2026, atas permintaan user): semua tombol punya
+     bayangan offset bawah yang tegas (efek tombol fisik yang bisa
+     ditekan), naik saat hover, turun saat ditekan. Ini penyimpangan
+     yang disengaja dari larangan shadow di design.md, atas perintah
+     user yang eksplisit ("Button button ini juga bisa ga dibuat 3d
+     aja" / "Keknya bakal lebih bagus ga sih").
    - Scrim netral di atas foto hero: satu-satunya pengecualian gradien yang
      diizinkan design.md, dipakai hanya di atas foto agar teks terbaca. */
 :root {
@@ -150,13 +156,18 @@ img { max-width: 100%; display: block; height: auto; }
 .site-nav a[aria-current="page"] { color: var(--ink); }
 .site-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .site-nav a.nav-login { display: none; }
+/* Tombol Masuk Admin di dropdown mobile: gaya 3D yang sama dengan .btn. */
+.site-nav a.nav-login { box-shadow: 0 4px 0 var(--accent-deep); }
+.site-nav a.nav-login:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .header-action {
   background: var(--accent-deep); color: var(--accent-ink); text-decoration: none;
   padding: 10px 20px; font-weight: 700; font-size: 16px;
   white-space: nowrap; border: 1px solid var(--accent-deep); border-radius: 999px;
-  transition: background 200ms, color 200ms, border-color 200ms;
+  box-shadow: 0 4px 0 rgba(20, 38, 31, 0.35);
+  transition: background 200ms, color 200ms, border-color 200ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.header-action:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.header-action:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 0 rgba(20, 38, 31, 0.35); }
+.header-action:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(20, 38, 31, 0.35); }
 /* Tombol hamburger: pil hitam kecil dengan 3 garis putih (ala Umano),
    hanya tampil di layar sempit. Menu bekerja tanpa JavaScript lewat
    checkbox hack: input tersembunyi + label sebagai tombol. */
@@ -166,7 +177,10 @@ img { max-width: 100%; display: block; height: auto; }
   width: 52px; height: 44px; min-height: 44px; padding: 0;
   background: var(--ink); border-radius: 999px;
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  box-shadow: 0 3px 0 rgba(20, 38, 31, 0.35);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+.nav-toggle:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(20, 38, 31, 0.35); }
 .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--surface); border-radius: 2px; transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms; }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(2) { opacity: 0; }
@@ -336,22 +350,32 @@ section > h2 { padding-top: 0; }
 .mission-label, .philosophy-label, .footer-col h3, label, .toolbar label,
 .page-info, .illustration-tag { font-family: var(--sans-alt); }
 
-/* Tombol v4: persegi, satu isi hijau tua, satu sekunder bergaris ink. */
+/* Tombol v4: persegi, satu isi hijau tua, satu sekunder bergaris ink.
+   Gaya 3D (atas permintaan user, 23 Nov 2026): bayangan offset bawah
+   yang tegas supaya tombol terlihat seperti tombol fisik yang bisa
+   ditekan; naik 2px + bayangan membesar saat hover, turun 2px +
+   bayangan mengecil saat ditekan. Hanya transform (dan bayangan yang
+   mengikutinya), 150-250ms. Radius 6px tetap. */
 .btn, button {
   background: var(--accent); color: var(--accent-ink); border: 0;
   padding: 12px 22px; font-family: var(--sans-alt); font-weight: 700; cursor: pointer;
   text-decoration: none; display: inline-block; min-height: 48px;
   font-size: 16px; white-space: nowrap;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms;
+  box-shadow: 0 4px 0 var(--accent-deep);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.btn:hover, button:hover { background: var(--accent-deep); color: var(--accent-ink); transform: translateY(-1px); }
-.btn:active, button:active { transform: scale(0.98); }
+.btn:hover, button:hover { background: var(--accent-deep); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-deep); }
+.btn:active, button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .btn-quiet {
   background: transparent; color: var(--ink);
   border: 1px solid var(--ink); padding: 11px 21px;
+  box-shadow: 0 4px 0 var(--ink);
 }
-.btn-quiet:hover { background: var(--ink); color: var(--surface); }
-.btn[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.btn-quiet:hover { background: var(--ink); color: var(--surface); box-shadow: 0 6px 0 var(--ink); }
+.btn-quiet:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ink); }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--surface); box-shadow: 0 4px 0 var(--accent-deep); }
+.btn[aria-pressed="true"]:hover { box-shadow: 0 6px 0 var(--accent-deep); }
+.btn[aria-pressed="true"]:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .btn-sm { padding: 10px 16px; min-height: 44px; font-size: 14px; }
 
 /* Chip paket di tabel ranking: persegi hijau muda, satu baris, bisa diklik. */
@@ -360,9 +384,11 @@ section > h2 { padding-top: 0; }
   background: var(--accent-soft); color: var(--accent-deep);
   border: 1px solid var(--accent);
   padding: 6px 14px; min-height: 36px; line-height: 1.4; font-weight: 700; font-size: 14px;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms;
+  box-shadow: 0 2px 0 var(--accent);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.chip:hover { background: var(--accent); color: var(--accent-ink); transform: translateY(-1px); }
+.chip:hover { background: var(--accent); color: var(--accent-ink); transform: translateY(-1px); box-shadow: 0 3px 0 var(--accent); }
+.chip:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--accent); }
 .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Tabel: header field gading, teks 13px semibold, baris 1px. */
@@ -411,9 +437,12 @@ td.action .btn { white-space: nowrap; }
   min-width: 44px; min-height: 44px; padding: 10px 14px; text-align: center;
   background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong);
   font-weight: 700; text-decoration: none; white-space: nowrap;
+  box-shadow: 0 3px 0 var(--line-strong);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.pagination .page-btn:hover { background: var(--field); color: var(--ink); }
-.pagination .page-btn[aria-current="page"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.pagination .page-btn:hover { background: var(--field); color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 0 var(--line-strong); }
+.pagination .page-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-strong); }
+.pagination .page-btn[aria-current="page"] { background: var(--ink); color: var(--surface); border-color: var(--ink); box-shadow: 0 3px 0 var(--accent-deep); }
 .pagination .page-btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
 
 /* Panel tahap hitungan: <details> asli, garis 1px. */
@@ -669,15 +698,63 @@ input, select, textarea { border-radius: var(--radius); }
    teks langsung tampil penuh. Ganjil dari kiri, genap dari kanan di
    desktop; di HP semuanya dari kanan. Judul dan paragraf dari bawah. */
 .js [data-reveal] { opacity: 0; }
-.js [data-reveal="up"] { transform: translateY(14px); filter: blur(4px); }
-.js [data-reveal="left"] { transform: translateX(-28px); }
-.js [data-reveal="right"] { transform: translateX(28px); }
+.js [data-reveal="up"] { transform: perspective(900px) rotateX(8deg) translateY(28px); filter: blur(6px); }
+.js [data-reveal="left"] { transform: perspective(900px) rotateY(-10deg) translateX(-40px); }
+.js [data-reveal="right"] { transform: perspective(900px) rotateY(10deg) translateX(40px); }
 .js [data-reveal].is-visible {
   opacity: 1; transform: none; filter: none;
-  transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1), transform 450ms cubic-bezier(0.16, 1, 0.3, 1), filter 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal] { opacity: 1; transform: none; filter: none; }
+}
+
+/* Background animasi 3D (atas permintaan user, 23 Nov 2026: "Background
+   animasi 3d gitu", karena animasi lama terlalu halus sampai tidak
+   terlihat di HP). Lapisan bentuk geometris CSS 3D yang mengambang
+   dan berputar pelan di belakang hero beranda dan section Filosofi.
+   Dipilih CSS 3D, bukan Three.js, supaya ringan di HP, tanpa CDN,
+   dan tetap jalan tanpa JavaScript (animasi CSS murni, dekoratif;
+   konten tetap lengkap). Parallax mouse digerakkan JavaScript lewat
+   --mx/--my di section; tanpa JS bentuknya tetap beranimasi. Dengan
+   prefers-reduced-motion, lapisan ini disembunyikan. */
+.hero .bg-3d, .philosophy .bg-3d {
+  position: absolute; inset: -20px; z-index: 1; overflow: hidden;
+  pointer-events: none; perspective: 900px;
+  transform: translate3d(calc(var(--mx, 0) * 14px), calc(var(--my, 0) * 10px), 0);
+  transition: transform 500ms ease-out;
+}
+.hero .bg-3d { --shape: rgba(255, 253, 249, 0.65); --shape-fill: rgba(255, 253, 249, 0.4); }
+.philosophy .bg-3d { --shape: rgba(255, 253, 249, 0.35); --shape-fill: rgba(255, 253, 249, 0.2); }
+.hero .hero-body { z-index: 2; }
+.philosophy { position: relative; overflow: hidden; }
+.philosophy > :not(.bg-3d) { position: relative; z-index: 1; }
+.bg-3d i { position: absolute; display: block; }
+.bg-3d i:nth-child(1) { width: 54px; height: 54px; top: 8%; left: 5%; border: 2px solid var(--shape); animation: drift3d-a 16s ease-in-out infinite alternate; }
+.bg-3d i:nth-child(2) { width: 72px; height: 72px; top: 12%; right: 7%; border: 2px solid var(--shape); border-radius: 50%; animation: drift3d-b 20s ease-in-out infinite alternate; }
+.bg-3d i:nth-child(3) { width: 64px; height: 56px; top: 40%; left: 84%; background: var(--shape-fill); clip-path: polygon(50% 0, 100% 100%, 0 100%); animation: drift3d-c 18s ease-in-out infinite alternate; }
+.bg-3d i:nth-child(4) { width: 90px; height: 10px; top: 36%; left: 12%; background: var(--shape-fill); border-radius: 999px; animation: drift3d-b 14s ease-in-out infinite alternate-reverse; }
+.bg-3d i:nth-child(5) { width: 26px; height: 26px; top: 6%; left: 46%; background: var(--shape); border-radius: 50%; animation: drift3d-a 12s ease-in-out infinite alternate-reverse; }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes drift3d-a { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(45deg); } to { transform: translate3d(16px, -22px, 50px) rotateX(32deg) rotateY(48deg) rotateZ(45deg); } }
+  @keyframes drift3d-b { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg); } to { transform: translate3d(-18px, 16px, 60px) rotateX(-28deg) rotateY(36deg); } }
+  @keyframes drift3d-c { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg); } to { transform: translate3d(12px, 20px, -40px) rotateX(24deg) rotateY(-42deg) rotateZ(120deg); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-3d { display: none; }
+}
+
+/* Transisi 3D ganti halaman (atas permintaan user, 23 Nov 2026:
+   "Sama transition 3d yg keren"). Halaman baru masuk dengan putaran
+   rotateY kecil + fade (550ms); halaman lama keluar dengan rotateY
+   berlawanan + fade saat tautan internal diklik (400ms, diatur
+   JavaScript di app.js). Tanpa JavaScript, navigasi normal tanpa
+   transisi. Dengan prefers-reduced-motion, semuanya dimatikan oleh
+   aturan reduce global. */
+@media (prefers-reduced-motion: no-preference) {
+  body.page-entering main { animation: pageEnter3d 550ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes pageEnter3d { from { opacity: 0; transform: perspective(1200px) rotateY(-7deg) translateY(12px); } to { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateY(0); } }
+  body.page-leaving main { opacity: 0; transform: perspective(1200px) rotateY(8deg) translateX(-24px); transition: opacity 400ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1); }
 }
 
 /* Tablet dan HP: komposisi sendiri, bukan desktop yang dikecilkan. */
@@ -760,8 +837,8 @@ input, select, textarea { border-radius: var(--radius); }
   .nav-toggle-input:focus-visible + .nav-toggle { outline: 2px solid var(--accent); outline-offset: 2px; }
   .city-list li { grid-template-columns: 1fr; gap: 4px; padding: 18px; }
   .form-row { grid-template-columns: 1fr; }
-  /* Scroll reveal di HP: semua kartu masuk dari kanan. */
-  .js [data-reveal="left"] { transform: translateX(28px); }
+  /* Scroll reveal di HP: semua kartu masuk dari kanan, dengan putaran 3D. */
+  .js [data-reveal="left"] { transform: perspective(900px) rotateY(10deg) translateX(40px); }
   /* Footer di HP: satu kolom vertikal menumpuk (perbaikan r3).
      Aturan dasar .site-footer .footer-cols lebih spesifik, jadi aturan
      mobile harus memakai selektor yang sama spesifiknya, kalau tidak
