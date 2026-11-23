@@ -76,7 +76,9 @@
 </svg>
 <header class="site-header">
   <div class="header-inner">
-    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="32" height="32" alt=""> TripRank</a>
+    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""> TripRank</a>
+    <input class="nav-toggle-input" type="checkbox" id="nav-toggle" aria-hidden="true" tabindex="-1">
+    <label class="nav-toggle" for="nav-toggle" aria-label="Buka menu navigasi"><span></span><span></span><span></span></label>
     <nav class="site-nav" aria-label="Utama">
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
       <a href="{{ url_for('tentang') }}" {% if request.endpoint == 'tentang' %}aria-current="page"{% endif %}>Tentang</a>
@@ -84,6 +86,8 @@
       <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint and request.endpoint.startswith('admin') %}aria-current="page"{% endif %}>Admin</a>
       {% if session.get('admin') %}
       <a href="{{ url_for('admin_logout') }}">Keluar ({{ session.get('admin') }})</a>
+      {% else %}
+      <a class="nav-login" href="{{ url_for('admin_login') }}">Masuk Admin</a>
       {% endif %}
     </nav>
     {% if not session.get('admin') %}
