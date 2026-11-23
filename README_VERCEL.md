@@ -3,14 +3,18 @@
 Isi folder ini adalah proyek Vercel yang siap deploy, isinya salinan aplikasi
 Flask yang sama dengan versi laptop, plus `api/index.py` dan `vercel.json`.
 
-Redesign 23 November 2026: tampilan sudah diganti ke mode Operate (token warna
-di `:root` di `aplikasi/static/style.css`, tipografi serif editorial plus
-system-ui, sudut persegi, tanpa gradien dan tanpa shadow). Semua halaman
-di `aplikasi/templates/` sudah redesign, dan ada `aplikasi/static/app.js`
-untuk sortir tabel dan filter paket per kota (tabel tetap lengkap tanpa
-JavaScript). Data, logika, dan hasil hitungan SAW/TOPSIS tidak berubah.
-`api/index.py`, `vercel.json`, dan `requirements.txt` tidak berubah, cara
-deploy di bawah tetap berlaku.
+Redesign modern v2, 23 November 2026: tampilan diganti ke modern minimal
+sans-serif bersih (ground putih, ink hampir hitam, aksen hijau #00754a,
+radius kecil 8px, layout rapat, header putih lengket). Serif Georgia v1
+dihapus karena terasa kuno. Halaman baru: `/tentang` (Tentang Kami, sumber
+data, FAQ, disclaimer) dan `/cara-kerja` (metodologi SAW dan TOPSIS),
+ditautkan dari navigasi, beranda, dan footer. Animasi hanya lapisan CSS
+(transform dan opacity, stagger 60ms, fallback prefers-reduced-motion).
+Semua halaman di `aplikasi/templates/` sudah v2, dan ada
+`aplikasi/static/app.js` untuk sortir tabel dan filter paket per kota
+(tabel tetap lengkap tanpa JavaScript). Data, logika, dan hasil hitungan
+SAW/TOPSIS tidak berubah. `api/index.py`, `vercel.json`, dan
+`requirements.txt` tidak berubah, cara deploy di bawah tetap berlaku.
 
 ## Cara deploy, pilih salah satu
 

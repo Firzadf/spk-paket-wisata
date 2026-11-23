@@ -55,7 +55,7 @@ Folder ini adalah proyek Vercel yang siap deploy, dengan `api/index.py` dan `ver
 
 ## Desain
 
-Redesign 23 November 2026, mode Operate. Token warna dan tipografi di `:root` di `aplikasi/static/style.css`, headline serif editorial plus system-ui, sudut persegi, tanpa gradien dan tanpa shadow. Tabel ranking bisa disortir dan paket per kota bisa difilter, tabel tetap lengkap tanpa JavaScript. Data, logika, dan hasil hitungan SAW/TOPSIS tidak berubah pada redesign ini.
+Redesign modern v2, 23 November 2026, mode Operate. Satu grotesk sans-serif sistem, ground putih bersih, ink hampir hitam, aksen hijau modern, radius kecil 8px, layout rapat, header putih lengket. Serif Georgia v1 dihapus karena dinilai kuno. Halaman baru `/tentang` dan `/cara-kerja` menjelaskan proyek, metodologi, sumber data, FAQ, dan disclaimer, supaya jelas ini bukan situs booking atau scam. Animasi hanya lapisan CSS (transform dan opacity, stagger 60ms, fallback prefers-reduced-motion). Tabel ranking bisa disortir dan paket per kota bisa difilter, tabel tetap lengkap tanpa JavaScript. Data, logika, dan hasil hitungan SAW/TOPSIS tidak berubah pada redesign ini.
 
 ## Struktur
 

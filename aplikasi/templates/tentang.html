@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Tentang Kami — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Tentang Kami</h1>
+  <p class="lede">Situs ini adalah proyek akhir kuliah, bukan situs booking dan bukan perusahaan travel. Tujuannya membantu memilih paket wisata dengan cara yang bisa diperiksa, bukan menjual paket.</p>
+</div>
+
+<section aria-labelledby="siapa-kami">
+  <h2 id="siapa-kami">Siapa kami</h2>
+  <p>Proyek akhir SPK (Sistem Pendukung Keputusan) mahasiswa Program Studi Sistem Informasi, Universitas Bina Sarana Informatika. Aplikasi ini dibuat oleh <strong>Firza Duta Fauzan, NIM 19230808</strong>, sebagai pembuat utama aplikasi ini.</p>
+  <p>Kami tidak memakai nama perusahaan, alamat kantor, nomor telepon, atau klaim afiliasi apa pun, karena memang tidak ada.</p>
+</section>
+
+<section aria-labelledby="tujuan">
+  <h2 id="tujuan">Tujuan proyek</h2>
+  <p>Memilih paket wisata itu sulit karena ada banyak hal yang harus ditimbang sekaligus: harga, fasilitas, akses, popularitas, dan jumlah destinasi. Situs ini menghitung semua itu dengan dua metode, SAW dan TOPSIS, lalu menampilkan tahap hitungannya supaya siapa pun bisa memeriksa kenapa satu paket menang dan paket lain kalah.</p>
+  <p><a class="btn" href="{{ url_for('cara_kerja') }}">Lihat cara kerja SAW dan TOPSIS</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+</section>
+
+<section aria-labelledby="sumber-data">
+  <h2 id="sumber-data">Sumber data</h2>
+  <p>Data berasal dari dataset paket wisata proyek ini: <strong>100 paket, 298 tempat, 403 relasi paket dan tempat</strong>. Nilai C1 sampai C4 adalah <strong>skor rubrik tim proyek</strong>, bukan harga atau rating resmi. C5 adalah jumlah tempat unik dalam paket.</p>
+  <p>Kami tidak mengklaim data ini berasal dari situs booking resmi atau dari pemerintah.</p>
+</section>
+
+<section aria-labelledby="faq">
+  <h2 id="faq">Pertanyaan yang sering ditanyakan</h2>
+  <details>
+    <summary>Apakah ini situs booking?</summary>
+    <div class="details-body"><p>Bukan. Ini alat rekomendasi. Tidak ada pemesanan dan tidak ada pembayaran di situs ini.</p></div>
+  </details>
+  <details>
+    <summary>Apakah harga di situs ini harga resmi?</summary>
+    <div class="details-body"><p>Bukan. Harga yang tampil adalah data dari dataset proyek, dan skor C1 sampai C4 adalah skor rubrik tim, bukan harga resmi penyedia. Periksa harga resmi ke penyedia paket sebelum membeli.</p></div>
+  </details>
+  <details>
+    <summary>Apakah situs ini mengumpulkan data pribadi?</summary>
+    <div class="details-body"><p>Tidak. Situs ini tidak meminta data pribadi, tidak ada pendaftaran pengunjung, dan tidak ada pembayaran.</p></div>
+  </details>
+  <details>
+    <summary>Kenapa Jakarta punya pemenang SAW dan TOPSIS yang berbeda?</summary>
+    <div class="details-body"><p>Karena cara hitungnya berbeda. SAW menjumlahkan skor terbobot, TOPSIS mengukur jarak ke solusi ideal. Di kota lain pemenangnya sama, di Jakarta berbeda. Tahap hitungan lengkapnya bisa dibuka di halaman rekomendasi.</p></div>
+  </details>
+</section>
+
+<section aria-labelledby="disclaimer">
+  <h2 id="disclaimer">Disclaimer</h2>
+  <p>Harga dan skor di situs ini adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli.</p>
+</section>
+{% endblock %}

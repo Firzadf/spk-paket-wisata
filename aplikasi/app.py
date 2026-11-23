@@ -59,6 +59,16 @@ def index():
     return render_template("index.html", kota=kota, kriteria=kriteria)
 
 
+@app.route("/tentang")
+def tentang():
+    return render_template("tentang.html", kriteria=database.get_kriteria())
+
+
+@app.route("/cara-kerja")
+def cara_kerja():
+    return render_template("cara-kerja.html", kriteria=database.get_kriteria())
+
+
 @app.route("/kota/<nama_kota>")
 def kota_page(nama_kota):
     packages = database.get_paket_by_kota(nama_kota)

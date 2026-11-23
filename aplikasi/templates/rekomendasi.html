@@ -5,9 +5,9 @@
   <h1>Rekomendasi {{ kota }}</h1>
   <p class="lede">Bobot: C1 {{ '%.2f'|format(weights[0]) }} Cost, C2 {{ '%.2f'|format(weights[1]) }}, C3 {{ '%.2f'|format(weights[2]) }}, C4 {{ '%.2f'|format(weights[3]) }}, C5 {{ '%.2f'|format(weights[4]) }}. C2 sampai C5 adalah Benefit. Klik nama kolom untuk mengurutkan tabel, atau pilih metode di bawah.</p>
   <p role="group" aria-label="Pilih metode">
-    <a class="btn {% if metode == 'saw' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='saw') }}" {% if metode == 'saw' %}aria-pressed="true"{% endif %}>Hanya SAW</a>
-    <a class="btn {% if metode == 'topsis' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='topsis') }}" {% if metode == 'topsis' %}aria-pressed="true"{% endif %}>Hanya TOPSIS</a>
-    <a class="btn {% if metode == 'keduanya' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='keduanya') }}" {% if metode == 'keduanya' %}aria-pressed="true"{% endif %}>Keduanya</a>
+    <a class="btn {% if metode != 'saw' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='saw') }}" {% if metode == 'saw' %}aria-pressed="true"{% endif %}>Hanya SAW</a>
+    <a class="btn {% if metode != 'topsis' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='topsis') }}" {% if metode == 'topsis' %}aria-pressed="true"{% endif %}>Hanya TOPSIS</a>
+    <a class="btn {% if metode != 'keduanya' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='keduanya') }}" {% if metode == 'keduanya' %}aria-pressed="true"{% endif %}>Keduanya</a>
   </p>
 </div>
 

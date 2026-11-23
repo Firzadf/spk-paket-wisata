@@ -15,6 +15,8 @@
     <a class="wordmark" href="{{ url_for('index') }}">SPK Paket Wisata</a>
     <nav class="site-nav" aria-label="Utama">
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
+      <a href="{{ url_for('tentang') }}" {% if request.endpoint == 'tentang' %}aria-current="page"{% endif %}>Tentang</a>
+      <a href="{{ url_for('cara_kerja') }}" {% if request.endpoint == 'cara_kerja' %}aria-current="page"{% endif %}>Cara Kerja</a>
       <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint and request.endpoint.startswith('admin') %}aria-current="page"{% endif %}>Admin</a>
       {% if session.get('admin') %}
       <a href="{{ url_for('admin_logout') }}">Keluar ({{ session.get('admin') }})</a>
@@ -36,7 +38,8 @@
   <div class="footer-inner">
     <p class="footer-word">SPK Paket Wisata</p>
     <p>Metode SAW dan TOPSIS. Ranking dihitung per kota, 20 paket per kota. Nilai C1 sampai C4 adalah skor rubrik tim dari Langkah 2, C5 adalah jumlah tempat dari dataset. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
-    <p><a href="{{ url_for('index') }}">Beranda</a> &nbsp;·&nbsp; <a href="{{ url_for('admin_dashboard') }}">Admin</a></p>
+    <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi, periksa harga resmi ke penyedia paket sebelum membeli.</p>
+    <p><a href="{{ url_for('index') }}">Beranda</a> &nbsp;·&nbsp; <a href="{{ url_for('tentang') }}">Tentang</a> &nbsp;·&nbsp; <a href="{{ url_for('cara_kerja') }}">Cara Kerja</a> &nbsp;·&nbsp; <a href="{{ url_for('admin_dashboard') }}">Admin</a> &nbsp;·&nbsp; <a href="https://github.com/Firzadf/spk-paket-wisata">GitHub</a></p>
   </div>
 </footer>
 </body>

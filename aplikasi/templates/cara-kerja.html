@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Cara Kerja — SPK Paket Wisata{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Cara Kerja</h1>
+  <p class="lede">Dua metode, satu dataset, semua tahap hitungan bisa dibuka. Ranking di sini bukan angka asal.</p>
+</div>
+
+<section aria-labelledby="saw">
+  <h2 id="saw">SAW, dijumlahkan</h2>
+  <p>SAW menormalisasi nilai tiap kriteria, lalu mengalikannya dengan bobot dan menjumlahkannya. Nilai akhir disebut Vi. Vi tertinggi menang. Sederhananya: paket yang nilainya bagus di kriteria berbobot besar akan naik.</p>
+</section>
+
+<section aria-labelledby="topsis">
+  <h2 id="topsis">TOPSIS, diukur jaraknya</h2>
+  <p>TOPSIS menormalisasi nilai, mengalikannya dengan bobot, lalu mengukur jarak tiap paket ke solusi ideal positif dan solusi ideal negatif. Nilai akhir disebut Ci. Ci tertinggi menang, artinya paket itu paling dekat dengan yang ideal dan paling jauh dari yang terburuk.</p>
+</section>
+
+<section aria-labelledby="kriteria-metode">
+  <h2 id="kriteria-metode">Kriteria dan bobot</h2>
+  <p class="section-note">Total bobot 1,00. C1 Harga adalah Cost, semakin kecil semakin baik. C2 sampai C5 adalah Benefit, semakin besar semakin baik.</p>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="kriteria-metode-caption">
+  <table>
+    <caption id="kriteria-metode-caption">Kriteria penilaian paket wisata</caption>
+    <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col">Tipe</th><th scope="col" class="num">Bobot</th></tr></thead>
+    <tbody>
+    {% for k in kriteria %}
+    <tr><th scope="row">{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section aria-labelledby="audit">
+  <h2 id="audit">Periksa sendiri tahap hitungannya</h2>
+  <p>Setiap halaman rekomendasi menampilkan matriks keputusan, normalisasi, matriks terbobot, solusi ideal, jarak, dan ranking. Buka salah satu kota dan periksa angkanya.</p>
+  <p>
+    <a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Rekomendasi Jakarta</a>
+    <a class="btn btn-quiet" href="{{ url_for('rekomendasi', kota='Yogyakarta', metode='keduanya') }}">Rekomendasi Yogyakarta</a>
+    <a class="btn btn-quiet" href="{{ url_for('rekomendasi', kota='Bandung', metode='keduanya') }}">Rekomendasi Bandung</a>
+  </p>
+  <p><a href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber dan data di GitHub</a></p>
+</section>
+
+<section aria-labelledby="disclaimer-metode">
+  <h2 id="disclaimer-metode">Disclaimer</h2>
+  <p>Harga dan skor di situs ini adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli.</p>
+</section>
+{% endblock %}
