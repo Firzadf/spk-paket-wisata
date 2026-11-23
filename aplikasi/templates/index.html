@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% block title %}SPK Paket Wisata — Pilih Kota{% endblock %}
+{% block title %}TripRank — Pilih Kota{% endblock %}
 {% block content %}
 <section class="hero" aria-labelledby="judul-hero">
   <img src="{{ url_for('static', filename='images/jakarta.jpg') }}" width="1280" height="800" fetchpriority="high" style="object-position: 50% 42%" alt="Monumen Nasional (Monas) di Jakarta">
   <div class="hero-body">
-    <h1 id="judul-hero">Pilih kota.<br>Lihat paket terbaiknya.</h1>
-    <p>Sistem ini merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
+    <h1 id="judul-hero">Dipilih dengan tenang.<br>Dibuktikan dengan angka.</h1>
+    <p>TripRank merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
+    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a></p>
   </div>
 </section>
 <p class="photo-credit">Foto hero: {{ city_meta['Jakarta'].subject }}, foto oleh {{ city_meta['Jakarta'].photographer }} ({{ city_meta['Jakarta'].license }}), via <a href="{{ city_meta['Jakarta'].commons_url }}">Wikimedia Commons</a>.</p>
@@ -15,6 +16,27 @@
   <div><span class="num">298</span><span class="lbl">tempat wisata</span></div>
   <div><span class="num">403</span><span class="lbl">relasi paket dan tempat</span></div>
 </div>
+<section class="mission" aria-labelledby="misi">
+  <p class="mission-label">Misi kami</p>
+  <h2 id="misi" class="visually-hidden">Misi kami</h2>
+  <p class="statement">Memilih paket wisata itu sulit karena ada banyak hal yang harus ditimbang sekaligus. TripRank menimbang semuanya dengan cara yang bisa diperiksa, supaya keputusan yang diambil terasa tenang.</p>
+  <p>TripRank dibuat untuk membantu memilih paket wisata, bukan menjual paket. Tujuannya satu: siapa pun bisa melihat kenapa satu paket menang dan paket lain kalah, tanpa harus percaya begitu saja.</p>
+</section>
+<section class="philosophy" aria-labelledby="filosofi">
+  <p class="philosophy-label">Filosofi kami</p>
+  <h2 id="filosofi" class="visually-hidden">Filosofi kami</h2>
+  <p class="statement">Rekomendasi yang baik harus jelas, bisa diperiksa, dan jujur soal datanya.</p>
+  <p>Setiap angka di TripRank berasal dari dataset proyek ini dan dari skor rubrik tim, bukan dari harga resmi atau rating yang dikarang. Metode SAW dan TOPSIS dipakai berdampingan, dan seluruh tahap hitungannya dibuka, supaya siapa pun bisa mengulang dan memeriksa hasilnya sendiri.</p>
+</section>
+<section aria-labelledby="janji">
+  <h2 id="janji">Janji kami</h2>
+  <ol class="pillars">
+    <li><h3>Dipahami</h3><p>Setiap paket dinilai dari lima hal yang memang dipertimbangkan saat memilih perjalanan: harga, fasilitas, akses, popularitas, dan jumlah destinasi.</p></li>
+    <li><h3>Dipercaya</h3><p>Tidak ada angka yang disembunyikan. Bobot tiap kriteria tertulis, dan sumber data serta foto dicantumkan dengan jelas.</p></li>
+    <li><h3>Diperiksa</h3><p>Matriks keputusan, normalisasi, dan solusi ideal dibuka di halaman rekomendasi. Periksa sendiri sebelum percaya.</p></li>
+    <li><h3>Terbukti</h3><p>Ranking TripRank dihitung ulang dari data yang sama dan hasilnya sama setiap kali. Di Jakarta kedua metode memilih pemenang yang berbeda, dan perbedaan itu dijelaskan, bukan ditutupi.</p></li>
+  </ol>
+</section>
 <section aria-labelledby="daftar-kota">
   <h2 id="daftar-kota">Kota</h2>
   <ol class="city-cards">

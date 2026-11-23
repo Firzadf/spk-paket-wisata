@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ detail.nama_tampil }} — SPK Paket Wisata{% endblock %}
+{% block title %}{{ detail.nama_tampil }} — TripRank{% endblock %}
 {% block content %}
 <section class="hero-banner" aria-labelledby="judul-paket">
   <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" style="object-position: {{ meta.position }}" alt="{{ meta.subject }}">

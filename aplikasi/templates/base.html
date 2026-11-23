@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Sistem Pendukung Keputusan rekomendasi paket wisata di 5 kota besar Indonesia dengan metode SAW dan TOPSIS.">
-<title>{% block title %}SPK Paket Wisata{% endblock %}</title>
+<meta name="description" content="TripRank, rekomendasi paket wisata di 5 kota besar Indonesia dengan metode SAW dan TOPSIS.">
+<title>{% block title %}TripRank{% endblock %}</title>
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32.png') }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
@@ -54,7 +54,7 @@
 </svg>
 <header class="site-header">
   <div class="header-inner">
-    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""> SPK Paket Wisata</a>
+    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""> TripRank</a>
     <nav class="site-nav" aria-label="Utama">
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
       <a href="{{ url_for('tentang') }}" {% if request.endpoint == 'tentang' %}aria-current="page"{% endif %}>Tentang</a>
@@ -78,8 +78,9 @@
 </main>
 <footer class="site-footer">
   <div class="footer-inner">
-    <p class="footer-word"><img class="logo-footer" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="48" height="48" alt=""> SPK Paket Wisata</p>
-    <p>Metode SAW dan TOPSIS. Ranking dihitung per kota, 20 paket per kota. Nilai C1 sampai C4 adalah skor rubrik tim dari Langkah 2, C5 adalah jumlah tempat dari dataset. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
+    <p class="footer-word"><img class="logo-footer" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="48" height="48" alt=""> TripRank</p>
+    <p>TripRank, rekomendasi paket wisata dengan SAW dan TOPSIS.</p>
+    <p>TripRank adalah nama produk aplikasi ini, dibuat sebagai proyek akhir kuliah: Sistem Pendukung Keputusan Rekomendasi Paket Wisata di Kota Besar Indonesia Menggunakan Metode SAW dan TOPSIS. Ranking dihitung per kota, 20 paket per kota. Nilai C1 sampai C4 adalah skor rubrik tim dari Langkah 2, C5 adalah jumlah tempat dari dataset. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
     <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi, periksa harga resmi ke penyedia paket sebelum membeli.</p>
     <p>Foto kota: Wikimedia Commons, bukan milik proyek. Kredit lengkap ada di halaman <a href="{{ url_for('tentang') }}">Tentang</a>.</p>
     <p><a href="{{ url_for('index') }}">Beranda</a> &nbsp;·&nbsp; <a href="{{ url_for('tentang') }}">Tentang</a> &nbsp;·&nbsp; <a href="{{ url_for('cara_kerja') }}">Cara Kerja</a> &nbsp;·&nbsp; <a href="{{ url_for('admin_dashboard') }}">Admin</a> &nbsp;·&nbsp; <a href="https://github.com/Firzadf/spk-paket-wisata">GitHub</a></p>
