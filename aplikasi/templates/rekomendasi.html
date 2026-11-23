@@ -11,17 +11,33 @@
 <p class="photo-credit">Foto: {{ meta.subject }}, foto oleh {{ meta.photographer }} ({{ meta.license }}), via <a href="{{ meta.commons_url }}">Wikimedia Commons</a>.</p>
 <div class="page-head">
   <p class="lede">Bobot: C1 {{ '%.2f'|format(weights[0]) }} Cost, C2 {{ '%.2f'|format(weights[1]) }}, C3 {{ '%.2f'|format(weights[2]) }}, C4 {{ '%.2f'|format(weights[3]) }}, C5 {{ '%.2f'|format(weights[4]) }}. C2 sampai C5 adalah Benefit. Klik nama kolom untuk mengurutkan tabel, atau pilih metode di bawah.</p>
-  <p role="group" aria-label="Pilih metode">
+  <p class="method-group" role="group" aria-label="Pilih metode">
     <a class="btn {% if metode != 'saw' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='saw') }}" {% if metode == 'saw' %}aria-pressed="true"{% endif %}>Hanya SAW</a>
     <a class="btn {% if metode != 'topsis' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='topsis') }}" {% if metode == 'topsis' %}aria-pressed="true"{% endif %}>Hanya TOPSIS</a>
     <a class="btn {% if metode != 'keduanya' %}btn-quiet{% endif %}" href="{{ url_for('rekomendasi', kota=kota, metode='keduanya') }}" {% if metode == 'keduanya' %}aria-pressed="true"{% endif %}>Keduanya</a>
   </p>
+  <nav class="pagination" aria-label="Halaman ranking">
+  <span class="page-info">Menampilkan {{ start }}-{{ end }} dari {{ total }} paket. Halaman {{ page }} dari {{ total_pages }}</span>
+  {% if page > 1 %}
+  <a class="page-btn" href="{{ url_for('rekomendasi', kota=kota, metode=metode, page=page-1) }}">Sebelumnya</a>
+  {% else %}
+  <span class="page-btn" aria-disabled="true">Sebelumnya</span>
+  {% endif %}
+  {% for n in range(1, total_pages + 1) %}
+  <a class="page-btn" href="{{ url_for('rekomendasi', kota=kota, metode=metode, page=n) }}" {% if n == page %}aria-current="page"{% endif %}>{{ n }}</a>
+  {% endfor %}
+  {% if page < total_pages %}
+  <a class="page-btn" href="{{ url_for('rekomendasi', kota=kota, metode=metode, page=page+1) }}">Berikutnya</a>
+  {% else %}
+  <span class="page-btn" aria-disabled="true">Berikutnya</span>
+  {% endif %}
+</nav>
 </div>
 
 {% if metode in ('saw', 'keduanya') %}
 {% set saw_top = packages[saw.order[0]] %}
 <section aria-labelledby="ranking-saw">
-  <h2 id="ranking-saw">Ranking SAW</h2>
+  <h2 id="ranking-saw" data-reveal="up">Ranking SAW</h2>
   <p class="section-note">Vi tertinggi adalah yang terbaik. Pemenang SAW {{ kota }}: <strong>Paket {{ saw_top.nomor_paket }}</strong>, Vi {{ '%.4f'|format(saw['values'][saw.order[0]]) }}.</p>
   <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="saw-caption">
   <table data-sortable>
@@ -33,7 +49,7 @@
       <th scope="col" data-type="number">Vi</th>
     </tr></thead>
     <tbody>
-    {% for idx in saw.order %}
+    {% for idx in saw.order[slice_start:slice_end] %}
     {% set p = packages[idx] %}
     <tr class="{{ 'winner' if saw.ranks[idx] == 1 else '' }}">
       <th scope="row" data-value="{{ saw.ranks[idx] }}">{{ saw.ranks[idx] }}</th>
@@ -46,6 +62,7 @@
   </table>
   <p class="visually-hidden" data-sort-status role="status"></p>
   </div>
+  <p class="table-hint">Geser tabel ke kanan untuk melihat semua kolom &rarr;</p>
   <details>
     <summary>Lihat tahap SAW: matriks dan normalisasi</summary>
     <div class="details-body">
@@ -75,7 +92,7 @@
 {% if metode in ('topsis', 'keduanya') %}
 {% set topsis_top = packages[topsis.order[0]] %}
 <section aria-labelledby="ranking-topsis">
-  <h2 id="ranking-topsis">Ranking TOPSIS</h2>
+  <h2 id="ranking-topsis" data-reveal="up">Ranking TOPSIS</h2>
   <p class="section-note">Ci tertinggi adalah yang terbaik. Pemenang TOPSIS {{ kota }}: <strong>Paket {{ topsis_top.nomor_paket }}</strong>, Ci {{ '%.4f'|format(topsis['values'][topsis.order[0]]) }}.</p>
   <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="topsis-caption">
   <table data-sortable>
@@ -89,7 +106,7 @@
       <th scope="col" data-type="number">Ci</th>
     </tr></thead>
     <tbody>
-    {% for idx in topsis.order %}
+    {% for idx in topsis.order[slice_start:slice_end] %}
     {% set p = packages[idx] %}
     <tr class="{{ 'winner' if topsis.ranks[idx] == 1 else '' }}">
       <th scope="row" data-value="{{ topsis.ranks[idx] }}">{{ topsis.ranks[idx] }}</th>
@@ -104,6 +121,7 @@
   </table>
   <p class="visually-hidden" data-sort-status role="status"></p>
   </div>
+  <p class="table-hint">Geser tabel ke kanan untuk melihat semua kolom &rarr;</p>
   <details>
     <summary>Lihat tahap TOPSIS: normalisasi, matriks terbobot, dan solusi ideal</summary>
     <div class="details-body">
@@ -142,7 +160,7 @@
 
 {% if metode == 'keduanya' %}
 <section aria-labelledby="perbandingan">
-  <h2 id="perbandingan">Perbandingan SAW dan TOPSIS</h2>
+  <h2 id="perbandingan" data-reveal="up">Perbandingan SAW dan TOPSIS</h2>
   <p class="section-note">Selisih adalah jarak mutlak antara ranking SAW dan ranking TOPSIS untuk paket yang sama. Di Jakarta kedua metode memilih pemenang yang berbeda, di kota lain pemenangnya sama.</p>
   <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="banding-caption">
   <table data-sortable>
@@ -154,7 +172,7 @@
       <th scope="col" data-type="number">Selisih</th>
     </tr></thead>
     <tbody>
-    {% for i in range(packages|length) %}
+    {% for i in saw.order[slice_start:slice_end] %}
     <tr>
       <th scope="row" data-value="{{ packages[i].nomor_paket }}">Paket {{ packages[i].nomor_paket }}</th>
       <td class="num" data-value="{{ saw.ranks[i] }}">{{ saw.ranks[i] }}</td>
@@ -166,6 +184,23 @@
   </table>
   <p class="visually-hidden" data-sort-status role="status"></p>
   </div>
+  <p class="table-hint">Geser tabel ke kanan untuk melihat semua kolom &rarr;</p>
 </section>
 {% endif %}
+<nav class="pagination" aria-label="Halaman ranking">
+  <span class="page-info">Menampilkan {{ start }}-{{ end }} dari {{ total }} paket. Halaman {{ page }} dari {{ total_pages }}</span>
+  {% if page > 1 %}
+  <a class="page-btn" href="{{ url_for('rekomendasi', kota=kota, metode=metode, page=page-1) }}">Sebelumnya</a>
+  {% else %}
+  <span class="page-btn" aria-disabled="true">Sebelumnya</span>
+  {% endif %}
+  {% for n in range(1, total_pages + 1) %}
+  <a class="page-btn" href="{{ url_for('rekomendasi', kota=kota, metode=metode, page=n) }}" {% if n == page %}aria-current="page"{% endif %}>{{ n }}</a>
+  {% endfor %}
+  {% if page < total_pages %}
+  <a class="page-btn" href="{{ url_for('rekomendasi', kota=kota, metode=metode, page=page+1) }}">Berikutnya</a>
+  {% else %}
+  <span class="page-btn" aria-disabled="true">Berikutnya</span>
+  {% endif %}
+</nav>
 {% endblock %}

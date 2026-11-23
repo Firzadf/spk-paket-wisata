@@ -7,7 +7,7 @@
 </div>
 
 <section aria-labelledby="langkah">
-  <h2 id="langkah">Empat langkah</h2>
+  <h2 id="langkah" data-reveal="up">Empat langkah</h2>
   <ol class="steps">
     <li><span class="step-no">1</span><strong>Pilih kota</strong><p>Lima kota besar, 20 paket per kota.</p></li>
     <li><span class="step-no">2</span><strong>Lihat nilai kriteria</strong><p>C1 sampai C5 tiap paket, lengkap dengan tempatnya.</p></li>
@@ -17,17 +17,17 @@
 </section>
 
 <section aria-labelledby="saw">
-  <h2 id="saw">SAW, dijumlahkan</h2>
+  <h2 id="saw" data-reveal="up">SAW, dijumlahkan</h2>
   <p>SAW menormalisasi nilai tiap kriteria, lalu mengalikannya dengan bobot dan menjumlahkannya. Nilai akhir disebut Vi. Vi tertinggi menang. Sederhananya: paket yang nilainya bagus di kriteria berbobot besar akan naik.</p>
 </section>
 
 <section aria-labelledby="topsis">
-  <h2 id="topsis">TOPSIS, diukur jaraknya</h2>
+  <h2 id="topsis" data-reveal="up">TOPSIS, diukur jaraknya</h2>
   <p>TOPSIS menormalisasi nilai, mengalikannya dengan bobot, lalu mengukur jarak tiap paket ke solusi ideal positif dan solusi ideal negatif. Nilai akhir disebut Ci. Ci tertinggi menang, artinya paket itu paling dekat dengan yang ideal dan paling jauh dari yang terburuk.</p>
 </section>
 
 <section aria-labelledby="kriteria-metode">
-  <h2 id="kriteria-metode">Kriteria dan bobot</h2>
+  <h2 id="kriteria-metode" data-reveal="up">Kriteria dan bobot</h2>
   <p class="section-note">Total bobot 1,00. C1 Harga adalah Cost, semakin kecil semakin baik. C2 sampai C5 adalah Benefit, semakin besar semakin baik.</p>
   <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="kriteria-metode-caption">
   <table>
@@ -35,7 +35,7 @@
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col">Tipe</th><th scope="col" class="num">Bobot</th></tr></thead>
     <tbody>
     {% for k in kriteria %}
-    <tr><th scope="row"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg>{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
+    <tr><th scope="row"><span class="criterion-icon"><img class="icon-3d" src="{{ url_for('static', filename='images/icon-3d-' + k.kode|lower + '.webp') }}" width="28" height="28" loading="lazy" alt="" onerror="this.remove(); this.parentElement.classList.add('no-img')"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span>{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
     {% endfor %}
     </tbody>
   </table>
@@ -43,7 +43,7 @@
 </section>
 
 <section aria-labelledby="audit">
-  <h2 id="audit">Periksa sendiri tahap hitungannya</h2>
+  <h2 id="audit" data-reveal="up">Periksa sendiri tahap hitungannya</h2>
   <p>Setiap halaman rekomendasi menampilkan matriks keputusan, normalisasi, matriks terbobot, solusi ideal, jarak, dan ranking. Buka salah satu kota dan periksa angkanya.</p>
   <p>
     <a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Rekomendasi Jakarta</a>
@@ -54,7 +54,7 @@
 </section>
 
 <section aria-labelledby="disclaimer-metode">
-  <h2 id="disclaimer-metode">Disclaimer</h2>
+  <h2 id="disclaimer-metode" data-reveal="up">Disclaimer</h2>
   <p>Harga dan skor di situs ini adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli.</p>
 </section>
 {% endblock %}

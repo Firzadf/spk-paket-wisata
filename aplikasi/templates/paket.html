@@ -15,19 +15,19 @@
   <div><span class="num">{{ detail.tempat|length }}</span><span class="lbl">tempat dalam paket</span></div>
 </div>
 <section aria-labelledby="tempat-wisata">
-  <h2 id="tempat-wisata">Tempat Wisata</h2>
+  <h2 id="tempat-wisata" data-reveal="up">Tempat Wisata</h2>
   <ul>
   {% for t in detail.tempat %}<li>{{ t.nama }} ({{ t.kategori }})</li>{% endfor %}
   </ul>
 </section>
 <section aria-labelledby="nilai-kriteria">
-  <h2 id="nilai-kriteria">Nilai Kriteria</h2>
+  <h2 id="nilai-kriteria" data-reveal="up">Nilai Kriteria</h2>
   <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="nilai-caption">
   <table>
     <caption id="nilai-caption">Nilai kriteria {{ detail.nama_tampil }}</caption>
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col" class="num">Nilai</th></tr></thead>
     <tbody>
-    {% for k in kriteria %}<tr><th scope="row"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg>{{ k.kode }}</th><td>{{ k.nama }} ({{ k.tipe }})</td><td class="num" data-value="{{ detail.nilai[k.kode] }}">{{ '%.2f'|format(detail.nilai[k.kode]) }}</td></tr>{% endfor %}
+    {% for k in kriteria %}<tr><th scope="row"><span class="criterion-icon"><img class="icon-3d" src="{{ url_for('static', filename='images/icon-3d-' + k.kode|lower + '.webp') }}" width="28" height="28" loading="lazy" alt="" onerror="this.remove(); this.parentElement.classList.add('no-img')"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span>{{ k.kode }}</th><td>{{ k.nama }} ({{ k.tipe }})</td><td class="num" data-value="{{ detail.nilai[k.kode] }}">{{ '%.2f'|format(detail.nilai[k.kode]) }}</td></tr>{% endfor %}
     </tbody>
   </table>
   </div>

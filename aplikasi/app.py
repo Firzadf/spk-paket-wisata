@@ -117,6 +117,20 @@ def compute_city(nama_kota, weights=None, types=None):
     }
 
 
+def paginate(total, per_page=10):
+    """Pagination server-side: jalan tanpa JavaScript, parameter di URL.
+    Mengembalikan (page, total_pages, start_0based, end_0based)."""
+    try:
+        page = int(request.args.get("page", "1"))
+    except ValueError:
+        page = 1
+    total_pages = max(1, (total + per_page - 1) // per_page)
+    page = max(1, min(page, total_pages))
+    start = (page - 1) * per_page
+    end = min(start + per_page, total)
+    return page, total_pages, start, end
+
+
 @app.route("/")
 def index():
     kota = database.get_kota_list()
@@ -142,9 +156,12 @@ def kota_page(nama_kota):
     packages = database.get_paket_by_kota(nama_kota)
     if not packages:
         return render_template("index.html", kota=database.get_kota_list(), kriteria=database.get_kriteria(), error=f"Kota {nama_kota} tidak ditemukan."), 404
-    return render_template("kota.html", kota=nama_kota, packages=packages,
+    # Pagination server-side: 10 paket per halaman, tanpa JavaScript.
+    page, total_pages, start, end = paginate(len(packages))
+    return render_template("kota.html", kota=nama_kota, packages=packages[start:end],
                            kriteria=database.get_kriteria(), meta=city_meta(nama_kota),
-                           winners=city_winners(nama_kota))
+                           winners=city_winners(nama_kota), page=page, total_pages=total_pages,
+                           total=len(packages), start=start + 1, end=end)
 
 
 @app.route("/rekomendasi")
@@ -156,8 +173,15 @@ def rekomendasi():
     data = compute_city(nama_kota)
     if data is None:
         return render_template("index.html", kota=database.get_kota_list(), kriteria=database.get_kriteria(), error=f"Kota {nama_kota} tidak ditemukan."), 404
+    # Pagination server-side: 10 paket per halaman, tanpa JavaScript.
+    # Satu nomor halaman berlaku untuk tabel SAW dan TOPSIS sekaligus,
+    # supaya keduanya menampilkan 10 baris yang sama. Ganti metode
+    # kembali ke halaman 1 (tautan metode tidak membawa parameter page).
+    page, total_pages, start, end = paginate(len(data["packages"]))
     return render_template("rekomendasi.html", kota=nama_kota, metode=metode,
-                           meta=city_meta(nama_kota), **data)
+                           meta=city_meta(nama_kota), page=page, total_pages=total_pages,
+                           total=len(data["packages"]), start=start + 1 if data["packages"] else 0,
+                           end=end, slice_start=start, slice_end=end, **data)
 
 
 @app.route("/paket/<int:paket_id>")

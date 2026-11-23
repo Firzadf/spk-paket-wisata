@@ -8,7 +8,11 @@
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32.png') }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Playfair+Display:wght@600;700&family=Space+Grotesk:wght@400;500;700&family=Sora:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=DM+Serif+Display&display=swap">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script>document.documentElement.classList.add('js');</script>
 <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </head>
 <body>
@@ -47,6 +51,24 @@
     <symbol id="icon-lawang-sewu" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M6 42V14l18-8 18 8v28"/><path d="M6 42h36"/><path d="M12 20v6M20 20v6M28 20v6M36 20v6"/><path d="M12 32v6M20 32v6M28 32v6M36 32v6"/>
     </symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>
+    </symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="icon-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 4l3 3M14 7l3 3"/>
+    </symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>
+    </symbol>
     <symbol id="icon-tugu-pahlawan" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M24 4l5 12-3 4v22H22V20l-3-4 5-12z"/><path d="M14 42h20"/><path d="M18 36h12"/>
     </symbol>
@@ -54,7 +76,7 @@
 </svg>
 <header class="site-header">
   <div class="header-inner">
-    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""> TripRank</a>
+    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="32" height="32" alt=""> TripRank</a>
     <nav class="site-nav" aria-label="Utama">
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
       <a href="{{ url_for('tentang') }}" {% if request.endpoint == 'tentang' %}aria-current="page"{% endif %}>Tentang</a>
@@ -79,11 +101,38 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <p class="footer-word"><img class="logo-footer" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="48" height="48" alt=""> TripRank</p>
-    <p>TripRank, rekomendasi paket wisata dengan SAW dan TOPSIS.</p>
-    <p>TripRank adalah nama produk aplikasi ini, dibuat sebagai proyek akhir kuliah: Sistem Pendukung Keputusan Rekomendasi Paket Wisata di Kota Besar Indonesia Menggunakan Metode SAW dan TOPSIS. Ranking dihitung per kota, 20 paket per kota. Nilai C1 sampai C4 adalah skor rubrik tim dari Langkah 2, C5 adalah jumlah tempat dari dataset. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
-    <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi, periksa harga resmi ke penyedia paket sebelum membeli.</p>
-    <p>Foto kota: Wikimedia Commons, bukan milik proyek. Kredit lengkap ada di halaman <a href="{{ url_for('tentang') }}">Tentang</a>.</p>
-    <p><a href="{{ url_for('index') }}">Beranda</a> &nbsp;·&nbsp; <a href="{{ url_for('tentang') }}">Tentang</a> &nbsp;·&nbsp; <a href="{{ url_for('cara_kerja') }}">Cara Kerja</a> &nbsp;·&nbsp; <a href="{{ url_for('admin_dashboard') }}">Admin</a> &nbsp;·&nbsp; <a href="https://github.com/Firzadf/spk-paket-wisata">GitHub</a></p>
+    <p class="footer-tagline">Dipilih dengan tenang. Dibuktikan dengan angka.</p>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h3>Tentang TripRank</h3>
+        <p>TripRank membantu memilih paket wisata dari 5 kota besar Indonesia. Setiap ranking dihitung dengan SAW dan TOPSIS, dan tahap hitungannya dibuka supaya siapa pun bisa memeriksa sendiri.</p>
+        <p><svg class="icon" aria-hidden="true"><use href="#icon-user"/></svg> Dibuat oleh <strong>Firza Duta Fauzan, NIM 19230808</strong>, sebagai proyek akhir kuliah.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Jelajahi</h3>
+        <ul>
+          <li><a href="{{ url_for('index') }}"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg> Beranda</a></li>
+          <li><a href="{{ url_for('tentang') }}"><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg> Tentang</a></li>
+          <li><a href="{{ url_for('cara_kerja') }}"><svg class="icon" aria-hidden="true"><use href="#icon-list"/></svg> Cara Kerja</a></li>
+          <li><a href="{{ url_for('admin_dashboard') }}"><svg class="icon" aria-hidden="true"><use href="#icon-key"/></svg> Admin</a></li>
+          <li><a href="https://github.com/Firzadf/spk-paket-wisata"><svg class="icon" aria-hidden="true"><use href="#icon-code"/></svg> Kode sumber di GitHub</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Kota</h3>
+        <ul>
+          <li><a href="{{ url_for('kota_page', nama_kota='Jakarta') }}"><svg class="icon" aria-hidden="true"><use href="#icon-monas"/></svg> Jakarta</a></li>
+          <li><a href="{{ url_for('kota_page', nama_kota='Yogyakarta') }}"><svg class="icon" aria-hidden="true"><use href="#icon-borobudur"/></svg> Yogyakarta</a></li>
+          <li><a href="{{ url_for('kota_page', nama_kota='Bandung') }}"><svg class="icon" aria-hidden="true"><use href="#icon-gedung-sate"/></svg> Bandung</a></li>
+          <li><a href="{{ url_for('kota_page', nama_kota='Semarang') }}"><svg class="icon" aria-hidden="true"><use href="#icon-lawang-sewu"/></svg> Semarang</a></li>
+          <li><a href="{{ url_for('kota_page', nama_kota='Surabaya') }}"><svg class="icon" aria-hidden="true"><use href="#icon-tugu-pahlawan"/></svg> Surabaya</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Proyek akhir: Sistem Pendukung Keputusan Rekomendasi Paket Wisata di Kota Besar Indonesia Menggunakan Metode SAW dan TOPSIS. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
+      <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli. Foto kota: Wikimedia Commons, bukan milik proyek.</p>
+    </div>
   </div>
 </footer>
 </body>

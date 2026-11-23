@@ -11,6 +11,15 @@
    - Jarak antar section 96px desktop (Serein: spasi lega), bukan 40px v3.
    - Sudut persegi (radius 0) diputuskan sekali untuk seluruh situs v4,
      menggantikan radius 8px v2/v3.
+   - Radius 6px (perbaikan mobile v4 r2, atas pilihan user): sudut
+     dilembutkan jadi 6px di semua elemen UI, tetap elegan, bukan pill.
+   - Tipografi 6 peran (v4 r2, atas permintaan user): Fraunces untuk
+     headline hero, Playfair Display untuk judul section, Space Grotesk
+     untuk body, Sora untuk tombol/label/nav, IBM Plex Mono untuk angka
+     (Vi/Ci, ranking, statistik), DM Serif Display untuk wordmark dan
+     kalimat brand. Bukan font sistem basic sebagai font utama;
+     Georgia/sans sistem hanya fallback bila font web gagal dimuat.
+   - Header gelap hijau tua + footer 3 kolom (v4 r2, atas permintaan user).
    - Scrim netral di atas foto hero: satu-satunya pengecualian gradien yang
      diizinkan design.md, dipakai hanya di atas foto agar teks terbaca. */
 :root {
@@ -31,13 +40,17 @@
   --danger: #9c2b1e;
   --danger-field: #fbeae6;
   --ok-field: #e7efe9;
-  --serif: Georgia, "Times New Roman", Times, serif;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "Fraunces", Georgia, "Times New Roman", Times, serif;
+  --serif: "Playfair Display", Georgia, "Times New Roman", Times, serif;
+  --sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sans-alt: "Sora", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --brand: "DM Serif Display", Georgia, "Times New Roman", Times, serif;
   --measure: 1120px;
   --measure-wide: 1240px;
   --gap: 24px;
-  --radius: 0px;
-  --radius-sm: 0px;
+  --radius: 6px;
+  --radius-sm: 6px;
 }
 
 * { box-sizing: border-box; }
@@ -54,13 +67,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 h1, h2, h3 {
-  font-family: var(--serif);
   font-weight: 400;
   letter-spacing: -0.015em;
   line-height: 1.08;
   overflow-wrap: break-word;
   min-width: 0;
 }
+h1 { font-family: var(--display); }
+h2, h3 { font-family: var(--serif); }
 h1 { font-size: clamp(40px, 7vw, 72px); margin: 0 0 16px; }
 h2 { font-size: clamp(30px, 4vw, 44px); margin: 0 0 16px; }
 h3 { font-size: 24px; margin: 0 0 8px; }
@@ -94,10 +108,11 @@ img { max-width: 100%; display: block; height: auto; }
 .icon-city { width: 40px; height: 40px; color: var(--accent); }
 .icon-criterion { width: 20px; height: 20px; color: var(--accent); vertical-align: -4px; margin-right: 6px; }
 
-/* Header: gading, lengket, garis bawah 1px, ringkas. */
+/* Header premium (v4 r2): hijau gelap, logo putih, nav underline animasi.
+   Tetap lengket, tetap 2 baris di HP, tidak menutupi konten. */
 .site-header {
-  background: var(--ground); color: var(--ink);
-  border-bottom: 1px solid var(--line);
+  background: var(--accent-deep); color: var(--accent-ink);
+  border-bottom: 1px solid rgba(255, 253, 249, 0.16);
   position: sticky; top: 0; z-index: 10;
 }
 .site-header .header-inner {
@@ -106,25 +121,32 @@ img { max-width: 100%; display: block; height: auto; }
 }
 .wordmark {
   display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--serif); font-size: 22px; font-weight: 700;
-  letter-spacing: -0.01em; color: var(--ink); text-decoration: none;
+  font-family: var(--brand); font-size: 24px; font-weight: 400;
+  letter-spacing: -0.01em; color: var(--accent-ink); text-decoration: none;
   white-space: nowrap;
 }
-.wordmark:hover { color: var(--accent); }
+.wordmark:hover { color: var(--accent-ink); opacity: 0.88; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-left: auto; }
 .site-nav a {
-  color: var(--muted); text-decoration: none; padding: 8px 12px;
-  font-weight: 600; font-size: 16px;
-  white-space: nowrap;
+  color: rgba(255, 253, 249, 0.78); text-decoration: none; padding: 8px 12px;
+  font-weight: 600; font-size: 16px; white-space: nowrap; position: relative;
 }
-.site-nav a:hover { background: var(--field); color: var(--ink); }
-.site-nav a[aria-current="page"] { background: var(--field); color: var(--ink); }
+.site-nav a::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 2px; height: 2px;
+  background: var(--accent-ink); transform: scaleX(0); transform-origin: left;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.site-nav a:hover { color: var(--accent-ink); }
+.site-nav a:hover::after { transform: scaleX(1); }
+.site-nav a[aria-current="page"] { color: var(--accent-ink); }
+.site-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .header-action {
-  background: var(--accent); color: var(--accent-ink); text-decoration: none;
+  background: transparent; color: var(--accent-ink); text-decoration: none;
   padding: 10px 18px; font-weight: 700; font-size: 16px;
-  white-space: nowrap;
+  white-space: nowrap; border: 1px solid rgba(255, 253, 249, 0.65);
+  transition: background 200ms, color 200ms, border-color 200ms;
 }
-.header-action:hover { background: var(--accent-deep); color: var(--accent-ink); }
+.header-action:hover { background: var(--accent-ink); color: var(--accent-deep); border-color: var(--accent-ink); }
 
 main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .page-head { margin-bottom: 32px; }
@@ -157,7 +179,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 /* Misi: pernyataan serif besar, satu momen tenang di tengah halaman. */
 .mission { max-width: 880px; margin-bottom: 96px; }
 .mission .mission-label {
-  font-family: var(--sans); font-size: 14px; font-weight: 700;
+  font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
   margin: 0 0 16px;
 }
@@ -180,7 +202,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   line-height: 1.3; opacity: 1; max-width: none; margin: 0 0 20px;
 }
 .philosophy .philosophy-label {
-  font-family: var(--sans); font-size: 14px; font-weight: 700;
+  font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink);
   opacity: 0.75; margin: 0 0 16px;
 }
@@ -204,7 +226,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .facts div { padding: 24px 24px 20px; border-left: 1px solid var(--line); }
 .facts div:first-child { border-left: 0; padding-left: 0; }
 .facts .num {
-  display: block; font-family: var(--serif); font-size: 56px; font-weight: 400;
+  display: block; font-family: var(--mono); font-size: 48px; font-weight: 600;
   letter-spacing: -0.02em; line-height: 1;
   font-variant-numeric: tabular-nums; text-align: left;
 }
@@ -255,7 +277,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 }
 .steps li { border: 1px solid var(--line); background: var(--surface); padding: 22px; }
 .steps .step-no {
-  display: block; font-family: var(--serif); font-size: 32px; font-weight: 400;
+  display: block; font-family: var(--mono); font-size: 28px; font-weight: 600;
   color: var(--accent); line-height: 1; margin-bottom: 10px;
 }
 .steps strong { display: block; margin-bottom: 4px; font-family: var(--serif); font-size: 19px; font-weight: 400; }
@@ -266,10 +288,15 @@ section { margin-bottom: 96px; }
 section > h2 { padding-top: 0; }
 .section-note { color: var(--muted); font-size: 18px; }
 
+/* Tombol, chip, nav, label: Sora (sans kedua, untuk aksi dan label). */
+.btn, button, .chip, .site-nav a, .header-action, .pagination .page-btn,
+.mission-label, .philosophy-label, .footer-col h3, label, .toolbar label,
+.page-info, .illustration-tag { font-family: var(--sans-alt); }
+
 /* Tombol v4: persegi, satu isi hijau tua, satu sekunder bergaris ink. */
 .btn, button {
   background: var(--accent); color: var(--accent-ink); border: 0;
-  padding: 12px 22px; font: inherit; font-weight: 700; cursor: pointer;
+  padding: 12px 22px; font-family: var(--sans-alt); font-weight: 700; cursor: pointer;
   text-decoration: none; display: inline-block; min-height: 48px;
   font-size: 16px; white-space: nowrap;
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms;
@@ -317,10 +344,10 @@ thead th {
 }
 tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover td, tbody tr:hover th { background: var(--field); }
-th[scope="row"] { font-weight: 700; }
+th[scope="row"] { font-weight: 700; font-family: var(--mono); }
 .winner td, .winner th { background: var(--winner); font-weight: 700; }
 .winner td:first-child::after { content: " · terbaik"; font-weight: 600; color: var(--accent-deep); }
-.num { text-align: right; font-variant-numeric: tabular-nums; }
+.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
 th .sort-btn {
   all: unset; display: block; width: 100%; cursor: pointer; color: inherit;
   font: inherit; font-weight: 700; padding: 0; min-height: 24px; white-space: nowrap;
@@ -366,7 +393,7 @@ details > .details-body h4 { margin-top: 18px; }
   border: 1px solid var(--line); background: var(--surface); padding: 24px;
 }
 .compare .panel .big {
-  font-family: var(--serif); font-size: 32px; font-weight: 400;
+  font-family: var(--mono); font-size: 30px; font-weight: 600;
   letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
 }
 .compare .panel .big small { font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
@@ -419,7 +446,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .admin-actions span { color: var(--muted); font-size: 14px; }
 .kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 32px; }
 .kv div { padding: 18px 20px; border: 1px solid var(--line); background: var(--surface); }
-.kv .num { display: block; font-family: var(--serif); font-size: 36px; font-weight: 400; letter-spacing: -0.02em; text-align: left; }
+.kv .num { display: block; font-family: var(--mono); font-size: 32px; font-weight: 600; letter-spacing: 0; text-align: left; }
 .kv .lbl { color: var(--muted); font-size: 14px; }
 
 /* Strip foto kota di Tentang: 5 foto kecil, kredit di bawah. */
@@ -436,14 +463,38 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .illustration-tag { display: inline-block; background: var(--field); border: 1px solid var(--line); padding: 1px 8px; font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 6px; }
 .photo-strip figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
-/* Footer: hijau gelap, wordmark serif besar. */
+/* Footer (v4 r2): hijau gelap, wordmark besar, 3 kolom, ikon di tiap tautan. */
 .site-footer { background: var(--accent-deep); color: var(--accent-ink); margin-top: 40px; }
 .site-footer .footer-inner { max-width: var(--measure-wide); margin: 0 auto; padding: 56px 24px 32px; }
 .site-footer .footer-word {
-  font-family: var(--serif); font-size: clamp(48px, 10vw, 96px); font-weight: 700;
-  letter-spacing: -0.02em; line-height: 0.95; margin: 0 0 20px;
+  font-family: var(--brand); font-size: clamp(48px, 10vw, 96px); font-weight: 400;
+  letter-spacing: -0.02em; line-height: 0.95; margin: 0 0 12px;
   overflow-wrap: break-word; min-width: 0;
 }
+.site-footer .footer-tagline {
+  font-family: var(--brand); font-size: clamp(20px, 2.4vw, 26px); line-height: 1.3;
+  color: var(--accent-ink); opacity: 0.92; margin: 0 0 32px; max-width: none;
+}
+.site-footer .footer-cols {
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px;
+  padding: 32px 0; border-top: 1px solid rgba(255, 253, 249, 0.2);
+}
+.site-footer .footer-col h3 {
+  font-family: var(--sans-alt); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink);
+  opacity: 0.65; margin: 0 0 14px;
+}
+.site-footer .footer-col p { color: var(--accent-ink); opacity: 0.88; margin: 0 0 12px; font-size: 16px; }
+.site-footer .footer-col ul { list-style: none; margin: 0; padding: 0; }
+.site-footer .footer-col li { margin: 0; }
+.site-footer .footer-col li a {
+  display: inline-flex; align-items: center; gap: 9px; padding: 6px 0;
+  color: var(--accent-ink); text-decoration: none; opacity: 0.88; font-size: 16px;
+}
+.site-footer .footer-col li a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+.site-footer .footer-col .icon { width: 18px; height: 18px; vertical-align: -3px; opacity: 0.85; }
+.site-footer .footer-bottom { padding-top: 24px; border-top: 1px solid rgba(255, 253, 249, 0.2); }
+.site-footer .footer-bottom p { color: var(--accent-ink); opacity: 0.72; font-size: 14px; margin: 0 0 10px; max-width: none; }
 .site-footer p { color: var(--accent-ink); opacity: 0.88; max-width: 68ch; }
 .site-footer a { color: var(--accent-ink); }
 
@@ -461,15 +512,6 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   .facts div:nth-child(2) { animation-delay: 70ms; }
   .facts div:nth-child(3) { animation-delay: 140ms; }
   .facts div:nth-child(4) { animation-delay: 210ms; }
-  .city-cards > li { animation: rise 350ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .city-cards > li:nth-child(2) { animation-delay: 70ms; }
-  .city-cards > li:nth-child(3) { animation-delay: 140ms; }
-  .city-cards > li:nth-child(4) { animation-delay: 210ms; }
-  .city-cards > li:nth-child(5) { animation-delay: 280ms; }
-  .pillars li { animation: rise 350ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .pillars li:nth-child(2) { animation-delay: 70ms; }
-  .pillars li:nth-child(3) { animation-delay: 140ms; }
-  .pillars li:nth-child(4) { animation-delay: 210ms; }
   .compare .panel { transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); }
   .compare .panel:hover { transform: translateY(-2px); }
   @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -477,6 +519,122 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Radius 6px (v4 r2, pilihan user): lembut dan konsisten di semua elemen
+   UI, bukan pill. Logo mark TripRank tidak diubah bentuknya. */
+.btn, .btn-quiet, .btn-sm, .chip, .header-action,
+.hero, .hero-banner, .philosophy, .city-cards > li, .city-list,
+.steps li, .compare .panel, .toolbar, .login-box,
+.admin-actions a, .kv div, .pagination .page-btn,
+details, .error, .success, .illustration-strip figure {
+  border-radius: var(--radius);
+}
+.table-wrapper { border-radius: var(--radius); }
+input, select, textarea { border-radius: var(--radius); }
+.photo-strip img { border-radius: var(--radius); }
+
+/* Chip Paket lebar seragam (v4 r2): cukup untuk "Paket 100", teks di tengah. */
+.chip { min-width: 108px; text-align: center; }
+
+/* Grup tombol metode (halaman rekomendasi): sebaris di desktop, stack
+   vertikal lebar penuh di HP supaya tidak ada tombol yang jatuh
+   sendirian setengah lebar. */
+.method-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.method-group .btn { text-align: center; }
+
+/* Petunjuk geser tabel: hanya tampil di HP, tempat tabel memang bisa
+   digeser ke kanan di dalam wrapper-nya. */
+.table-hint { display: none; }
+
+/* Ikon 3D clay (v4 r2): gambar kecil bergaya clay, fallback-nya ikon SVG. */
+.icon-3d { width: 28px; height: 28px; vertical-align: -7px; margin-right: 6px; border-radius: var(--radius); }
+.criterion-icon { display: inline-flex; align-items: center; }
+.criterion-icon svg { display: none; }
+.criterion-icon.no-img svg { display: inline-block; }
+.logo-3d { margin: 0 0 16px; }
+.logo-3d img { width: 200px; height: auto; border-radius: var(--radius); }
+.logo-3d figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.mascot { margin: 0 0 24px; text-align: center; }
+.mascot img { width: 220px; height: auto; margin: 0 auto; border-radius: var(--radius); }
+.mascot figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+/* Efek 3D (v4 r2): tilt halus saat hover, hanya di perangkat ber-pointer
+   dan bila motion diizinkan. Di HP tanpa hover tidak ada efek, kartu diam. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .city-cards { perspective: 1200px; }
+  .city-cards > li { transform-style: preserve-3d; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .city-cards > li:hover { transform: translateY(-4px) rotateX(3deg) rotateY(-3deg); }
+  .wordmark { perspective: 600px; }
+  .wordmark .logo-mark { transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .wordmark:hover .logo-mark { transform: rotateY(18deg) scale(1.06); }
+}
+
+/* Hero headline reveal per baris (v4 r2): line-level, bukan per karakter,
+   supaya screen reader dan copy-paste tetap benar. */
+.hero h1 .line { display: block; overflow: hidden; perspective: 800px; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero h1 .line:nth-child(2) > span { animation-delay: 90ms; }
+  @keyframes lineRise { from { opacity: 0; transform: translateY(110%) rotateX(8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
+}
+
+/* Marquee kota (v4 r2): strip teks berjalan pelan, jeda saat hover.
+   Dekoratif saja, bukan tautan. */
+.marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin: 0 0 96px; }
+.marquee-track { display: flex; width: max-content; }
+.marquee-track span {
+  font-family: var(--serif); font-size: 28px; color: var(--muted);
+  white-space: nowrap; padding-right: 16px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track { animation: marquee 36s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+}
+
+/* Typewriter hero (v4 r2): hanya satu kalimat kunci di hero beranda.
+   Teks lengkap ada di HTML, jadi tanpa JS tetap tampil penuh. */
+.typewriter { min-height: 2.6em; }
+.typewriter .cursor {
+  display: inline-block; width: 2px; height: 1.1em; margin-left: 3px;
+  background: currentColor; vertical-align: -2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .typewriter .cursor { animation: blink 1s steps(1) infinite; }
+  .typewriter .cursor.done { animation: none; opacity: 0; transition: opacity 400ms; }
+  @keyframes blink { 50% { opacity: 0; } }
+}
+
+/* Loading screen (v4 r2): lapisan yang dibuat JavaScript saja, jadi tanpa
+   JS tidak ada yang menutupi halaman. Sekali tampil ~900ms lalu fade. */
+.trip-loader {
+  position: fixed; inset: 0; z-index: 100; background: var(--ground);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  opacity: 1; transition: opacity 300ms ease;
+}
+.trip-loader.is-hidden { opacity: 0; pointer-events: none; }
+.trip-loader img { width: 96px; height: auto; border-radius: var(--radius); animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.trip-loader .loader-word { font-family: var(--brand); font-size: 30px; font-weight: 400; animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both; }
+.trip-loader .loader-bar { width: 160px; height: 2px; background: var(--line); overflow: hidden; border-radius: 2px; }
+.trip-loader .loader-bar i { display: block; height: 100%; width: 0; background: var(--accent); animation: loaderBar 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes loaderRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes loaderBar { to { width: 100%; } }
+
+/* Scroll reveal berarah (v4 r2): keadaan tersembunyi hanya saat class .js
+   ada di <html> (ditambah skrip inline di <head>), jadi tanpa JS semua
+   teks langsung tampil penuh. Ganjil dari kiri, genap dari kanan di
+   desktop; di HP semuanya dari kanan. Judul dan paragraf dari bawah. */
+.js [data-reveal] { opacity: 0; }
+.js [data-reveal="up"] { transform: translateY(14px); filter: blur(4px); }
+.js [data-reveal="left"] { transform: translateX(-28px); }
+.js [data-reveal="right"] { transform: translateX(28px); }
+.js [data-reveal].is-visible {
+  opacity: 1; transform: none; filter: none;
+  transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1), transform 450ms cubic-bezier(0.16, 1, 0.3, 1), filter 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; filter: none; }
 }
 
 /* Tablet dan HP: komposisi sendiri, bukan desktop yang dikecilkan. */
@@ -508,7 +666,33 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   .header-action { margin-left: auto; padding: 9px 14px; font-size: 14px; min-height: 44px; }
   .city-list li { grid-template-columns: 1fr; gap: 4px; padding: 18px; }
   .form-row { grid-template-columns: 1fr; }
+  /* Scroll reveal di HP: semua kartu masuk dari kanan. */
+  .js [data-reveal="left"] { transform: translateX(28px); }
+  .footer-cols { grid-template-columns: 1fr; gap: 24px; }
+  .typewriter { min-height: 4.6em; }
+  .marquee { margin-bottom: 56px; }
+  .marquee-track span { font-size: 22px; }
+  .mascot img { width: 180px; }
+  .logo-3d img { width: 160px; }
   table { min-width: 560px; }
+  th, td { padding: 10px 12px; font-size: 14px; }
+  /* Tombol metode: stack vertikal, masing-masing lebar penuh. */
+  .method-group { flex-direction: column; align-items: stretch; }
+  .method-group .btn { width: 100%; }
+  /* Petunjuk geser tabel, hanya di HP. */
+  .table-hint {
+    display: block; font-size: 14px; color: var(--muted); margin: 0 0 12px;
+  }
+  /* Kolom pertama tabel sticky di kiri saat tabel digeser ke kanan. */
+  .table-wrapper table th:first-child,
+  .table-wrapper table td:first-child {
+    position: sticky; left: 0; z-index: 2; background: var(--surface);
+  }
+  .table-wrapper table thead th:first-child { z-index: 3; background: var(--field); }
+  .table-wrapper table tbody tr.winner th:first-child,
+  .table-wrapper table tbody tr.winner td:first-child { background: var(--winner); }
+  .table-wrapper table tbody tr:hover th:first-child,
+  .table-wrapper table tbody tr:hover td:first-child { background: var(--field); }
   .facts .num { font-size: 36px; }
   .login-box { padding: 24px; }
   h1 { font-size: 40px; }

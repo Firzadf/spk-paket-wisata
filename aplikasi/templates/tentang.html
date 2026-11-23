@@ -2,25 +2,26 @@
 {% block title %}Tentang Kami — TripRank{% endblock %}
 {% block content %}
 <div class="page-head">
-  <img class="logo-large" src="{{ url_for('static', filename='images/logo.svg') }}" width="72" height="72" alt="Logo TripRank">
+  <figure class="logo-3d"><img src="{{ url_for('static', filename='images/logo-3d.png') }}" width="512" height="341" alt="Logo 3D TripRank, pin hijau bergaya clay dengan huruf T dan grafik ranking"><figcaption>Logo 3D TripRank.</figcaption></figure>
   <h1>Tentang TripRank</h1>
   <p class="lede"><strong>TripRank</strong> adalah nama produk aplikasi ini, dibuat oleh <strong>Firza Duta Fauzan, NIM 19230808</strong>, sebagai proyek akhir kuliah: Sistem Pendukung Keputusan Rekomendasi Paket Wisata di Kota Besar Indonesia Menggunakan Metode SAW dan TOPSIS. Situs ini bukan situs booking dan bukan perusahaan travel. Tujuannya membantu memilih paket wisata dengan cara yang bisa diperiksa, bukan menjual paket.</p>
 </div>
 
 <section aria-labelledby="siapa-kami">
-  <h2 id="siapa-kami">Siapa kami</h2>
+  <h2 id="siapa-kami" data-reveal="up">Siapa kami</h2>
   <p>Proyek akhir SPK (Sistem Pendukung Keputusan) mahasiswa Program Studi Sistem Informasi, Universitas Bina Sarana Informatika. Aplikasi ini dibuat oleh <strong>Firza Duta Fauzan, NIM 19230808</strong>, sebagai pembuat utama aplikasi ini.</p>
   <p>Kami tidak memakai nama perusahaan, alamat kantor, nomor telepon, atau klaim afiliasi apa pun, karena memang tidak ada.</p>
+  <figure class="mascot"><img src="{{ url_for('static', filename='images/maskot-3d.png') }}" width="640" height="640" loading="lazy" alt="Maskot traveler TripRank, seorang traveler kecil bergaya 3D clay dengan ransel dan peta"><figcaption>Ilustrasi 3D: maskot traveler TripRank.</figcaption></figure>
 </section>
 
 <section aria-labelledby="tujuan">
-  <h2 id="tujuan">Tujuan proyek</h2>
+  <h2 id="tujuan" data-reveal="up">Tujuan proyek</h2>
   <p>Memilih paket wisata itu sulit karena ada banyak hal yang harus ditimbang sekaligus: harga, fasilitas, akses, popularitas, dan jumlah destinasi. Situs ini menghitung semua itu dengan dua metode, SAW dan TOPSIS, lalu menampilkan tahap hitungannya supaya siapa pun bisa memeriksa kenapa satu paket menang dan paket lain kalah.</p>
   <p><a class="btn" href="{{ url_for('cara_kerja') }}">Lihat cara kerja SAW dan TOPSIS</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
 </section>
 
 <section aria-labelledby="foto-kota">
-  <h2 id="foto-kota">Foto kota</h2>
+  <h2 id="foto-kota" data-reveal="up">Foto kota</h2>
   <p>Foto di situs ini bukan milik proyek. Semuanya dari Wikimedia Commons, dengan lisensi yang jelas, dan dipakai apa adanya.</p>
   <div class="photo-strip">
   {% for nama, m in city_meta.items() %}
@@ -39,7 +40,7 @@
 
 
 <section aria-labelledby="ilustrasi-kota">
-  <h2 id="ilustrasi-kota">Ilustrasi kota</h2>
+  <h2 id="ilustrasi-kota" data-reveal="up">Ilustrasi kota</h2>
   <p>Ilustrasi datar di bawah ini dibuat dengan AI sebagai hiasan, dan diberi label <strong>Ilustrasi</strong> supaya jelas bukan foto asli. Foto lokasi yang sebenarnya tetap foto Wikimedia di atas.</p>
   <div class="illustration-strip">
     <figure>
@@ -66,13 +67,13 @@
 </section>
 
 <section aria-labelledby="sumber-data">
-  <h2 id="sumber-data">Sumber data</h2>
+  <h2 id="sumber-data" data-reveal="up">Sumber data</h2>
   <p>Data berasal dari dataset paket wisata proyek ini: <strong>100 paket, 298 tempat, 403 relasi paket dan tempat</strong>. Nilai C1 sampai C4 adalah <strong>skor rubrik tim proyek</strong>, bukan harga atau rating resmi. C5 adalah jumlah tempat unik dalam paket.</p>
   <p>Kami tidak mengklaim data ini berasal dari situs booking resmi atau dari pemerintah.</p>
 </section>
 
 <section aria-labelledby="faq">
-  <h2 id="faq">Pertanyaan yang sering ditanyakan</h2>
+  <h2 id="faq" data-reveal="up">Pertanyaan yang sering ditanyakan</h2>
   <details>
     <summary>Apakah ini situs booking?</summary>
     <div class="details-body"><p>Bukan. Ini alat rekomendasi. Tidak ada pemesanan dan tidak ada pembayaran di situs ini.</p></div>
@@ -92,7 +93,7 @@
 </section>
 
 <section aria-labelledby="disclaimer">
-  <h2 id="disclaimer">Disclaimer</h2>
+  <h2 id="disclaimer" data-reveal="up">Disclaimer</h2>
   <p>Harga dan skor di situs ini adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli.</p>
 </section>
 {% endblock %}
