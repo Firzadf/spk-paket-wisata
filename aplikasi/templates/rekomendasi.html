@@ -2,7 +2,7 @@
 {% block title %}Rekomendasi {{ kota }} — SPK Paket Wisata{% endblock %}
 {% block content %}
 <section class="hero-banner" aria-labelledby="judul-rekomendasi">
-  <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" alt="{{ meta.subject }}">
+  <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" style="object-position: {{ meta.position }}" alt="{{ meta.subject }}">
   <div class="hero-body">
     <h1 id="judul-rekomendasi">Rekomendasi {{ kota }}</h1>
     <p>{{ meta.subject }}.</p>

@@ -2,7 +2,7 @@
 {% block title %}SPK Paket Wisata — Pilih Kota{% endblock %}
 {% block content %}
 <section class="hero" aria-labelledby="judul-hero">
-  <img src="{{ url_for('static', filename='images/jakarta.jpg') }}" width="1280" height="724" fetchpriority="high" alt="Monumen Nasional (Monas) di Jakarta">
+  <img src="{{ url_for('static', filename='images/jakarta.jpg') }}" width="1280" height="800" fetchpriority="high" style="object-position: 50% 42%" alt="Monumen Nasional (Monas) di Jakarta">
   <div class="hero-body">
     <h1 id="judul-hero">Pilih kota.<br>Lihat paket terbaiknya.</h1>
     <p>Sistem ini merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
@@ -22,7 +22,7 @@
     {% set m = city_meta[k.nama] %}
     {% set w = winners[k.nama] %}
     <li>
-      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" alt="{{ m.subject }}">
+      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" style="object-position: {{ m.position }}" alt="{{ m.subject }}">
       <div class="city-card-body">
         <div class="city-card-head">
           <svg class="icon icon-city" aria-hidden="true"><use href="#icon-{{ m.symbol }}"/></svg>

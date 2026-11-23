@@ -65,7 +65,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
 a:hover { color: var(--accent-deep); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm); }
 ::selection { background: var(--accent); color: var(--accent-ink); }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; display: block; height: auto; }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
@@ -130,7 +130,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 32px 24px 64px; }
 /* Hero foto: gambar nyata, teks di atas scrim netral (pengecualian gradien
    design.md, hanya di atas foto). Rasio tetap supaya tidak lompat saat muat. */
 .hero { position: relative; border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; background: var(--field); }
-.hero img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; }
+.hero img { width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; }
 .hero .hero-body {
   position: absolute; inset: auto 0 0 0; padding: 48px 24px 20px; color: var(--surface);
   background: linear-gradient(to top, rgba(11, 15, 14, 0.82), rgba(11, 15, 14, 0.35) 60%, rgba(11, 15, 14, 0));
@@ -139,7 +139,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 32px 24px 64px; }
 .hero .hero-body p { color: var(--surface); opacity: 0.92; margin: 0; max-width: 62ch; }
 .hero .hero-body a { color: var(--surface); }
 .hero-banner { position: relative; border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; background: var(--field); }
-.hero-banner img { width: 100%; aspect-ratio: 16 / 5; object-fit: cover; }
+.hero-banner img { width: 100%; height: auto; aspect-ratio: 16 / 5; object-fit: cover; }
 .hero-banner .hero-body {
   position: absolute; inset: auto 0 0 0; padding: 40px 24px 16px; color: var(--surface);
   background: linear-gradient(to top, rgba(11, 15, 14, 0.82), rgba(11, 15, 14, 0.3) 65%, rgba(11, 15, 14, 0));
@@ -164,20 +164,20 @@ main { max-width: var(--measure); margin: 0 auto; padding: 32px 24px 64px; }
 }
 .facts .lbl { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
 
-/* Kartu kota ala Vita: foto besar, nama + simbol kota, pemenang, aksi. */
+/* Kartu kota ala Vita: foto besar, nama + simbol kota, pemenang, aksi.
+   Semua kartu setara: rasio gambar 16:10 yang sama di semua kartu dan lebar,
+   grid stretch supaya satu baris sama tinggi, tombol didorong ke bawah. */
 .city-cards {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap);
-  margin: 0 0 32px; padding: 0; list-style: none;
+  margin: 0 0 32px; padding: 0; list-style: none; align-items: stretch;
 }
 .city-cards > li {
   border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
-  background: var(--surface); display: flex; flex-direction: column;
+  background: var(--surface); display: flex; flex-direction: column; height: 100%;
   transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .city-cards > li:hover { transform: translateY(-2px); }
-.city-cards > li:first-child { grid-column: 1 / -1; }
-.city-cards > li:first-child img { aspect-ratio: 16 / 6; }
-.city-cards img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--field); }
+.city-cards img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--field); }
 .city-card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .city-card-head { display: flex; align-items: center; gap: 12px; }
 .city-card-head h3 { margin: 0; font-size: 24px; }
@@ -389,7 +389,16 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 /* Strip foto kota di Tentang: 5 foto kecil, kredit di bawah. */
 .photo-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 8px; }
 .photo-strip figure { margin: 0; }
-.photo-strip img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); background: var(--field); }
+.photo-strip img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); background: var(--field); }
+
+/* Ilustrasi kota: jelas-jelas ilustrasi datar, bukan foto. Dipakai sebagai
+   dekorasi jujur di halaman Tentang, foto asli tetap jadi foto utama. */
+.illustration-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0 0 8px; }
+.illustration-strip figure { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); display: flex; flex-direction: column; height: 100%; }
+.illustration-strip img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: var(--field); }
+.illustration-strip figcaption { padding: 10px 12px 12px; font-size: 13px; color: var(--muted); }
+.illustration-strip figcaption strong { color: var(--ink); display: block; font-size: 14px; }
+.illustration-tag { display: inline-block; background: var(--field); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 6px; }
 .photo-strip figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
 /* Footer: ink gelap, wordmark sans 800, rapat. */
@@ -438,8 +447,6 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   .admin-actions { grid-template-columns: 1fr; }
   .kv { grid-template-columns: 1fr; }
   .city-cards { grid-template-columns: 1fr; }
-  .city-cards > li:first-child { grid-column: auto; }
-  .city-cards > li:first-child img { aspect-ratio: 16 / 9; }
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .photo-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero img { aspect-ratio: 16 / 9; }

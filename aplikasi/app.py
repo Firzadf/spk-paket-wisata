@@ -25,7 +25,7 @@ app.secret_key = os.environ.get("SPK_SECRET_KEY", "spk-demo-key-ganti-di-produks
 # Foto bukan milik proyek; kredit lengkap ditampilkan di halaman Tentang.
 CITY_META = {
     "Jakarta": {
-        "file": "jakarta.jpg", "width": 1280, "height": 724,
+        "file": "jakarta.jpg", "width": 1280, "height": 800, "position": "50% 42%",
         "subject": "Monumen Nasional (Monas), Jakarta",
         "photographer": "Ramayoni", "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -33,7 +33,7 @@ CITY_META = {
         "symbol": "monas",
     },
     "Yogyakarta": {
-        "file": "yogyakarta.jpg", "width": 1280, "height": 854,
+        "file": "yogyakarta.jpg", "width": 1280, "height": 800, "position": "50% 55%",
         "subject": "Candi Borobudur, Jawa Tengah",
         "photographer": "Jakub Ha\u0142un", "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -41,7 +41,7 @@ CITY_META = {
         "symbol": "borobudur",
     },
     "Bandung": {
-        "file": "bandung.jpg", "width": 1280, "height": 757,
+        "file": "bandung.jpg", "width": 1280, "height": 800, "position": "50% 42%",
         "subject": "Gedung Sate, Bandung",
         "photographer": "Gunawan Kartapranata", "license": "CC BY-SA 3.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -49,7 +49,7 @@ CITY_META = {
         "symbol": "gedung-sate",
     },
     "Semarang": {
-        "file": "semarang.jpg", "width": 1280, "height": 854,
+        "file": "semarang.jpg", "width": 1280, "height": 800, "position": "50% 42%",
         "subject": "Lawang Sewu, Semarang",
         "photographer": "Philip Nalangan", "license": "CC BY 4.0",
         "license_url": "https://creativecommons.org/licenses/by/4.0",
@@ -57,7 +57,7 @@ CITY_META = {
         "symbol": "lawang-sewu",
     },
     "Surabaya": {
-        "file": "surabaya.jpg", "width": 1280, "height": 853,
+        "file": "surabaya.jpg", "width": 1280, "height": 800, "position": "50% 42%",
         "subject": "Tugu Pahlawan, Surabaya",
         "photographer": "Eny Santiati", "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",

@@ -2,7 +2,7 @@
 {% block title %}{{ detail.nama_tampil }} — SPK Paket Wisata{% endblock %}
 {% block content %}
 <section class="hero-banner" aria-labelledby="judul-paket">
-  <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" alt="{{ meta.subject }}">
+  <img src="{{ url_for('static', filename='images/' + meta.file) }}" width="{{ meta.width }}" height="{{ meta.height }}" fetchpriority="high" style="object-position: {{ meta.position }}" alt="{{ meta.subject }}">
   <div class="hero-body">
     <h1 id="judul-paket">{{ detail.nama_tampil }}</h1>
     <p>Kota {{ detail.kota }}. Foto di atas adalah foto kota, bukan foto paket, karena tidak ada foto paket asli.</p>

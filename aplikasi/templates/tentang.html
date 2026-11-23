@@ -25,7 +25,7 @@
   <div class="photo-strip">
   {% for nama, m in city_meta.items() %}
     <figure>
-      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" alt="{{ m.subject }}">
+      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" style="object-position: {{ m.position }}" alt="{{ m.subject }}">
       <figcaption>{{ nama }}: {{ m.subject }}</figcaption>
     </figure>
   {% endfor %}
@@ -35,6 +35,34 @@
     <li>{{ nama }}: {{ m.subject }}, foto oleh {{ m.photographer }}, lisensi <a href="{{ m.license_url }}">{{ m.license }}</a>, sumber <a href="{{ m.commons_url }}">Wikimedia Commons</a>.</li>
   {% endfor %}
   </ul>
+</section>
+
+
+<section aria-labelledby="ilustrasi-kota">
+  <h2 id="ilustrasi-kota">Ilustrasi kota</h2>
+  <p>Ilustrasi datar di bawah ini dibuat dengan AI sebagai hiasan, dan diberi label <strong>Ilustrasi</strong> supaya jelas bukan foto asli. Foto lokasi yang sebenarnya tetap foto Wikimedia di atas.</p>
+  <div class="illustration-strip">
+    <figure>
+      <img src="{{ url_for('static', filename='images/ilustrasi-jakarta.png') }}" width="1024" height="768" loading="lazy" alt="Ilustrasi datar Monumen Nasional (Monas), Jakarta">
+      <figcaption><strong>Jakarta</strong>Monas<span class="illustration-tag">Ilustrasi</span></figcaption>
+    </figure>
+    <figure>
+      <img src="{{ url_for('static', filename='images/ilustrasi-yogyakarta.png') }}" width="1024" height="768" loading="lazy" alt="Ilustrasi datar Candi Borobudur, Yogyakarta">
+      <figcaption><strong>Yogyakarta</strong>Borobudur<span class="illustration-tag">Ilustrasi</span></figcaption>
+    </figure>
+    <figure>
+      <img src="{{ url_for('static', filename='images/ilustrasi-bandung.png') }}" width="1024" height="768" loading="lazy" alt="Ilustrasi datar Gedung Sate, Bandung">
+      <figcaption><strong>Bandung</strong>Gedung Sate<span class="illustration-tag">Ilustrasi</span></figcaption>
+    </figure>
+    <figure>
+      <img src="{{ url_for('static', filename='images/ilustrasi-semarang.png') }}" width="1024" height="768" loading="lazy" alt="Ilustrasi datar Lawang Sewu, Semarang">
+      <figcaption><strong>Semarang</strong>Lawang Sewu<span class="illustration-tag">Ilustrasi</span></figcaption>
+    </figure>
+    <figure>
+      <img src="{{ url_for('static', filename='images/ilustrasi-surabaya.png') }}" width="1024" height="768" loading="lazy" alt="Ilustrasi datar Tugu Pahlawan, Surabaya">
+      <figcaption><strong>Surabaya</strong>Tugu Pahlawan<span class="illustration-tag">Ilustrasi</span></figcaption>
+    </figure>
+  </div>
 </section>
 
 <section aria-labelledby="sumber-data">
