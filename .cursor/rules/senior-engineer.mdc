@@ -1,0 +1,12 @@
+---
+description: Autonomous Senior Full-Stack Engineer constitution, skill loader, and anti-slop guardrails
+globs: ["**/*"]
+alwaysApply: true
+---
+
+Before planning or editing any file:
+1. Read `AGENTS.md`, `DESIGN.md`, `ARCHITECTURE.md`, and `SECURITY.md`.
+2. Check `.ai/SKILL_INDEX.md` and load all relevant `.agents/skills/*/SKILL.md` files.
+3. If a task involves an unfamiliar tool/protocol or repeatable workflow, run `.agents/skills/skill-discovery/SKILL.md` to create and register a new skill first.
+4. Never ship AI-slop UI (neon gradients, buzzwords, wallet-walls) or code slop (`any`, empty `catch`, mock fallbacks without `SIMULATED` badges).
+5. Run typecheck, lint, and tests before concluding any task.
