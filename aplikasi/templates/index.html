@@ -2,8 +2,9 @@
 {% block title %}TripRank — Pilih Kota{% endblock %}
 {% block body_class %}home-hero{% endblock %}
 {% block content %}
+<div class="hero-wrap">
 <section class="hero-pomaii" aria-labelledby="judul-hero">
-  <img src="{{ url_for('static', filename='images/pomaii-hero-ai.jpg') }}" width="1920" height="1280" fetchpriority="high" style="object-position: 50% 50%" alt="Monumen Nasional (Monas) di Jakarta">
+  <img src="{{ url_for('static', filename='images/pomaii-hero-lima-kota.jpg') }}" width="1920" height="1280" fetchpriority="high" style="object-position: 50% 42%" alt="Lima landmark ikonik Indonesia dalam satu pemandangan senja: Monas Jakarta, Candi Borobudur Yogyakarta, Gedung Sate Bandung, Lawang Sewu Semarang, dan Tugu Pahlawan Surabaya">
   <div class="hero-pomaii-body">
     <div class="hero-pomaii-panel">
       <p class="hero-eyebrow">Rekomendasi paket wisata</p>
@@ -24,13 +25,25 @@
   <p class="field">
     <label for="filter-metode">Metode</label>
     <select id="filter-metode" name="metode">
-      <option value="keduanya" selected>SAW dan TOPSIS</option>
+      <option value="keduanya" selected>Keduanya</option>
       <option value="saw">Hanya SAW</option>
       <option value="topsis">Hanya TOPSIS</option>
     </select>
   </p>
   <p class="filter-submit"><button type="submit">Lihat rekomendasi</button></p>
 </form>
+
+<aside class="hero-winners" aria-label="Pemenang per kota">
+  <p class="hero-winners-label">Pemenang per kota</p>
+  <ul>
+  {% for k in kota %}
+    {% set w = winners[k.nama] %}
+    <li><a href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}"><span class="hw-city">{{ k.nama }}</span><span class="hw-wins">SAW Paket <strong>{{ w.saw_paket }}</strong> · TOPSIS Paket <strong>{{ w.topsis_paket }}</strong></span></a></li>
+  {% endfor %}
+  </ul>
+  <p class="hero-winners-note">Dihitung dengan SAW dan TOPSIS dari data proyek.</p>
+</aside>
+</div>
 
 <section class="trust-strip" aria-label="Kenapa TripRank bisa diperiksa">
   <div class="trust-item">

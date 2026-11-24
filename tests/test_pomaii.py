@@ -27,6 +27,8 @@ class TestPomaii(TripRankTestCase):
             self.assertIn('value="%s"' % kota, html)
         for metode in ("keduanya", "saw", "topsis"):
             self.assertIn('value="%s"' % metode, html)
+        # Label opsi singkat (ADR-008): "Keduanya" supaya teks tidak
+        # terpotong di select filter bar HP yang sempit.
 
     def test_filter_bar_jalan_tanpa_js(self):
         # GET nyata ke /rekomendasi, sama seperti form submit browser.
@@ -61,10 +63,12 @@ class TestPomaii(TripRankTestCase):
         # footer menjelaskan foto asli dipakai di halaman Tentang, dan
         # halaman Tentang tetap menampilkan foto asli + kredit lengkap.
         # Tidak ada label "Ilustrasi AI" (aturan final user 24 Nov 2026).
+        # ADR-008: hero beranda diganti gambar lima landmark realistic
+        # (pomaii-hero-lima-kota.jpg) atas persetujuan user 24 Nov 2026.
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("Wikimedia Commons", html)
         self.assertNotIn("Ilustrasi AI", html)
-        self.assertIn("pomaii-hero-ai.jpg", html)
+        self.assertIn("pomaii-hero-lima-kota.jpg", html)
         self.assertIn("pomaii-stories-1.jpg", html)
         self.assertIn("pomaii-stories-2.jpg", html)
         self.assertIn("pomaii-lab.jpg", html)

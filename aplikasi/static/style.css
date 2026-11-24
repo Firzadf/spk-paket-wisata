@@ -247,6 +247,17 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 
 /* --- Gaya Pomaii (24 Nov 2026) --- */
 
+/* Pembungkus hero + filter bar + kartu pemenang (ADR-008): kartu
+   pemenang di desktop diposisikan absolut di sisi kanan hero, jadi
+   di HP ia mengalir normal di bawah filter bar tanpa pernah tertutup. */
+.hero-wrap { position: relative; }
+
+/* Teks header di atas foto hero (ADR-008): foto senja baru lebih gelap
+   dari langit Monas sebelumnya, jadi tautan nav dan wordmark memakai
+   warna ink + bayangan terang supaya tetap terbaca sebelum di-scroll. */
+body.home-hero .site-header .site-nav a { color: var(--ink); text-shadow: 0 1px 10px rgba(250, 247, 241, 0.9); }
+body.home-hero .site-header .wordmark { text-shadow: 0 1px 10px rgba(250, 247, 241, 0.9); }
+
 /* Hero full-bleed ala Pomaii (24 Nov 2026, ADR-007): memenuhi seluruh
    layar browser (min-height 100svh), foto edge-to-edge, teks gelap rata
    kiri di atas foto. Overlay terang DATAR tipis (bukan gradient) hanya
@@ -267,12 +278,12 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .hero-pomaii-body {
   position: relative; z-index: 2;
   max-width: var(--measure); margin: 0 auto; padding: 96px 24px 120px;
-  display: flex; flex-direction: column; align-items: flex-start;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
   text-align: left; min-height: 100vh; min-height: 100svh; justify-content: center;
 }
 .hero-pomaii-panel {
   background: rgba(250, 247, 241, 0.88);
-  border-radius: 24px; padding: 36px 40px; max-width: 680px;
+  border-radius: 24px; padding: 32px 36px; max-width: 680px;
 }
 .hero-pomaii-body .hero-eyebrow {
   font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
@@ -280,7 +291,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 }
 .hero-pomaii-body h1 {
   color: var(--ink); margin: 0 0 16px; max-width: 640px;
-  font-size: clamp(44px, 6.4vw, 76px);
+  font-size: clamp(40px, 5.8vw, 64px); line-height: 1.12;
 }
 .hero-pomaii-body .hero-sub {
   color: var(--ink-soft); font-size: 19px; max-width: 560px;
@@ -290,11 +301,43 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .hero-pomaii-body .hero-cta { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
 .hero-pomaii-body .hero-cta .btn { padding: 14px 26px; min-height: 52px; }
 
+/* Kartu pemenang di sisi kanan hero (24 Nov 2026, ADR-008): mengisi
+   sisi kanan hero yang kosong. Isinya data NYATA dari winners yang
+   sudah dihitung app.py (bukan angka karangan), tiap baris tautan ke
+   halaman rekomendasi kota itu. Desktop: absolut di kanan hero,
+   sejajar vertikal dengan panel. HP/tablet: mengalir normal di bawah
+   filter bar, tidak pernah tertutup dan tidak menutupi apa pun. */
+.hero-winners {
+  background: rgba(250, 247, 241, 0.88);
+  border-radius: 24px; padding: 24px 28px; width: 100%; max-width: 420px;
+  margin: 24px 0 0;
+}
+.hero-winners-label {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+}
+.hero-winners ul { margin: 0; padding: 0; list-style: none; }
+.hero-winners li + li { border-top: 1px solid var(--line); }
+.hero-winners li a {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 9px 0; text-decoration: none; color: var(--ink);
+}
+.hero-winners li a:hover .hw-city { color: var(--accent); }
+.hero-winners .hw-city { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.hero-winners .hw-wins { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.hero-winners .hw-wins strong { color: var(--ink); }
+.hero-winners-note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+@media (min-width: 901px) {
+  .hero-winners { position: absolute; top: 50%; right: 24px; transform: translateY(-50%); z-index: 2; width: 360px; margin: 0; }
+}
+
 /* Filter bar mengambang: kartu putih menumpuk di bawah hero, form GET
-   nyata ke /rekomendasi, jalan tanpa JavaScript. */
+   nyata ke /rekomendasi, jalan tanpa JavaScript. Tumpangan -118px
+   (ADR-008) supaya seluruh bar terlihat dalam satu viewport 900px saat
+   landing, bukan terpotong di bawah lipatan. */
 .filter-bar {
   position: relative; z-index: 3; max-width: 880px;
-  margin: -56px auto 0; padding: 20px 24px;
+  margin: -118px auto 0; padding: 16px 24px;
   background: var(--surface); border: 1px solid var(--line);
   border-radius: 24px; box-shadow: var(--shadow-card);
   display: flex; flex-wrap: wrap; gap: 16px; align-items: end;
@@ -817,8 +860,12 @@ input, select, textarea { border-radius: var(--radius); }
 }
 
 /* Hero headline reveal per baris (v4 r2): line-level, bukan per karakter,
-   supaya screen reader dan copy-paste tetap benar. */
-.hero h1 .line, .hero-pomaii h1 .line { display: block; overflow: hidden; }
+   supaya screen reader dan copy-paste tetap benar. Perbaikan 24 Nov 2026
+   (ADR-008): .line punya overflow: hidden untuk animasi, tapi line-height
+   1,08 terlalu rapat sehingga descender huruf "g" pada "dengan" dan
+   "angka" terpotong. padding-bottom 0,16em memberi ruang descender,
+   margin-bottom negatif menjaga jarak antarbaris tetap sama. */
+.hero h1 .line, .hero-pomaii h1 .line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
 @media (prefers-reduced-motion: no-preference) {
   .hero h1 .line > span, .hero-pomaii h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
   .hero h1 .line:nth-child(2) > span, .hero-pomaii h1 .line:nth-child(2) > span { animation-delay: 90ms; }
@@ -933,6 +980,10 @@ input, select, textarea { border-radius: var(--radius); }
      nav di panel dropdown di bawah pil. Pil mengambang hanya di
      layar <=900px; desktop tetap bar penuh (koreksi Umano). */
   .site-header { background: transparent; border-bottom: 0; padding: 12px 20px 0; top: 10px; }
+  /* Header pil di beranda HP (ADR-008): fixed, bukan sticky, supaya
+     tidak memakan ruang alur dan foto hero memenuhi layar dari atas.
+     Tampilan pil tidak berubah; saat di-scroll ia tetap di atas. */
+  body.home-hero .site-header { position: fixed; top: 10px; left: 0; right: 0; }
   .site-header .header-inner {
     position: relative; padding: 10px 12px 10px 22px;
     background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
@@ -1037,14 +1088,28 @@ input, select, textarea { border-radius: var(--radius); }
      satu kolom. */
   .hero-pomaii, .hero-pomaii-body { min-height: 100vh; min-height: 100svh; }
   .hero-pomaii { margin-top: -28px; }
-  .hero-pomaii-body { padding: 72px 20px 96px; }
+  /* Panel mulai dari atas (ADR-008): justify-content flex-start supaya
+     panel tidak terdorong ke tengah dan filter bar tetap muat dalam
+     satu viewport 844px. Padding atas 88px memberi ruang untuk pil
+     header yang mengambang di atas foto. */
+  .hero-pomaii-body { padding: 88px 20px 24px; justify-content: flex-start; }
   .hero-pomaii-panel { padding: 24px 20px; border-radius: 20px; }
-  .hero-pomaii-body h1 { font-size: clamp(36px, 10vw, 44px); }
-  .hero-pomaii-body .hero-sub { font-size: 17px; }
+  .hero-pomaii-body h1 { font-size: clamp(32px, 9vw, 44px); }
+  .hero-pomaii-body .hero-sub { font-size: 16px; }
   .hero-pomaii-body .hero-cta .btn { width: 100%; text-align: center; }
-  .filter-bar { margin: -48px 0 0; padding: 16px; border-radius: 20px; flex-direction: column; align-items: stretch; }
-  .filter-bar .field { flex: none; }
-  .filter-bar .filter-submit button { width: 100%; }
+  /* Kartu pemenang di HP (ADR-008): versi ringkas supaya panel + kartu
+     + filter bar muat dalam satu viewport 844px. Catatan disembunyikan,
+     baris lebih rapat, dua kolom tetap satu baris per kota. */
+  .hero-winners { padding: 16px 20px; border-radius: 20px; }
+  .hero-winners-note { display: none; }
+  .hero-winners li a { padding: 6px 0; }
+  /* Filter bar di HP (ADR-008): dua kolom berdampingan + tombol penuh,
+     tumpangan -170px dan padding lebih ramping supaya seluruh bar
+     terlihat dalam satu viewport 844px saat landing. */
+  .filter-bar { margin: -170px 0 0; padding: 12px 16px; border-radius: 20px; flex-direction: row; flex-wrap: wrap; gap: 12px; }
+  .filter-bar .field { flex: 1 1 130px; }
+  .filter-bar .filter-submit { flex: 1 1 100%; }
+  .filter-bar .filter-submit button { width: 100%; min-height: 48px; padding: 12px 26px; }
   .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 24px 0; }
   .stories { grid-template-columns: 1fr; }
   .lab-banner { grid-template-columns: 1fr; }
