@@ -7,9 +7,9 @@ nyata (5 kota, 100 paket, 298 tempat, 403 relasi).
 Gambar (aturan final user 24 Nov 2026 09:32 WIB): generate AI boleh
 dipakai untuk gambar apa pun dan label "Ilustrasi AI" TIDAK diperlukan
 di mana pun. Yang wajib hanya kredit fotografer Wikimedia untuk foto
-asli yang dipakai (syarat lisensi CC). Hero memakai Monas hasil
-generate AI (detailnya dicek benar), 5 kartu kota memakai foto asli
-Wikimedia yang digrading konsisten dengan PIL.
+asli yang dipakai (syarat lisensi CC). Beranda ADR-009 memakai hero
+gelap + 5 panel kota AI (pomaii-kota-*.jpg); hero foto lima landmark
+dan 2 gambar cerita tidak lagi dirujuk di beranda.
 """
 import unittest
 
@@ -39,21 +39,29 @@ class TestPomaii(TripRankTestCase):
         self.assertIn("Bandung", html)
         self.assertIn("Paket 47", html)
 
-    def test_home_punya_trust_strip_jujur(self):
+    def test_home_punya_strip_statistik_angka_nyata(self):
+        # ADR-009: trust strip diganti strip statistik di hero gelap.
+        # Hanya angka nyata (100 paket, 5 kota, 5 kriteria, 2 metode),
+        # tanpa Spearman dan tanpa klaim lain.
         html = self.client.get("/").get_data(as_text=True)
-        self.assertIn('class="trust-strip"', html)
-        for item in ("5 kota besar", "100 paket wisata", "SAW + TOPSIS",
-                     "Tahap hitungan terbuka"):
+        self.assertIn('class="hero-stats"', html)
+        for item in ("paket dinilai", "kota besar", "kriteria", "metode"):
             self.assertIn(item, html)
-        for klaim in ("Happy Travelers", "Best Price", "4.8", "$699"):
+        for klaim in ("Spearman", "Happy Travelers", "Best Price", "4.8",
+                      "$699"):
             self.assertNotIn(klaim, html)
 
-    def test_home_punya_lima_kartu_kota(self):
+    def test_home_punya_lima_panel_kota_berfoto(self):
+        # ADR-009: kartu kota diganti 5 panel kota di hero gelap,
+        # masing-masing berfoto dan bertautan ke halaman kota.
         html = self.client.get("/").get_data(as_text=True)
-        self.assertEqual(html.count('class="city-card-body"'), 5)
+        self.assertIn('class="hero-city-panels"', html)
         for kota in ("Jakarta", "Yogyakarta", "Bandung", "Semarang",
                      "Surabaya"):
             self.assertIn(kota, html)
+        for slug in ("jakarta", "yogyakarta", "bandung", "semarang",
+                     "surabaya"):
+            self.assertIn("pomaii-kota-%s.jpg" % slug, html)
         self.assertIn("20 paket", html)
 
     def test_home_kredit_wikimedia_foto_asli_tanpa_label_ai(self):
@@ -63,14 +71,15 @@ class TestPomaii(TripRankTestCase):
         # footer menjelaskan foto asli dipakai di halaman Tentang, dan
         # halaman Tentang tetap menampilkan foto asli + kredit lengkap.
         # Tidak ada label "Ilustrasi AI" (aturan final user 24 Nov 2026).
-        # ADR-008: hero beranda diganti gambar lima landmark realistic
-        # (pomaii-hero-lima-kota.jpg) atas persetujuan user 24 Nov 2026.
+        # ADR-009: hero foto lima landmark (pomaii-hero-lima-kota.jpg)
+        # dan 2 gambar cerita tidak lagi dirujuk di beranda; beranda
+        # memakai hero gelap + panel kota AI + banner Lab.
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("Wikimedia Commons", html)
         self.assertNotIn("Ilustrasi AI", html)
-        self.assertIn("pomaii-hero-lima-kota.jpg", html)
-        self.assertIn("pomaii-stories-1.jpg", html)
-        self.assertIn("pomaii-stories-2.jpg", html)
+        self.assertNotIn("pomaii-hero-lima-kota.jpg", html)
+        self.assertNotIn("pomaii-stories-1.jpg", html)
+        self.assertNotIn("pomaii-stories-2.jpg", html)
         self.assertIn("pomaii-lab.jpg", html)
         # Kartu kota memakai gambar AI, bukan foto asli.
         for slug in ("jakarta", "yogyakarta", "bandung", "semarang", "surabaya"):
@@ -80,9 +89,11 @@ class TestPomaii(TripRankTestCase):
         self.assertIn("/static/images/jakarta.jpg", tentang)
         self.assertIn("Wikimedia Commons", tentang)
 
-    def test_home_punya_pill_kriteria_dan_banner_lab(self):
+    def test_home_punya_kartu_kriteria_dan_banner_lab(self):
+        # ADR-009: pill kriteria diganti 5 kartu kriteria (bobot besar
+        # + sumber data); banner Lab tetap.
         html = self.client.get("/").get_data(as_text=True)
-        self.assertIn('class="criteria-pills"', html)
+        self.assertIn('class="criteria-cards"', html)
         for bobot in ("0,30", "0,25", "0,20", "0,15", "0,10"):
             self.assertIn(bobot, html)
         self.assertIn('class="lab-banner"', html)

@@ -32,7 +32,7 @@ class TataLetakKiriTest(TripRankTestCase):
         # jadi tepi kiri teks lurus dari atas sampai bawah.
         css = read_css()
         self.assertIn(".site-header .header-inner {\n  max-width: var(--measure);", css)
-        self.assertIn("max-width: var(--measure); margin: 0 auto; padding: 96px 24px 120px;", css)
+        self.assertIn("max-width: var(--measure); margin: 0 auto; padding: 88px 24px 64px;", css)
         self.assertIn(".site-footer .footer-inner { max-width: var(--measure);", css)
         self.assertNotIn("var(--measure-wide)", css)
 
@@ -81,13 +81,17 @@ class GambarDanMaskotTest(TripRankTestCase):
 
 
 class HeaderFooterPomaiiTest(TripRankTestCase):
-    def test_header_transparan_di_home_dan_hero_full_screen(self):
+    def test_header_transparan_di_home_di_atas_hero_gelap(self):
+        # ADR-009: hero bukan lagi foto full-screen; hero gelap datar.
+        # Header tetap transparan di atasnya dengan logo putih + teks
+        # terang sebelum di-scroll, lalu solid krem setelah di-scroll.
         css = read_css()
         self.assertIn("body.home-hero .site-header {", css)
         self.assertIn("position: fixed;", css)
         self.assertIn("background: transparent;", css)
         self.assertIn("body.home-hero .site-header.is-scrolled {", css)
-        self.assertIn("min-height: 100vh; min-height: 100svh;", css)
+        self.assertIn("body.home-hero .site-header:not(.is-scrolled) .logo-light { display: inline-block; }", css)
+        self.assertNotIn("min-height: 100vh; min-height: 100svh;", css)
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn('class="home-hero"', html)
 
@@ -99,7 +103,11 @@ class HeaderFooterPomaiiTest(TripRankTestCase):
         self.assertNotIn("accent-deep", footer.group(0))
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("/static/images/logo.svg", html)
-        self.assertNotIn("logo-putih.svg", html)
+        # ADR-009: logo putih ada di header (untuk hero gelap), bukan
+        # di footer yang tetap terang.
+        self.assertIn("logo-putih.svg", html)
+        resp = self.client.get("/static/images/logo-putih.svg")
+        self.assertEqual(resp.status_code, 200)
 
 
 class LoginAdminRapiTest(TripRankTestCase):

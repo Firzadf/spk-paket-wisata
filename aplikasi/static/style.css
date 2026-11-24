@@ -24,7 +24,17 @@
      gelap terbaca di atas foto yang terang.
    - Animasi 3D dan transisi yang disukai user tetap ada: bg-3d melayang
      di Filosofi, loading screen, transisi 3D halaman, scroll reveal 3D,
-     tilt kartu. Typewriter DIHAPUS (atas perintah redesign ini). */
+     tilt kartu. Typewriter DIHAPUS (atas perintah redesign ini).
+   Redesign pen.dev (24 Nov 2026, ADR-009): homepage mengikuti desain
+   pen.dev user (hero gelap, 8 section bernomor, tabel SAW vs TOPSIS),
+   SEMUA data diganti data asli proyek (tanpa Spearman, tanpa peringkat
+   nasional). Foto hero lima landmark dan 2 gambar cerita tidak lagi
+   dirujuk di beranda; file-nya tetap ada di static/images/.
+   Penyimpangan design.md yang disengaja, dicatat:
+   - Label section bernomor 01-08 ala pen.dev (design.md melarang
+     eyebrow dan penomoran indeks; user menyetujui desain ini).
+   - Hero gelap field penuh (bukan foto), header transparan dengan
+     logo putih sebelum di-scroll. */
 :root {
   --ground: #faf7f1;
   --surface: #fffdf9;
@@ -105,6 +115,9 @@ img { max-width: 100%; display: block; height: auto; }
 
 /* Logo TripRank: mark SVG asli (pin + T + grafik ranking menaik). */
 .logo-mark { display: inline-block; width: 32px; height: 32px; vertical-align: -9px; }
+/* Logo putih: hanya tampil di header transparan atas hero gelap
+   (ADR-009); di semua tempat lain logo gelap yang dipakai. */
+.logo-light { display: none; }
 .logo-footer { width: 48px; height: 48px; vertical-align: -10px; }
 .logo-large { width: 72px; height: 72px; margin-bottom: 16px; }
 
@@ -142,6 +155,18 @@ img { max-width: 100%; display: block; height: auto; }
   body.home-hero .site-header.is-scrolled {
     background: var(--surface); border-bottom: 1px solid var(--line);
   }
+  /* Header transparan di atas hero GELAP (ADR-009): nav dan wordmark
+     terang + logo putih sebelum di-scroll; tombol Masuk Admin jadi pil
+     krem supaya terbaca di atas hijau gelap. Saat is-scrolled (solid
+     krem), kembali ke logo gelap + teks ink. */
+  body.home-hero .site-header:not(.is-scrolled) .site-nav a { color: var(--surface); }
+  body.home-hero .site-header:not(.is-scrolled) .site-nav a:hover { color: var(--surface); }
+  body.home-hero .site-header:not(.is-scrolled) .site-nav a[aria-current="page"] { color: var(--surface); }
+  body.home-hero .site-header:not(.is-scrolled) .wordmark { color: var(--surface); }
+  body.home-hero .site-header:not(.is-scrolled) .logo-dark { display: none; }
+  body.home-hero .site-header:not(.is-scrolled) .logo-light { display: inline-block; }
+  body.home-hero .site-header:not(.is-scrolled) .header-action { background: var(--surface); color: var(--ink); border-color: var(--surface); }
+  body.home-hero .site-header:not(.is-scrolled) .header-action:hover { background: var(--field); color: var(--ink); }
 }
 .site-header .header-inner {
   max-width: var(--measure); margin: 0 auto; padding: 12px 24px;
@@ -247,97 +272,81 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 
 /* --- Gaya Pomaii (24 Nov 2026) --- */
 
-/* Pembungkus hero + filter bar + kartu pemenang (ADR-008): kartu
-   pemenang di desktop diposisikan absolut di sisi kanan hero, jadi
-   di HP ia mengalir normal di bawah filter bar tanpa pernah tertutup. */
-.hero-wrap { position: relative; }
+/* Teks header di atas hero GELAP (ADR-009): nav dan wordmark terang
+   sebelum di-scroll, logo putih dipakai; aturannya ada di blok desktop
+   @media (min-width: 901px) di bawah, supaya pil header HP yang
+   berlatar krem tetap memakai logo gelap + teks ink. */
 
-/* Teks header di atas foto hero (ADR-008): foto senja baru lebih gelap
-   dari langit Monas sebelumnya, jadi tautan nav dan wordmark memakai
-   warna ink + bayangan terang supaya tetap terbaca sebelum di-scroll. */
-body.home-hero .site-header .site-nav a { color: var(--ink); text-shadow: 0 1px 10px rgba(250, 247, 241, 0.9); }
-body.home-hero .site-header .wordmark { text-shadow: 0 1px 10px rgba(250, 247, 241, 0.9); }
-
-/* Hero full-bleed ala Pomaii (24 Nov 2026, ADR-007): memenuhi seluruh
-   layar browser (min-height 100svh), foto edge-to-edge, teks gelap rata
-   kiri di atas foto. Overlay terang DATAR tipis (bukan gradient) hanya
-   supaya teks terbaca, foto tetap vivid. Tanpa typewriter, tanpa bg-3d. */
-.hero-pomaii {
-  position: relative; overflow: hidden;
-  min-height: 100vh; min-height: 100svh; margin: -40px calc(50% - 50vw) 0;
-  background: var(--field);
+/* Hero gelap ala desain pen.dev (24 Nov 2026, ADR-009): field hijau
+   gelap DATAR (bukan gradient, bukan foto), headline serif besar rata
+   kiri, 5 panel kota berfoto, strip statistik angka nyata. Filter bar
+   duduk di bawah hero dalam alur normal (bukan menumpuk), supaya
+   selalu terlihat utuh saat landing. */
+.hero-dark {
+  background: var(--accent-deep); color: var(--accent-ink);
+  margin: -40px calc(50% - 50vw) 0;
 }
-.hero-pomaii img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 42%;
+.hero-dark-inner {
+  max-width: var(--measure); margin: 0 auto; padding: 88px 24px 64px;
+  text-align: left;
 }
-.hero-pomaii::before {
-  content: ""; position: absolute; inset: 0; z-index: 1;
-  background: rgba(250, 247, 241, 0.18);
-}
-.hero-pomaii-body {
-  position: relative; z-index: 2;
-  max-width: var(--measure); margin: 0 auto; padding: 96px 24px 120px;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
-  text-align: left; min-height: 100vh; min-height: 100svh; justify-content: center;
-}
-.hero-pomaii-panel {
-  background: rgba(250, 247, 241, 0.88);
-  border-radius: 24px; padding: 32px 36px; max-width: 680px;
-}
-.hero-pomaii-body .hero-eyebrow {
+.hero-dark .hero-eyebrow {
   font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--accent); margin: 0 0 14px;
+  text-transform: uppercase; color: var(--accent-ink); opacity: 0.75; margin: 0 0 14px;
 }
-.hero-pomaii-body h1 {
-  color: var(--ink); margin: 0 0 16px; max-width: 640px;
+.hero-dark h1 {
+  color: var(--accent-ink); margin: 0 0 16px; max-width: 760px;
   font-size: clamp(40px, 5.8vw, 64px); line-height: 1.12;
 }
-.hero-pomaii-body .hero-sub {
-  color: var(--ink-soft); font-size: 19px; max-width: 560px;
+.hero-dark .hero-sub {
+  color: var(--accent-ink); opacity: 0.92; font-size: 19px; max-width: 640px;
   margin: 0 0 28px;
 }
-.hero-pomaii-body .hero-sub strong { color: var(--ink); }
-.hero-pomaii-body .hero-cta { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
-.hero-pomaii-body .hero-cta .btn { padding: 14px 26px; min-height: 52px; }
+.hero-dark .hero-sub strong { color: var(--accent-ink); }
+.hero-dark .hero-cta { margin: 0 0 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-dark .hero-cta .btn { padding: 14px 26px; min-height: 52px; }
+.hero-dark .hero-cta .btn-quiet { background: var(--surface); color: var(--ink); border-color: var(--surface); }
+.hero-dark .hero-cta .btn-quiet:hover { background: var(--field); color: var(--ink); }
+/* Panel kota di hero: 5 foto landmark, nama kota + jumlah paket,
+   masing-masing tautan ke halaman kota. Desktop 5 kolom; HP jadi
+   baris thumb + teks supaya tidak menumpuk tinggi. */
+.hero-city-panels {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px;
+  margin: 0 0 40px; padding: 0; list-style: none;
+}
+.hero-city-panels li { margin: 0; }
+.hero-city-panels a {
+  display: flex; flex-direction: column; text-decoration: none;
+  color: var(--accent-ink); border-radius: var(--radius-card); overflow: hidden;
+  background: rgba(255, 253, 249, 0.08); border: 1px solid rgba(255, 253, 249, 0.25);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms;
+}
+.hero-city-panels a:hover { transform: translateY(-2px); border-color: rgba(255, 253, 249, 0.6); color: var(--accent-ink); }
+.hero-city-panels img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--field); }
+.hero-panel-text { display: flex; flex-direction: column; padding: 12px 14px 14px; }
+.hero-panel-city { font-family: var(--serif); font-size: 19px; }
+.hero-panel-count { font-size: 13px; opacity: 0.75; }
+/* Strip statistik di hero: hanya angka nyata (100 paket, 5 kota,
+   5 kriteria, 2 metode). Tanpa Spearman, tanpa klaim lain. */
+.hero-stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;
+  border-top: 1px solid rgba(255, 253, 249, 0.25); padding-top: 24px;
+}
+.hero-stats div { margin: 0; }
+.hero-stats .num {
+  display: block; font-family: var(--mono); font-size: 40px; font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
+  color: var(--accent-ink); text-align: left;
+}
+.hero-stats .lbl { display: block; margin-top: 6px; color: var(--accent-ink); opacity: 0.75; font-size: 14px; }
 
-/* Kartu pemenang di sisi kanan hero (24 Nov 2026, ADR-008): mengisi
-   sisi kanan hero yang kosong. Isinya data NYATA dari winners yang
-   sudah dihitung app.py (bukan angka karangan), tiap baris tautan ke
-   halaman rekomendasi kota itu. Desktop: absolut di kanan hero,
-   sejajar vertikal dengan panel. HP/tablet: mengalir normal di bawah
-   filter bar, tidak pernah tertutup dan tidak menutupi apa pun. */
-.hero-winners {
-  background: rgba(250, 247, 241, 0.88);
-  border-radius: 24px; padding: 24px 28px; width: 100%; max-width: 420px;
-  margin: 24px 0 0;
-}
-.hero-winners-label {
-  font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
-}
-.hero-winners ul { margin: 0; padding: 0; list-style: none; }
-.hero-winners li + li { border-top: 1px solid var(--line); }
-.hero-winners li a {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-  padding: 9px 0; text-decoration: none; color: var(--ink);
-}
-.hero-winners li a:hover .hw-city { color: var(--accent); }
-.hero-winners .hw-city { font-weight: 700; font-size: 15px; white-space: nowrap; }
-.hero-winners .hw-wins { font-size: 13px; color: var(--muted); white-space: nowrap; }
-.hero-winners .hw-wins strong { color: var(--ink); }
-.hero-winners-note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
-@media (min-width: 901px) {
-  .hero-winners { position: absolute; top: 50%; right: 24px; transform: translateY(-50%); z-index: 2; width: 360px; margin: 0; }
-}
-
-/* Filter bar mengambang: kartu putih menumpuk di bawah hero, form GET
-   nyata ke /rekomendasi, jalan tanpa JavaScript. Tumpangan -118px
-   (ADR-008) supaya seluruh bar terlihat dalam satu viewport 900px saat
-   landing, bukan terpotong di bawah lipatan. */
+/* Filter bar (ADR-009): kartu putih di bawah hero gelap, dalam alur
+   normal (bukan menumpuk), form GET nyata ke /rekomendasi, jalan
+   tanpa JavaScript. Tumpangan -118px ala ADR-008 dibatalkan karena
+   hero baru bukan foto full-screen. */
 .filter-bar {
   position: relative; z-index: 3; max-width: 880px;
-  margin: -118px auto 0; padding: 16px 24px;
+  margin: 32px auto 96px; padding: 16px 24px;
   background: var(--surface); border: 1px solid var(--line);
   border-radius: 24px; box-shadow: var(--shadow-card);
   display: flex; flex-wrap: wrap; gap: 16px; align-items: end;
@@ -348,55 +357,68 @@ body.home-hero .site-header .wordmark { text-shadow: 0 1px 10px rgba(250, 247, 2
 .filter-bar .filter-submit { margin: 0; flex: none; }
 .filter-bar .filter-submit button { min-height: 52px; padding: 14px 26px; }
 
-/* Trust strip: 4 item jujur dengan ikon garis, tanpa klaim yang dikarang. */
-.trust-strip {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;
-  margin: 56px 0 0; padding: 28px 8px;
-  border-bottom: 1px solid var(--line);
+/* Label section bernomor ala desain pen.dev (ADR-009): 01-08, caps,
+   aksen hijau. Penyimpangan design.md yang disengaja (design.md
+   melarang eyebrow dan penomoran indeks), dicatat di ADR-009. */
+.section-label {
+  font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+  margin: 0 0 16px;
 }
-.trust-item { display: flex; gap: 14px; align-items: flex-start; }
-.trust-item .icon {
-  width: 44px; height: 44px; padding: 10px; flex: none;
-  color: var(--accent); background: var(--accent-soft);
-  border: 1px solid var(--line); border-radius: 50%;
-}
-.trust-item strong { display: block; font-size: 16px; margin-bottom: 2px; }
-.trust-item span { display: block; color: var(--muted); font-size: 14px; line-height: 1.45; }
-
-/* Pill kriteria: 5 pill ke /cara-kerja, ikon + nama + bobot + tipe. */
-.criteria-pills {
-  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
-  margin: 0; padding: 0; list-style: none;
-}
-.criteria-pills li { margin: 0; }
-.criteria-pills a {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--surface); border: 1px solid var(--line-strong);
-  border-radius: 999px; padding: 10px 18px 10px 12px;
-  text-decoration: none; color: var(--ink);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms;
-}
-.criteria-pills a:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); border-color: var(--accent); color: var(--ink); }
-.criteria-pills a strong { font-size: 15px; font-weight: 700; }
-.criteria-pills .pill-weight { color: var(--muted); font-size: 13px; white-space: nowrap; }
-
-/* Stories: dua kartu gambar, masing-masing satu ajakan jujur. */
-.stories {
+/* Kartu pemenang (ADR-009): 5 kartu, nama paket asli dari database,
+   skor Vi/Ci, jumlah destinasi. Jakarta satu-satunya yang menampilkan
+   dua pemenang berbeda. Tilt kartu seperti kartu kota sebelumnya. */
+.winner-cards {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap);
-  margin: 0 0 32px;
+  margin: 0; padding: 0; list-style: none; align-items: stretch;
 }
-.story-card {
-  margin: 0; border: 1px solid var(--line); background: var(--surface);
-  border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card);
-  display: flex; flex-direction: column; height: 100%;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+.winner-cards > li {
+  border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  padding: 24px 26px; display: flex; flex-direction: column; gap: 10px; height: 100%;
 }
-.story-card:hover { transform: translateY(-4px); }
-.story-card img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; background: var(--field); }
-.story-card figcaption { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; align-items: flex-start; }
-.story-card figcaption strong { font-family: var(--serif); font-size: 22px; font-weight: 400; }
-.story-card figcaption span:not(.illustration-tag) { color: var(--muted); font-size: 15px; }
-.story-card figcaption .btn { margin-top: auto; }
+.winner-card-head { display: flex; align-items: baseline; gap: 12px; }
+.winner-card-head h3 { margin: 0; font-size: 28px; }
+.winner-city-count { margin-left: auto; color: var(--muted); font-size: 14px; white-space: nowrap; }
+.winner-badge {
+  display: inline-block; align-self: flex-start; margin: 0;
+  background: var(--accent-soft); border: 1px solid var(--accent);
+  color: var(--accent-deep); font-size: 13px; font-weight: 700;
+  padding: 4px 12px; border-radius: 999px;
+}
+.winner-name { margin: 0; font-family: var(--serif); font-size: 24px; }
+.winner-name a { color: var(--ink); text-decoration: none; }
+.winner-name a:hover { color: var(--accent); }
+.winner-scores { display: flex; gap: 24px; margin: 0; flex-wrap: wrap; }
+.winner-scores div { margin: 0; }
+.winner-scores dt { font-size: 13px; color: var(--muted); font-weight: 700; }
+.winner-scores dd { margin: 2px 0 0; font-family: var(--mono); font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.winner-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 0; }
+.winner-split > div + div { border-left: 1px solid var(--line); padding-left: 20px; }
+.winner-method { margin: 0 0 4px; font-size: 13px; font-weight: 700; color: var(--accent); }
+.winner-split .winner-name { font-size: 20px; }
+.winner-meta { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.winner-actions { margin: auto 0 0; padding-top: 12px; }
+
+/* Kartu kriteria (ADR-009): 5 kartu sebaris di desktop, bobot besar,
+   sumber data dari draf laporan (skor rubrik tim / jumlah tempat). */
+.criteria-cards {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px;
+  margin: 0; padding: 0; list-style: none; align-items: stretch;
+}
+.criteria-cards > li {
+  border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  padding: 22px; display: flex; flex-direction: column; gap: 8px; height: 100%;
+}
+.criteria-cards .criterion-icon { width: 44px; height: 44px; }
+.criteria-code { margin: 0; font-size: 13px; font-weight: 700; color: var(--muted); }
+.criteria-cards h3 { margin: 0; font-size: 20px; }
+.criteria-weight {
+  margin: 0; font-family: var(--mono); font-size: 34px; font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.criteria-source { margin: 0; color: var(--muted); font-size: 14px; }
 
 /* Banner Lab: panel hijau gelap + foto danau, teks dan CTA di kanan. */
 .lab-banner {
@@ -415,6 +437,33 @@ body.home-hero .site-header .wordmark { text-shadow: 0 1px 10px rgba(250, 247, 2
 .lab-banner-body p { color: var(--accent-ink); opacity: 0.92; margin: 0 0 20px; }
 .lab-banner-body .photo-credit { color: var(--accent-ink); opacity: 0.65; margin: 16px 0 0; }
 .lab-banner-body .photo-credit a { color: var(--accent-ink); }
+/* Daftar bobot di teaser Lab (ADR-009): 5 bobot asli, tanpa slider. */
+.lab-weights { margin: 0 0 20px; padding: 0; list-style: none; }
+.lab-weights li { margin: 0 0 4px; }
+.lab-weights li strong { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+/* Rumus metode (ADR-009): satu baris mono di atas field krem. */
+.formula {
+  font-family: var(--mono); font-size: 20px; font-weight: 600;
+  letter-spacing: -0.01em; font-variant-numeric: tabular-nums;
+  background: var(--field); border: 1px solid var(--line);
+  padding: 12px 16px; border-radius: var(--radius);
+}
+/* Tanya Jawab (ADR-009): <details> asli per panduan accordion
+   modern-web-guidance, tanpa heading di dalam summary, tanpa mode
+   eksklusif (name), supaya beberapa jawaban bisa dibuka sekaligus. */
+.faq details { margin-bottom: 12px; }
+/* CTA penutup ala desain pen.dev (ADR-009): panel hijau gelap datar,
+   headline serif, dua tombol (oranye primer + krem sekunder). */
+.cta-final {
+  background: var(--accent-deep); color: var(--accent-ink);
+  border-radius: var(--radius-card); padding: 56px 48px;
+}
+.cta-final .section-label { color: var(--accent-ink); opacity: 0.75; }
+.cta-final h2 { color: var(--accent-ink); }
+.cta-final p { color: var(--accent-ink); opacity: 0.92; }
+.cta-final p:has(.btn) { display: flex; flex-wrap: wrap; gap: 12px; }
+.cta-final .btn-quiet { background: var(--surface); color: var(--ink); border-color: var(--surface); }
+.cta-final .btn-quiet:hover { background: var(--field); color: var(--ink); }
 
 /* Misi: pernyataan serif besar, satu momen tenang di tengah halaman. */
 .mission { max-width: 880px; margin-bottom: 96px; }
@@ -471,30 +520,6 @@ body.home-hero .site-header .wordmark { text-shadow: 0 1px 10px rgba(250, 247, 2
   font-variant-numeric: tabular-nums; text-align: left;
 }
 .facts .lbl { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
-
-/* Kartu kota: foto besar, nama serif, pemenang, aksi. Semua kartu setara:
-   rasio gambar 16:10 yang sama, grid stretch, tombol didorong ke bawah. */
-.city-cards {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap);
-  margin: 0 0 32px; padding: 0; list-style: none; align-items: stretch;
-}
-.city-cards > li {
-  border: 1px solid var(--line); overflow: hidden;
-  background: var(--surface); display: flex; flex-direction: column; height: 100%;
-  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.city-cards > li:hover { transform: translateY(-2px); }
-.city-cards img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--field); }
-.city-card-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.city-card-head { display: flex; align-items: center; gap: 12px; }
-.city-card-head h3 { margin: 0; font-size: 28px; }
-.city-card-head h3 a { color: var(--ink); text-decoration: none; }
-.city-card-head h3 a:hover { color: var(--accent); }
-.city-card-head .city-count { margin-left: auto; color: var(--muted); font-size: 14px; white-space: nowrap; }
-.city-winner { margin: 0; color: var(--muted); font-size: 15px; max-width: none; }
-.city-winner strong { color: var(--ink); }
-.city-card-body .city-actions { margin-top: auto; padding-top: 10px; }
 
 /* Daftar kota lama (dipakai bila ada): baris rapat. */
 .city-list { list-style: none; margin: 0 0 32px; padding: 0; border: 1px solid var(--line); overflow: hidden; background: var(--surface); }
@@ -851,9 +876,9 @@ input, select, textarea { border-radius: var(--radius); }
 /* Efek 3D (v4 r2): tilt halus saat hover, hanya di perangkat ber-pointer
    dan bila motion diizinkan. Di HP tanpa hover tidak ada efek, kartu diam. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .city-cards { perspective: 1200px; }
-  .city-cards > li { transform-style: preserve-3d; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .city-cards > li:hover { transform: translateY(-4px) rotateX(3deg) rotateY(-3deg); }
+  .winner-cards { perspective: 1200px; }
+  .winner-cards > li { transform-style: preserve-3d; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .winner-cards > li:hover { transform: translateY(-4px) rotateX(3deg) rotateY(-3deg); }
   .wordmark { perspective: 600px; }
   .wordmark .logo-mark { transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
   .wordmark:hover .logo-mark { transform: rotateY(18deg) scale(1.06); }
@@ -865,10 +890,11 @@ input, select, textarea { border-radius: var(--radius); }
    1,08 terlalu rapat sehingga descender huruf "g" pada "dengan" dan
    "angka" terpotong. padding-bottom 0,16em memberi ruang descender,
    margin-bottom negatif menjaga jarak antarbaris tetap sama. */
-.hero h1 .line, .hero-pomaii h1 .line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
+.hero h1 .line, .hero-dark h1 .line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero h1 .line > span, .hero-pomaii h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .hero h1 .line:nth-child(2) > span, .hero-pomaii h1 .line:nth-child(2) > span { animation-delay: 90ms; }
+  .hero h1 .line > span, .hero-dark h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero h1 .line:nth-child(2) > span, .hero-dark h1 .line:nth-child(2) > span { animation-delay: 90ms; }
+  .hero-dark h1 .line:nth-child(3) > span { animation-delay: 180ms; }
   @keyframes lineRise { from { opacity: 0; transform: translateY(110%); } to { opacity: 1; transform: translateY(0); } }
 }
 
@@ -958,17 +984,16 @@ input, select, textarea { border-radius: var(--radius); }
   .compare { grid-template-columns: 1fr; }
   .admin-actions { grid-template-columns: 1fr; }
   .kv { grid-template-columns: 1fr; }
-  .city-cards { grid-template-columns: 1fr; }
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .photo-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero img { aspect-ratio: 16 / 9; }
   .hero-banner img { aspect-ratio: 16 / 7; }
   .philosophy { padding: 48px 28px; }
-  /* Gaya Pomaii di tablet: trust strip 2 kolom, banner Lab satu kolom. */
-  .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Tablet: banner Lab satu kolom, kartu kriteria 2 kolom. */
   .lab-banner { grid-template-columns: 1fr; }
   .lab-banner img { min-height: 0; aspect-ratio: 16 / 9; }
+  .criteria-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   section { margin-bottom: 64px; }
   .mission { margin-bottom: 64px; }
   .philosophy { margin-bottom: 64px; }
@@ -1083,41 +1108,32 @@ input, select, textarea { border-radius: var(--radius); }
   .steps { grid-template-columns: 1fr; }
   .pillars { grid-template-columns: 1fr; }
   .photo-strip { grid-template-columns: 1fr 1fr; }
-  /* Gaya Pomaii di HP: hero tetap foto dengan teks di atasnya, filter
-     bar menumpuk vertikal, trust strip 2 kolom, stories dan banner Lab
-     satu kolom. */
-  .hero-pomaii, .hero-pomaii-body { min-height: 100vh; min-height: 100svh; }
-  .hero-pomaii { margin-top: -28px; }
-  /* Panel mulai dari atas (ADR-008): justify-content flex-start supaya
-     panel tidak terdorong ke tengah dan filter bar tetap muat dalam
-     satu viewport 844px. Padding atas 88px memberi ruang untuk pil
-     header yang mengambang di atas foto. */
-  .hero-pomaii-body { padding: 88px 20px 24px; justify-content: flex-start; }
-  .hero-pomaii-panel { padding: 24px 20px; border-radius: 20px; }
-  .hero-pomaii-body h1 { font-size: clamp(32px, 9vw, 44px); }
-  .hero-pomaii-body .hero-sub { font-size: 16px; }
-  .hero-pomaii-body .hero-cta .btn { width: 100%; text-align: center; }
-  /* Kartu pemenang di HP (ADR-008): versi ringkas supaya panel + kartu
-     + filter bar muat dalam satu viewport 844px. Catatan disembunyikan,
-     baris lebih rapat, dua kolom tetap satu baris per kota. */
-  .hero-winners { padding: 16px 20px; border-radius: 20px; }
-  .hero-winners-note { display: none; }
-  .hero-winners li a { padding: 6px 0; }
-  /* Filter bar di HP (ADR-008): dua kolom berdampingan + tombol penuh,
-     tumpangan -170px dan padding lebih ramping supaya seluruh bar
-     terlihat dalam satu viewport 844px saat landing. */
-  .filter-bar { margin: -170px 0 0; padding: 12px 16px; border-radius: 20px; flex-direction: row; flex-wrap: wrap; gap: 12px; }
+  /* Hero gelap di HP (ADR-009): panel kota jadi baris thumb + teks,
+     filter bar dalam alur normal (tanpa tumpangan negatif), kartu
+     pemenang dan kriteria satu kolom. */
+  .hero-dark { margin-top: -28px; }
+  .hero-dark-inner { padding: 88px 20px 48px; }
+  .hero-dark h1 { font-size: clamp(32px, 9vw, 44px); }
+  .hero-dark .hero-sub { font-size: 16px; }
+  .hero-dark .hero-cta .btn { width: 100%; text-align: center; }
+  .hero-city-panels { grid-template-columns: 1fr; gap: 10px; }
+  .hero-city-panels a { flex-direction: row; align-items: center; }
+  .hero-city-panels img { width: 96px; height: 72px; aspect-ratio: auto; flex: none; }
+  .hero-panel-text { padding: 10px 12px; }
+  .hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .filter-bar { margin: 24px 0 56px; padding: 12px 16px; border-radius: 20px; flex-direction: row; flex-wrap: wrap; gap: 12px; }
   .filter-bar .field { flex: 1 1 130px; }
   .filter-bar .filter-submit { flex: 1 1 100%; }
   .filter-bar .filter-submit button { width: 100%; min-height: 48px; padding: 12px 26px; }
-  .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 24px 0; }
-  .stories { grid-template-columns: 1fr; }
+  .winner-cards { grid-template-columns: 1fr; }
+  .winner-split { grid-template-columns: 1fr; }
+  .winner-split > div + div { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 12px; }
+  .criteria-cards { grid-template-columns: 1fr; }
   .lab-banner { grid-template-columns: 1fr; }
   .lab-banner img { min-height: 0; aspect-ratio: 16 / 9; }
   .lab-banner-body { padding: 28px 22px; }
-  .criteria-pills { justify-content: flex-start; }
+  .cta-final { padding: 36px 20px; }
   .hide-sm { display: none; }
-  .city-card-body { padding: 18px; }
   .philosophy { padding: 36px 20px; }
   section { margin-bottom: 56px; }
   .mission { margin-bottom: 56px; }

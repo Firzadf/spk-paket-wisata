@@ -89,7 +89,11 @@ def city_meta(nama_kota):
 
 
 def city_winners(nama_kota):
-    """Pemenang SAW/TOPSIS per kota, dipakai kartu kota di beranda."""
+    """Pemenang SAW/TOPSIS per kota, dipakai kartu kota di beranda.
+
+    Selain nomor dan nilai, dikembalikan juga id, nama tampil, dan
+    jumlah tempat unik pemenang, supaya kartu pemenang di beranda bisa
+    menautkan ke halaman paket tanpa menebak nama (ADR-009)."""
     data = compute_city(nama_kota)
     if data is None:
         return None
@@ -98,8 +102,14 @@ def city_winners(nama_kota):
     return {
         "saw_paket": saw_top["nomor_paket"],
         "saw_vi": data["saw"]["values"][data["saw"]["order"][0]],
+        "saw_id": saw_top["id"],
+        "saw_nama": saw_top["nama_tampil"],
+        "saw_tempat": len(saw_top["tempat"]),
         "topsis_paket": topsis_top["nomor_paket"],
         "topsis_ci": data["topsis"]["values"][data["topsis"]["order"][0]],
+        "topsis_id": topsis_top["id"],
+        "topsis_nama": topsis_top["nama_tampil"],
+        "topsis_tempat": len(topsis_top["tempat"]),
     }
 
 
