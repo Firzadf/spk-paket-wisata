@@ -37,10 +37,13 @@ class V41HtmlTest(TripRankTestCase):
         for kelas in ("btn-gold", "btn-leaf", "btn-sand", "btn-dark"):
             self.assertNotIn(kelas, html, kelas)
 
-    def test_home_tetap_punya_bg_3d_dan_typewriter(self):
+    def test_home_tetap_punya_bg_3d_tanpa_typewriter(self):
+        # Redesign Pomaii (24 Nov 2026): typewriter dihapus, bg-3d tetap
+        # ada di Filosofi dan di CSS. Test lama yang mengharuskan
+        # data-typewriter sudah diganti, bukan dihapus diam-diam.
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("bg-3d", html)
-        self.assertIn("data-typewriter", html)
+        self.assertNotIn("data-typewriter", html)
 
     def test_rekomendasi_page_head_rata_tengah(self):
         html = self.client.get(

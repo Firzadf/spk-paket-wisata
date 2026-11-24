@@ -1,43 +1,30 @@
-/* TripRank — v4 (gaya Serein: mewah, serif, tenang, di atas v3).
-   Nama produk: TripRank. Judul akademik lengkap tetap tercantum di
-   Tentang dan footer. Bukan situs booking, bukan perusahaan travel.
-   Token dulu: semua warna dan font lewat :root. Tidak ada warna atau
-   font-family literal di luar blok token.
+/* TripRank — gaya Pomaii (24 Nov 2026, atas permintaan user, referensi
+   landing travel Pomaii): hero foto full-bleed, filter bar mengambang,
+   trust strip, kartu kota berfoto, pill kriteria, banner Lab.
+   Diambil STRUKTUR dan presisinya, BUKAN isinya: tanpa rating bintang,
+   tanpa harga, tanpa testimoni, tanpa klaim jumlah traveler. Hanya angka
+   nyata (5 kota, 100 paket, 298 tempat, 403 relasi).
+   Gambar: 5 foto landmark kota tetap foto asli Wikimedia (digrading
+   konsisten dengan PIL), kredit Wikimedia tetap dicantumkan. Hero
+   memakai Monas hasil generate AI (detailnya dicek benar: tugu,
+   api emas, cawan, dan dek observasi), begitu juga gambar traveler
+   dan danau. Aturan final user (24 Nov 2026 09:32 WIB): generate AI
+   boleh dipakai untuk gambar apa pun, label "Ilustrasi AI" tidak
+   diperlukan di mana pun; yang wajib hanya kredit fotografer
+   Wikimedia untuk foto asli yang dipakai (syarat lisensi CC).
+   Token dulu: semua warna dan font lewat :root.
    Penyimpangan design.md yang disengaja, dicatat:
-   - Serif editorial Georgia sebagai display: instruksi tugas v4 meminta
-     arah Serein (serif besar, tenang). Body dan tabel tetap sans.
-   - Ground krem gading hangat + ink hijau gelap: palet Serein, bukan
-     krem-kuning + terracotta yang dilarang design.md; aksen hijau tua.
-   - Jarak antar section 96px desktop (Serein: spasi lega), bukan 40px v3.
-   - Sudut persegi (radius 0) diputuskan sekali untuk seluruh situs v4,
-     menggantikan radius 8px v2/v3.
-   - Radius 6px (perbaikan mobile v4 r2, atas pilihan user): sudut
-     dilembutkan jadi 6px di semua elemen UI, tetap elegan, bukan pill.
-   - Tipografi 6 peran (v4 r2, atas permintaan user): Fraunces untuk
-     headline hero, Playfair Display untuk judul section, Space Grotesk
-     untuk body, Sora untuk tombol/label/nav, IBM Plex Mono untuk angka
-     (Vi/Ci, ranking, statistik), DM Serif Display untuk wordmark dan
-     kalimat brand. Bukan font sistem basic sebagai font utama;
-     Georgia/sans sistem hanya fallback bila font web gagal dimuat.
-   - Header gelap hijau tua + footer 3 kolom (v4 r2, atas permintaan user).
-   - Tombol 3D (23 Nov 2026, atas permintaan user): semua tombol punya
-     bayangan offset bawah yang tegas (efek tombol fisik yang bisa
-     ditekan), naik saat hover, turun saat ditekan. Ini penyimpangan
-     yang disengaja dari larangan shadow di design.md, atas perintah
-     user yang eksplisit ("Button button ini juga bisa ga dibuat 3d
-     aja" / "Keknya bakal lebih bagus ga sih").
-   - Scrim netral di atas foto hero: satu-satunya pengecualian gradien yang
-     diizinkan design.md, dipakai hanya di atas foto agar teks terbaca.
-   - Warna tombol dan gradient (23 Nov 2026, atas permintaan user)
-     sempat dipakai: tombol emas, hijau daun, pasir, dan gradient di
-     tombol, hero, Filosofi, footer, dan latar.
-   - Polish v4.1 (24 Nov 2026, atas permintaan user: warna tombol dan
-     font norak, tampilan tombol norak): SEMUA gradient dan warna emas
-     dihapus; tombol hanya dua (primer hijau gelap datar, sekunder krem
-     datar ber-border ink), bayangan offset 3D diganti bayangan lembut
-     saat hover. Animasi 3D dan transisi yang disukai user tetap ada:
-     bg-3d melayang, loading screen, typewriter, transisi 3D halaman,
-     scroll reveal 3D, tilt kartu. */
+   - Font 2 keluarga (Fraunces display + Space Grotesk untuk semua
+     sisanya, termasuk angka dengan tabular-nums).
+   - Tombol CTA berbentuk pil (fully rounded); CTA primer oranye hangat
+     #c2410c (kontras 5,18:1 dengan teks putih, lolos AA), dipakai HANYA
+     untuk CTA primer; tombol lain tetap hijau gelap datar.
+   - Kartu radius 18px dengan bayangan lembut, hover naik.
+   - Scrim terang datar di atas foto hero (bukan gradient) supaya teks
+     gelap terbaca di atas foto yang terang.
+   - Animasi 3D dan transisi yang disukai user tetap ada: bg-3d melayang
+     di Filosofi, loading screen, transisi 3D halaman, scroll reveal 3D,
+     tilt kartu. Typewriter DIHAPUS (atas perintah redesign ini). */
 :root {
   --ground: #faf7f1;
   --surface: #fffdf9;
@@ -56,12 +43,16 @@
   --danger: #9c2b1e;
   --danger-field: #fbeae6;
   --ok-field: #e7efe9;
+  --cta: #c2410c;
+  --cta-deep: #9a3412;
+  --radius-card: 18px;
+  --shadow-card: 0 10px 28px rgba(20, 38, 31, 0.10), 0 2px 8px rgba(20, 38, 31, 0.06);
   --display: "Fraunces", Georgia, "Times New Roman", Times, serif;
-  --serif: "Playfair Display", Georgia, "Times New Roman", Times, serif;
+  --serif: "Fraunces", Georgia, "Times New Roman", Times, serif;
   --sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --sans-alt: "Sora", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --brand: "DM Serif Display", Georgia, "Times New Roman", Times, serif;
+  --sans-alt: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --brand: "Fraunces", Georgia, "Times New Roman", Times, serif;
   --measure: 1120px;
   --measure-wide: 1240px;
   --gap: 24px;
@@ -201,7 +192,6 @@ img { max-width: 100%; display: block; height: auto; }
 .hero .hero-body { text-align: center; }
 .hero .hero-body h1 { margin-left: auto; margin-right: auto; }
 .hero .hero-body p { margin-left: auto; margin-right: auto; }
-.hero .hero-body .typewriter { margin-left: auto; margin-right: auto; }
 .hero-banner .hero-body { text-align: center; }
 .hero-banner .hero-body h1, .hero-banner .hero-body p { margin-left: auto; margin-right: auto; }
 .mission { text-align: center; }
@@ -250,6 +240,130 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .hero-banner .hero-body p { color: var(--surface); opacity: 0.94; margin: 0; font-size: 18px; }
 .photo-credit { font-size: 13px; color: var(--muted); margin: 10px 0 0; max-width: none; }
 .photo-credit a { color: var(--muted); }
+
+/* --- Gaya Pomaii (24 Nov 2026) --- */
+
+/* Hero full-bleed: keluar dari container main sampai tepi viewport,
+   foto terang siang hari, teks gelap rata kiri di atas foto. Overlay
+   terang DATAR (bukan gradient) supaya teks terbaca tanpa menggelapkan
+   foto seperti scrim lama. Tanpa typewriter, tanpa bg-3d di atas foto. */
+.hero-pomaii {
+  position: relative; overflow: hidden;
+  min-height: 620px; margin: -40px calc(50% - 50vw) 0;
+  background: var(--field);
+}
+.hero-pomaii img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 42%;
+}
+.hero-pomaii::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: rgba(250, 247, 241, 0.55);
+}
+.hero-pomaii-body {
+  position: relative; z-index: 2;
+  max-width: var(--measure-wide); margin: 0 auto; padding: 96px 24px 120px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  text-align: left; min-height: 620px; justify-content: center;
+}
+.hero-pomaii-body .hero-eyebrow {
+  font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 14px;
+}
+.hero-pomaii-body h1 {
+  color: var(--ink); margin: 0 0 16px; max-width: 640px;
+  font-size: clamp(44px, 6.4vw, 76px);
+}
+.hero-pomaii-body .hero-sub {
+  color: var(--ink-soft); font-size: 19px; max-width: 560px;
+  margin: 0 0 28px; text-wrap: balance;
+}
+.hero-pomaii-body .hero-sub strong { color: var(--ink); }
+.hero-pomaii-body .hero-cta { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-pomaii-body .hero-cta .btn { padding: 14px 26px; min-height: 52px; }
+
+/* Filter bar mengambang: kartu putih menumpuk di bawah hero, form GET
+   nyata ke /rekomendasi, jalan tanpa JavaScript. */
+.filter-bar {
+  position: relative; z-index: 3; max-width: 880px;
+  margin: -56px auto 0; padding: 20px 24px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 24px; box-shadow: var(--shadow-card);
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: end;
+}
+.filter-bar .field { flex: 1 1 200px; margin: 0; }
+.filter-bar label { display: block; font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+.filter-bar select { width: 100%; }
+.filter-bar .filter-submit { margin: 0; flex: none; }
+.filter-bar .filter-submit button { min-height: 52px; padding: 14px 26px; }
+
+/* Trust strip: 4 item jujur dengan ikon garis, tanpa klaim yang dikarang. */
+.trust-strip {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;
+  margin: 56px 0 0; padding: 28px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.trust-item { display: flex; gap: 14px; align-items: flex-start; }
+.trust-item .icon {
+  width: 44px; height: 44px; padding: 10px; flex: none;
+  color: var(--accent); background: var(--accent-soft);
+  border: 1px solid var(--line); border-radius: 50%;
+}
+.trust-item strong { display: block; font-size: 16px; margin-bottom: 2px; }
+.trust-item span { display: block; color: var(--muted); font-size: 14px; line-height: 1.45; }
+
+/* Pill kriteria: 5 pill ke /cara-kerja, ikon + nama + bobot + tipe. */
+.criteria-pills {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  margin: 0; padding: 0; list-style: none;
+}
+.criteria-pills li { margin: 0; }
+.criteria-pills a {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--line-strong);
+  border-radius: 999px; padding: 10px 18px 10px 12px;
+  text-decoration: none; color: var(--ink);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms;
+}
+.criteria-pills a:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); border-color: var(--accent); color: var(--ink); }
+.criteria-pills a strong { font-size: 15px; font-weight: 700; }
+.criteria-pills .pill-weight { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+/* Stories: dua kartu gambar, masing-masing satu ajakan jujur. */
+.stories {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap);
+  margin: 0 0 32px;
+}
+.story-card {
+  margin: 0; border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card);
+  display: flex; flex-direction: column; height: 100%;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.story-card:hover { transform: translateY(-4px); }
+.story-card img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; background: var(--field); }
+.story-card figcaption { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; align-items: flex-start; }
+.story-card figcaption strong { font-family: var(--serif); font-size: 22px; font-weight: 400; }
+.story-card figcaption span:not(.illustration-tag) { color: var(--muted); font-size: 15px; }
+.story-card figcaption .btn { margin-top: auto; }
+
+/* Banner Lab: panel hijau gelap + foto danau, teks dan CTA di kanan. */
+.lab-banner {
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 0;
+  background: var(--accent-deep); color: var(--accent-ink);
+  border-radius: var(--radius-card); overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.lab-banner img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+.lab-banner-body { padding: 48px 44px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+.lab-banner-label {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent-ink); opacity: 0.75; margin: 0 0 12px;
+}
+.lab-banner-body h2 { color: var(--accent-ink); margin: 0 0 12px; }
+.lab-banner-body p { color: var(--accent-ink); opacity: 0.92; margin: 0 0 20px; }
+.lab-banner-body .photo-credit { color: var(--accent-ink); opacity: 0.65; margin: 16px 0 0; }
+.lab-banner-body .photo-credit a { color: var(--accent-ink); }
 
 /* Misi: pernyataan serif besar, satu momen tenang di tengah halaman. */
 .mission { max-width: 880px; margin-bottom: 96px; }
@@ -318,6 +432,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .city-cards > li {
   border: 1px solid var(--line); overflow: hidden;
   background: var(--surface); display: flex; flex-direction: column; height: 100%;
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .city-cards > li:hover { transform: translateY(-2px); }
@@ -352,12 +467,12 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
   margin: 0 0 8px; padding: 0; list-style: none;
 }
-.steps li { border: 1px solid var(--line); background: var(--surface); padding: 22px; }
+.steps li { border: 1px solid var(--line); background: var(--surface); padding: 22px; border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
 .steps .step-no {
   display: block; font-family: var(--mono); font-size: 28px; font-weight: 600;
   color: var(--accent); line-height: 1; margin-bottom: 10px;
 }
-.steps strong { display: block; margin-bottom: 4px; font-family: var(--serif); font-size: 19px; font-weight: 400; }
+.steps strong { display: block; margin-bottom: 4px; font-family: var(--serif); font-size: 19px; font-weight: 400; min-height: 2.4em; }
 .steps p { margin: 0; color: var(--muted); font-size: 15px; max-width: none; }
 
 /* Section: spasi lega ala Serein di desktop. */
@@ -380,7 +495,7 @@ section > h2 { padding-top: 0; }
   background: var(--accent); color: var(--accent-ink); border: 0;
   padding: 12px 22px; font-family: var(--sans-alt); font-weight: 700; cursor: pointer;
   text-decoration: none; display: inline-block; min-height: 48px;
-  font-size: 16px; white-space: nowrap;
+  font-size: 16px; white-space: nowrap; border-radius: 999px;
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn:hover, button:hover { background: var(--accent-deep); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(20, 38, 31, 0.18); }
@@ -396,12 +511,23 @@ section > h2 { padding-top: 0; }
 .btn[aria-pressed="true"]:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(20, 38, 31, 0.18); }
 .btn-sm { padding: 10px 16px; min-height: 44px; font-size: 14px; }
 
+/* CTA primer oranye hangat (gaya Pomaii): HANYA untuk ajakan utama
+   (hero dan banner Lab). Kontras 5,18:1 dengan teks putih, lolos AA.
+   Tombol lain tetap hijau gelap datar. */
+.btn-cta {
+  background: var(--cta); color: #fffdf9; border: 0;
+}
+.btn-cta:hover { background: var(--cta-deep); color: #fffdf9; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(154, 52, 18, 0.30); }
+.btn-cta:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(154, 52, 18, 0.30); }
+/* Tombol sekunder berbentuk pil (mis. "Coba Lab Simulasi" di hero). */
+.btn-pill { border-radius: 999px; }
+
 
 /* Chip paket di tabel ranking: persegi hijau muda, satu baris, bisa diklik. */
 .chip {
   display: inline-block; white-space: nowrap; text-decoration: none;
   background: var(--accent-soft); color: var(--accent-deep);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--accent); border-radius: 999px;
   padding: 6px 14px; min-height: 36px; line-height: 1.4; font-weight: 700; font-size: 14px;
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -614,10 +740,11 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* Radius 6px (v4 r2, pilihan user): lembut dan konsisten di semua elemen
-   UI, bukan pill. Logo mark TripRank tidak diubah bentuknya. */
-.btn, .btn-quiet, .btn-sm, .chip, .header-action,
-.hero, .hero-banner, .philosophy, .city-cards > li, .city-list,
+/* Radius 6px: lembut dan konsisten di elemen UI kecil. Tombol (.btn,
+   .btn-quiet, .btn-sm, .header-action) dan chip berbentuk pil penuh
+   (gaya Pomaii), jadi tidak ada di daftar ini. Logo mark TripRank
+   tidak diubah bentuknya. */
+.hero, .hero-banner, .philosophy, .city-list,
 .steps li, .compare .panel, .toolbar, .login-box,
 .admin-actions a, .kv div, .pagination .page-btn,
 details, .error, .success, .illustration-strip figure {
@@ -665,28 +792,13 @@ input, select, textarea { border-radius: var(--radius); }
 
 /* Hero headline reveal per baris (v4 r2): line-level, bukan per karakter,
    supaya screen reader dan copy-paste tetap benar. */
-.hero h1 .line { display: block; overflow: hidden; perspective: 800px; }
+.hero h1 .line, .hero-pomaii h1 .line { display: block; overflow: hidden; perspective: 800px; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .hero h1 .line:nth-child(2) > span { animation-delay: 90ms; }
+  .hero h1 .line > span, .hero-pomaii h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero h1 .line:nth-child(2) > span, .hero-pomaii h1 .line:nth-child(2) > span { animation-delay: 90ms; }
   @keyframes lineRise { from { opacity: 0; transform: translateY(110%) rotateX(8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
 }
 
-
-/* Typewriter hero (v4 r2): hanya satu kalimat kunci di hero beranda.
-   Teks lengkap ada di HTML, jadi tanpa JS tetap tampil penuh. */
-/* Typewriter: tinggi dicadangkan 2 baris penuh supaya layout tidak
-   lompat saat mengetik dan teks tidak terpotong di tengah kata. */
-.typewriter { min-height: 3.2em; }
-.typewriter .cursor {
-  display: inline-block; width: 2px; height: 1.1em; margin-left: 3px;
-  background: currentColor; vertical-align: -2px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .typewriter .cursor { animation: blink 1s steps(1) infinite; }
-  .typewriter .cursor.done { animation: none; opacity: 0; transition: opacity 400ms; }
-  @keyframes blink { 50% { opacity: 0; } }
-}
 
 /* Loading screen (v4 r2): lapisan yang dibuat JavaScript saja, jadi tanpa
    JS tidak ada yang menutupi halaman. Sekali tampil ~900ms lalu fade. */
@@ -781,6 +893,10 @@ input, select, textarea { border-radius: var(--radius); }
   .hero img { aspect-ratio: 16 / 9; }
   .hero-banner img { aspect-ratio: 16 / 7; }
   .philosophy { padding: 48px 28px; }
+  /* Gaya Pomaii di tablet: trust strip 2 kolom, banner Lab satu kolom. */
+  .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lab-banner { grid-template-columns: 1fr; }
+  .lab-banner img { min-height: 0; aspect-ratio: 16 / 9; }
   section { margin-bottom: 64px; }
   .mission { margin-bottom: 64px; }
   .philosophy { margin-bottom: 64px; }
@@ -858,7 +974,6 @@ input, select, textarea { border-radius: var(--radius); }
   .site-footer .footer-col h3 { white-space: nowrap; }
   .site-footer .footer-col li a { white-space: nowrap; }
   .site-footer .footer-col p { max-width: none; }
-  .typewriter { min-height: 4.8em; }
   .mascot img { width: 180px; }
   .logo-3d img { width: 160px; }
   table { min-width: 560px; }
@@ -891,6 +1006,24 @@ input, select, textarea { border-radius: var(--radius); }
   .steps { grid-template-columns: 1fr; }
   .pillars { grid-template-columns: 1fr; }
   .photo-strip { grid-template-columns: 1fr 1fr; }
+  /* Gaya Pomaii di HP: hero tetap foto dengan teks di atasnya, filter
+     bar menumpuk vertikal, trust strip 2 kolom, stories dan banner Lab
+     satu kolom. */
+  .hero-pomaii, .hero-pomaii-body { min-height: 560px; }
+  .hero-pomaii { margin-top: -28px; }
+  .hero-pomaii-body { padding: 72px 20px 96px; }
+  .hero-pomaii-body h1 { font-size: clamp(36px, 10vw, 44px); }
+  .hero-pomaii-body .hero-sub { font-size: 17px; }
+  .hero-pomaii-body .hero-cta .btn { width: 100%; text-align: center; }
+  .filter-bar { margin: -48px 0 0; padding: 16px; border-radius: 20px; flex-direction: column; align-items: stretch; }
+  .filter-bar .field { flex: none; }
+  .filter-bar .filter-submit button { width: 100%; }
+  .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 24px 0; }
+  .stories { grid-template-columns: 1fr; }
+  .lab-banner { grid-template-columns: 1fr; }
+  .lab-banner img { min-height: 0; aspect-ratio: 16 / 9; }
+  .lab-banner-body { padding: 28px 22px; }
+  .criteria-pills { justify-content: flex-start; }
   .hide-sm { display: none; }
   .city-card-body { padding: 18px; }
   .philosophy { padding: 36px 20px; }

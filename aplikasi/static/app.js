@@ -97,9 +97,10 @@
   updateTotal();
 })();
 
-/* Loading screen, typewriter hero, dan scroll reveal berarah (v4 r2).
-   Semua ini lapisan di atas konten: tanpa JavaScript, konten tetap
-   tampil penuh; dengan prefers-reduced-motion, semuanya dimatikan. */
+/* Loading screen dan scroll reveal berarah (v4 r2). Typewriter DIHAPUS
+   pada redesign Pomaii (24 Nov 2026). Semua ini lapisan di atas konten:
+   tanpa JavaScript, konten tetap tampil penuh; dengan
+   prefers-reduced-motion, semuanya dimatikan. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -170,10 +171,11 @@
     });
   }
 
-  /* --- Parallax mouse untuk background 3D: bentuk di hero dan Filosofi
-     bergeser pelan mengikuti kursor. Hanya di perangkat ber-pointer. --- */
+  /* --- Parallax mouse untuk background 3D: bentuk di Filosofi bergeser
+     pelan mengikuti kursor. Hanya di perangkat ber-pointer. (Hero tidak
+     lagi memakai bg-3d sejak redesign Pomaii.) --- */
   if (!reduced && window.matchMedia("(hover: hover)").matches) {
-    document.querySelectorAll(".hero, .philosophy").forEach(function (section) {
+    document.querySelectorAll(".philosophy").forEach(function (section) {
       section.addEventListener("mousemove", function (e) {
         var r = section.getBoundingClientRect();
         if (!r.width || !r.height) return;
@@ -187,29 +189,6 @@
         section.style.setProperty("--my", 0);
       });
     });
-  }
-
-  /* --- Typewriter hero: satu kalimat kunci, teks lengkap tetap di HTML. --- */
-  var tw = document.querySelector("[data-typewriter]");
-  if (tw && !reduced) {
-    var full = tw.textContent.trim();
-    tw.textContent = "";
-    var cursor = document.createElement("span");
-    cursor.className = "cursor";
-    cursor.setAttribute("aria-hidden", "true");
-    tw.appendChild(cursor);
-    var i = 0;
-    function typeNext() {
-      if (i < full.length) {
-        cursor.insertAdjacentText("beforebegin", full.charAt(i));
-        i += 1;
-        setTimeout(typeNext, 50);
-      } else {
-        cursor.classList.add("done");
-        setTimeout(function () { if (cursor.parentNode) cursor.parentNode.removeChild(cursor); }, 500);
-      }
-    }
-    setTimeout(typeNext, 1100);
   }
 
   /* --- Scroll reveal berarah: IntersectionObserver, stagger per grup. --- */
