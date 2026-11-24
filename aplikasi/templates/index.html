@@ -3,11 +3,12 @@
 {% block content %}
 <section class="hero" aria-labelledby="judul-hero">
   <img src="{{ url_for('static', filename='images/jakarta.jpg') }}" width="1280" height="800" fetchpriority="high" style="object-position: 50% 42%" alt="Monumen Nasional (Monas) di Jakarta">
+  <div class="bg-3d" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
   <div class="hero-body">
-    <h1 id="judul-hero">Dipilih dengan tenang.<br>Dibuktikan dengan angka.</h1>
+    <h1 id="judul-hero"><span class="line"><span>Dipilih dengan tenang.</span></span><span class="line"><span>Dibuktikan dengan angka.</span></span></h1>
     <p>TripRank merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
-    <p>TripRank menimbang harga, fasilitas, akses, popularitas, dan jumlah destinasi. Lalu menunjukkan paket terbaiknya.</p>
-    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-quiet" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
+    <p class="typewriter" data-typewriter>TripRank menimbang harga, fasilitas, akses, popularitas, dan jumlah destinasi. Lalu menunjukkan paket terbaiknya.</p>
+    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-gold" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
   </div>
 </section>
 <p class="photo-credit">Foto hero: {{ city_meta['Jakarta'].subject }}, foto oleh {{ city_meta['Jakarta'].photographer }} ({{ city_meta['Jakarta'].license }}), via <a href="{{ city_meta['Jakarta'].commons_url }}">Wikimedia Commons</a>.</p>
@@ -17,6 +18,7 @@
   <div><span class="num">298</span><span class="lbl">tempat wisata</span></div>
   <div><span class="num">403</span><span class="lbl">relasi paket dan tempat</span></div>
 </div>
+<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Jakarta &bull; Yogyakarta &bull; Bandung &bull; Semarang &bull; Surabaya &bull;&nbsp;</span><span>Jakarta &bull; Yogyakarta &bull; Bandung &bull; Semarang &bull; Surabaya &bull;&nbsp;</span></div></div>
 <section class="mission" aria-labelledby="misi">
   <p class="mission-label">Misi kami</p>
   <h2 id="misi" class="visually-hidden">Misi kami</h2>
@@ -24,6 +26,7 @@
   <p>TripRank dibuat untuk membantu memilih paket wisata, bukan menjual paket. Tujuannya satu: siapa pun bisa melihat kenapa satu paket menang dan paket lain kalah, tanpa harus percaya begitu saja.</p>
 </section>
 <section class="philosophy" aria-labelledby="filosofi">
+  <div class="bg-3d" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
   <p class="philosophy-label">Filosofi kami</p>
   <h2 id="filosofi" class="visually-hidden">Filosofi kami</h2>
   <p class="statement" data-reveal="up">Rekomendasi yang baik harus jelas, bisa diperiksa, dan jujur soal datanya.</p>
@@ -32,10 +35,10 @@
 <section aria-labelledby="janji">
   <h2 id="janji" data-reveal="up">Janji kami</h2>
   <ol class="pillars">
-    <li data-reveal="up"><h3>Dipahami</h3><p>Setiap paket dinilai dari lima hal yang memang dipertimbangkan saat memilih perjalanan: harga, fasilitas, akses, popularitas, dan jumlah destinasi.</p></li>
-    <li data-reveal="up"><h3>Dipercaya</h3><p>Tidak ada angka yang disembunyikan. Bobot tiap kriteria tertulis, dan sumber data serta foto dicantumkan dengan jelas.</p></li>
-    <li data-reveal="up"><h3>Diperiksa</h3><p>Matriks keputusan, normalisasi, dan solusi ideal dibuka di halaman rekomendasi. Periksa sendiri sebelum percaya.</p></li>
-    <li data-reveal="up"><h3>Terbukti</h3><p>Ranking TripRank dihitung ulang dari data yang sama dan hasilnya sama setiap kali. Di Jakarta kedua metode memilih pemenang yang berbeda, dan perbedaan itu dijelaskan, bukan ditutupi.</p></li>
+    <li data-reveal="left"><h3>Dipahami</h3><p>Setiap paket dinilai dari lima hal yang memang dipertimbangkan saat memilih perjalanan: harga, fasilitas, akses, popularitas, dan jumlah destinasi.</p></li>
+    <li data-reveal="right"><h3>Dipercaya</h3><p>Tidak ada angka yang disembunyikan. Bobot tiap kriteria tertulis, dan sumber data serta foto dicantumkan dengan jelas.</p></li>
+    <li data-reveal="left"><h3>Diperiksa</h3><p>Matriks keputusan, normalisasi, dan solusi ideal dibuka di halaman rekomendasi. Periksa sendiri sebelum percaya.</p></li>
+    <li data-reveal="right"><h3>Terbukti</h3><p>Ranking TripRank dihitung ulang dari data yang sama dan hasilnya sama setiap kali. Di Jakarta kedua metode memilih pemenang yang berbeda, dan perbedaan itu dijelaskan, bukan ditutupi.</p></li>
   </ol>
 </section>
 <section aria-labelledby="daftar-kota">
@@ -44,7 +47,7 @@
   {% for k in kota %}
     {% set m = city_meta[k.nama] %}
     {% set w = winners[k.nama] %}
-    <li data-reveal="up">
+    <li data-reveal="{{ 'left' if loop.index is odd else 'right' }}">
       <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" style="object-position: {{ m.position }}" alt="{{ m.subject }}">
       <div class="city-card-body">
         <div class="city-card-head">
@@ -55,7 +58,7 @@
         <p class="city-winner">Pemenang SAW: <strong>Paket {{ w.saw_paket }}</strong> (Vi {{ '%.4f'|format(w.saw_vi) }}). Pemenang TOPSIS: <strong>Paket {{ w.topsis_paket }}</strong> (Ci {{ '%.4f'|format(w.topsis_ci) }}).</p>
         <p class="photo-credit">Foto: {{ m.subject }}, {{ m.photographer }} ({{ m.license }}).</p>
         <span class="city-actions">
-          <a class="btn btn-quiet" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
+          <a class="btn btn-leaf" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
           <a class="btn" href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}">Rekomendasi SAW dan TOPSIS</a>
         </span>
       </div>
@@ -66,17 +69,18 @@
 <section aria-labelledby="cara-kerja-singkat">
   <h2 id="cara-kerja-singkat" data-reveal="up">Cara Kerja</h2>
   <ol class="steps">
-    <li data-reveal="up"><span class="step-no">1</span><strong>Pilih kota</strong><p>Lima kota besar, 20 paket per kota.</p></li>
-    <li data-reveal="up"><span class="step-no">2</span><strong>Lihat nilai kriteria</strong><p>C1 sampai C5 tiap paket, lengkap dengan tempatnya.</p></li>
-    <li data-reveal="up"><span class="step-no">3</span><strong>Bandingkan SAW dan TOPSIS</strong><p>Dua metode, dua sudut pandang yang sama-sama bisa diperiksa.</p></li>
-    <li data-reveal="up"><span class="step-no">4</span><strong>Periksa tahap hitungannya</strong><p>Matriks, normalisasi, dan solusi ideal dibuka semua.</p></li>
+    <li data-reveal="left"><span class="step-no">1</span><strong>Pilih kota</strong><p>Lima kota besar, 20 paket per kota.</p></li>
+    <li data-reveal="right"><span class="step-no">2</span><strong>Lihat nilai kriteria</strong><p>C1 sampai C5 tiap paket, lengkap dengan tempatnya.</p></li>
+    <li data-reveal="left"><span class="step-no">3</span><strong>Bandingkan SAW dan TOPSIS</strong><p>Dua metode, dua sudut pandang yang sama-sama bisa diperiksa.</p></li>
+    <li data-reveal="right"><span class="step-no">4</span><strong>Periksa tahap hitungannya</strong><p>Matriks, normalisasi, dan solusi ideal dibuka semua.</p></li>
   </ol>
-  <p><a class="btn" href="{{ url_for('cara_kerja') }}">Baca cara kerja lengkap</a></p>
+  <p><a class="btn btn-gold" href="{{ url_for('cara_kerja') }}">Baca cara kerja lengkap</a></p>
 </section>
 <section aria-labelledby="bukan-booking">
   <h2 id="bukan-booking" data-reveal="up">Bukan situs booking</h2>
   <p class="section-note" data-reveal="up">Ini proyek akhir kuliah. Tidak ada pemesanan, tidak ada pembayaran, dan tidak ada data pribadi yang diminta. Ranking dihitung dengan SAW dan TOPSIS, dan tahap hitungannya bisa dibuka.</p>
-  <p><a class="btn btn-quiet" href="{{ url_for('tentang') }}">Tentang kami</a> <a class="btn btn-quiet" href="{{ url_for('cara_kerja') }}">Cara kerja</a> <a class="btn" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+  <figure class="mascot"><img src="{{ url_for('static', filename='images/maskot-3d.png') }}" width="640" height="640" loading="lazy" alt="Maskot traveler TripRank, seorang traveler kecil bergaya 3D clay dengan ransel dan peta"><figcaption>Ilustrasi 3D: maskot traveler TripRank.</figcaption></figure>
+  <p><a class="btn btn-quiet" href="{{ url_for('tentang') }}">Tentang kami</a> <a class="btn btn-sand" href="{{ url_for('cara_kerja') }}">Cara kerja</a> <a class="btn btn-dark" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
 </section>
 <section aria-labelledby="kriteria-bobot">
   <h2 id="kriteria-bobot" data-reveal="up">Kriteria dan Bobot</h2>
@@ -87,7 +91,7 @@
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col">Tipe</th><th scope="col" class="num">Bobot</th></tr></thead>
     <tbody>
     {% for k in kriteria %}
-    <tr><th scope="row"><span class="criterion-icon"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span>{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
+    <tr><th scope="row"><span class="criterion-icon"><img class="icon-3d" src="{{ url_for('static', filename='images/icon-3d-' + k.kode|lower + '.webp') }}" width="28" height="28" loading="lazy" alt="" onerror="this.remove(); this.parentElement.classList.add('no-img')"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span>{{ k.kode }}</th><td>{{ k.nama }}</td><td>{{ k.tipe }}</td><td class="num" data-value="{{ k.bobot }}">{{ '%.2f'|format(k.bobot) }}</td></tr>
     {% endfor %}
     </tbody>
   </table>

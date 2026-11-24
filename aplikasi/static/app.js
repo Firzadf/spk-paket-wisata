@@ -97,39 +97,145 @@
   updateTotal();
 })();
 
-/* Scroll reveal v5: hanya fade + naik 8px, 280ms, stagger 60ms per grup.
-   Tanpa JavaScript atau dengan prefers-reduced-motion, konten tampil penuh. */
+/* Loading screen, typewriter hero, dan scroll reveal berarah (v4 r2).
+   Semua ini lapisan di atas konten: tanpa JavaScript, konten tetap
+   tampil penuh; dengan prefers-reduced-motion, semuanya dimatikan. */
 (function () {
   "use strict";
-  var targets = document.querySelectorAll("[data-reveal]");
-  if (!targets.length) return;
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced || !("IntersectionObserver" in window)) {
-    targets.forEach(function (el) { el.classList.add("is-visible"); });
-    return;
+
+  /* --- Loading screen TripRank --- */
+  function buildLoader() {
+    var loader = document.createElement("div");
+    loader.className = "trip-loader";
+    loader.setAttribute("aria-hidden", "true");
+    var img = document.createElement("img");
+    img.src = "/static/images/logo-3d.png";
+    img.alt = "";
+    img.width = 96;
+    var word = document.createElement("div");
+    word.className = "loader-word";
+    word.textContent = "TripRank";
+    var bar = document.createElement("div");
+    bar.className = "loader-bar";
+    bar.appendChild(document.createElement("i"));
+    loader.appendChild(img);
+    loader.appendChild(word);
+    loader.appendChild(bar);
+    return loader;
   }
-  var groups = {};
-  targets.forEach(function (el) {
-    var parent = el.parentElement;
-    var key = parent ? parent.className + "|" + parent.tagName : "solo";
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(el);
-  });
-  Object.keys(groups).forEach(function (key) {
-    var list = groups[key];
-    if (list.length > 1) {
-      list.forEach(function (el, idx) {
-        el.style.transitionDelay = (idx * 60) + "ms";
+  function hideLoader(loader, after) {
+    setTimeout(function () {
+      loader.classList.add("is-hidden");
+      setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 350);
+    }, after);
+    setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 2500);
+  }
+  if (!reduced) {
+    var viaNav = false;
+    try { viaNav = sessionStorage.getItem("triprank-nav") === "1"; sessionStorage.removeItem("triprank-nav"); } catch (e) {}
+    var loader = buildLoader();
+    document.body.appendChild(loader);
+    hideLoader(loader, viaNav ? 450 : 900);
+    /* Transisi 3D ganti halaman (v4 r3): halaman masuk dengan rotateY
+       kecil (class page-entering, dilepas setelah animasi selesai supaya
+       transisi keluar nanti tidak tertahan fill mode animasi), halaman
+       lama keluar dengan rotateY berlawanan saat tautan internal diklik,
+       lalu navigasi setelah 420ms. Tanpa JS, navigasi normal. */
+    document.body.classList.add("page-entering");
+    setTimeout(function () { document.body.classList.remove("page-entering"); }, 650);
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || a.target === "_blank") return;
+        if (/^(https?:)?\/\//i.test(href) && a.origin !== location.origin) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        try { sessionStorage.setItem("triprank-nav", "1"); } catch (err) {}
+        e.preventDefault();
+        document.body.classList.add("page-leaving");
+        setTimeout(function () { location.href = a.href; }, 420);
       });
-    }
-  });
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
+    });
+    window.addEventListener("pageshow", function (e) {
+      document.body.classList.remove("page-leaving");
+      document.body.classList.remove("page-entering");
+      if (e.persisted) {
+        var old = document.querySelector(".trip-loader");
+        if (old && old.parentNode) old.parentNode.removeChild(old);
       }
     });
-  }, { threshold: 0.15 });
-  targets.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* --- Parallax mouse untuk background 3D: bentuk di hero dan Filosofi
+     bergeser pelan mengikuti kursor. Hanya di perangkat ber-pointer. --- */
+  if (!reduced && window.matchMedia("(hover: hover)").matches) {
+    document.querySelectorAll(".hero, .philosophy").forEach(function (section) {
+      section.addEventListener("mousemove", function (e) {
+        var r = section.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        var mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        var my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        section.style.setProperty("--mx", mx.toFixed(2));
+        section.style.setProperty("--my", my.toFixed(2));
+      });
+      section.addEventListener("mouseleave", function () {
+        section.style.setProperty("--mx", 0);
+        section.style.setProperty("--my", 0);
+      });
+    });
+  }
+
+  /* --- Typewriter hero: satu kalimat kunci, teks lengkap tetap di HTML. --- */
+  var tw = document.querySelector("[data-typewriter]");
+  if (tw && !reduced) {
+    var full = tw.textContent.trim();
+    tw.textContent = "";
+    var cursor = document.createElement("span");
+    cursor.className = "cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    tw.appendChild(cursor);
+    var i = 0;
+    function typeNext() {
+      if (i < full.length) {
+        cursor.insertAdjacentText("beforebegin", full.charAt(i));
+        i += 1;
+        setTimeout(typeNext, 50);
+      } else {
+        cursor.classList.add("done");
+        setTimeout(function () { if (cursor.parentNode) cursor.parentNode.removeChild(cursor); }, 500);
+      }
+    }
+    setTimeout(typeNext, 1100);
+  }
+
+  /* --- Scroll reveal berarah: IntersectionObserver, stagger per grup. --- */
+  var targets = document.querySelectorAll("[data-reveal]");
+  if (targets.length && !reduced && "IntersectionObserver" in window) {
+    var groups = {};
+    targets.forEach(function (el) {
+      var parent = el.parentElement;
+      var key = parent ? parent.className + "|" + parent.tagName : "solo";
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(el);
+    });
+    Object.keys(groups).forEach(function (key) {
+      var list = groups[key];
+      if (list.length > 1) {
+        list.forEach(function (el, idx) {
+          el.style.transitionDelay = (idx * 90) + "ms";
+        });
+      }
+    });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    targets.forEach(function (el) { observer.observe(el); });
+  } else if (targets.length) {
+    targets.forEach(function (el) { el.classList.add("is-visible"); });
+  }
 })();

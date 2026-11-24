@@ -27,7 +27,7 @@
     <caption id="nilai-caption">Nilai kriteria {{ detail.nama_tampil }}</caption>
     <thead><tr><th scope="col">Kode</th><th scope="col">Kriteria</th><th scope="col" class="num">Nilai</th></tr></thead>
     <tbody>
-    {% for k in kriteria %}<tr><th scope="row"><span class="criterion-icon"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span>{{ k.kode }}</th><td>{{ k.nama }} ({{ k.tipe }})</td><td class="num" data-value="{{ detail.nilai[k.kode] }}">{{ '%.2f'|format(detail.nilai[k.kode]) }}</td></tr>{% endfor %}
+    {% for k in kriteria %}<tr><th scope="row"><span class="criterion-icon"><img class="icon-3d" src="{{ url_for('static', filename='images/icon-3d-' + k.kode|lower + '.webp') }}" width="28" height="28" loading="lazy" alt="" onerror="this.remove(); this.parentElement.classList.add('no-img')"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span>{{ k.kode }}</th><td>{{ k.nama }} ({{ k.tipe }})</td><td class="num" data-value="{{ detail.nilai[k.kode] }}">{{ '%.2f'|format(detail.nilai[k.kode]) }}</td></tr>{% endfor %}
     </tbody>
   </table>
   </div>
