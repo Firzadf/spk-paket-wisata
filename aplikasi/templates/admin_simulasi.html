@@ -6,6 +6,7 @@
   <p class="lede">Hitung ranking dengan bobot sementara. Bobot asli tidak berubah dan tidak ada yang disimpan.</p>
 </div>
 <form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <p class="field">
     <label for="kota">Kota</label>
     <select id="kota" name="kota">{% for nama in ['Jakarta','Yogyakarta','Bandung','Semarang','Surabaya'] %}<option value="{{ nama }}" {% if kota==nama %}selected{% endif %}>{{ nama }}</option>{% endfor %}</select>

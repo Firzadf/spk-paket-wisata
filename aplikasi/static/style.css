@@ -553,6 +553,10 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   background: var(--ok-field); border: 1px solid var(--accent);
   padding: 14px 16px; margin-bottom: 18px; font-weight: 700;
 }
+.notice {
+  background: #fffbeb; border: 1px solid #d97706;
+  color: #7c4a03; padding: 14px 16px; margin-bottom: 18px; font-weight: 700;
+}
 .login-box { max-width: 480px; border: 1px solid var(--line); background: var(--surface); padding: 28px; }
 .login-box h2 { margin-top: 0; }
 

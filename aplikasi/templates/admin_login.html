@@ -9,6 +9,7 @@
 <div class="login-box">
   <h2>Login Admin</h2>
   <form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <p class="field">
       <label for="username">Nama pengguna</label>
       <input id="username" name="username" required autocomplete="username">

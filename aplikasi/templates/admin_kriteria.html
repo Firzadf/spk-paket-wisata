@@ -6,6 +6,7 @@
   <p class="lede">Total bobot harus 1,00, kalau tidak sistem menolak penyimpanan.</p>
 </div>
 <form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="kriteria-admin-caption">
   <table>
     <caption id="kriteria-admin-caption">Kriteria dan bobot yang dipakai SAW dan TOPSIS</caption>

@@ -16,6 +16,8 @@ Isi:
 - `test_app.py` — Halaman publik, API, pagination, dan jumlah seed.
 - `test_admin.py` — Login, proteksi halaman admin, ubah kriteria
   dan nilai, serta simulasi bobot admin.
+- `test_security.py` — Token CSRF, batas percobaan login,
+  flag cookie sesi, dan peringatan demo Vercel.
 
 Tes yang menulis (admin) memakai salinan sementara database
 (lihat `base.py`), jadi `aplikasi/spk_wisata.db` yang ter-commit

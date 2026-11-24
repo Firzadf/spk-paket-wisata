@@ -8,10 +8,13 @@ Lalu buka http://127.0.0.1:5000
 Akun demo admin: admin / admin123. Ganti sebelum pemakaian nyata.
 """
 
+import hmac
 import os
+import secrets
+import time
 from functools import wraps
 
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for, flash
+from flask import Flask, abort, jsonify, redirect, render_template, request, session, url_for, flash
 from werkzeug.security import check_password_hash
 
 import database
@@ -20,6 +23,12 @@ import topsis as topsis_mod
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SPK_SECRET_KEY", "spk-demo-key-ganti-di-produksi")
+# Cookie sesi: HttpOnly dan SameSite selalu; Secure hanya saat
+# SPK_SECRET_KEY di-set (produksi/Vercel, HTTPS). Lokal tanpa env var
+# tetap bisa login lewat http://127.0.0.1.
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = bool(os.environ.get("SPK_SECRET_KEY"))
 
 # Metadata foto kota (Wikimedia Commons, lisensi jelas, file lokal di static/images/).
 # Foto bukan milik proyek; kredit lengkap ditampilkan di halaman Tentang.
@@ -94,6 +103,55 @@ def login_required(view):
             return redirect(url_for("admin_login"))
         return view(*args, **kwargs)
     return wrapper
+
+
+# --- CSRF dan batas percobaan login (tanpa dependensi baru) ---
+# Token CSRF dibuat per sesi dan dicek di setiap POST /admin/*.
+def _csrf_token():
+    token = session.get("csrf_token")
+    if not token:
+        token = secrets.token_hex(32)
+        session["csrf_token"] = token
+    return token
+
+
+@app.context_processor
+def _inject_globals():
+    # vercel_demo: Vercel otomatis men-set VERCEL=1; dipakai untuk
+    # menampilkan peringatan bahwa edit admin di sana tidak permanen.
+    return {"csrf_token": _csrf_token,
+            "vercel_demo": os.environ.get("VERCEL") == "1"}
+
+
+@app.before_request
+def _csrf_protect():
+    if request.method == "POST" and request.path.startswith("/admin"):
+        token = request.form.get("csrf_token", "")
+        if not token or not hmac.compare_digest(
+                token, session.get("csrf_token", "")):
+            abort(400, "Token keamanan tidak valid. "
+                       "Muat ulang halaman dan coba lagi.")
+
+
+# Batas percobaan login: 5 gagal dalam 15 menit dari satu IP, lalu
+# diblokir 15 menit. Disimpan di memori per instance server; di Vercel
+# tiap instance punya hitungannya sendiri, jadi ini pelapis, bukan
+# pengganti kata sandi admin yang kuat.
+_LOGIN_FAILURES = {}
+MAX_LOGIN_FAILURES = 5
+LOGIN_BLOCK_SECONDS = 900
+
+
+def _login_blocked(ip):
+    now = time.time()
+    attempts = [t for t in _LOGIN_FAILURES.get(ip, [])
+                if now - t < LOGIN_BLOCK_SECONDS]
+    _LOGIN_FAILURES[ip] = attempts
+    return len(attempts) >= MAX_LOGIN_FAILURES
+
+
+def _record_failed_login(ip):
+    _LOGIN_FAILURES.setdefault(ip, []).append(time.time())
 
 
 def compute_city(nama_kota, weights=None, types=None):
@@ -286,14 +344,21 @@ def admin_login():
     if request.method == "POST":
         username = request.form.get("username", "")
         password = request.form.get("password", "")
+        ip = request.remote_addr or "unknown"
+        if _login_blocked(ip):
+            error = ("Terlalu banyak percobaan gagal. "
+                     "Coba lagi dalam 15 menit.")
+            return render_template("admin_login.html", error=error)
         conn = database.get_connection()
         try:
             row = conn.execute("SELECT * FROM admin WHERE username = ?", (username,)).fetchone()
         finally:
             conn.close()
         if row and check_password_hash(row["password_hash"], password):
+            _LOGIN_FAILURES.pop(ip, None)
             session["admin"] = username
             return redirect(url_for("admin_dashboard"))
+        _record_failed_login(ip)
         error = "Nama pengguna atau kata sandi salah."
     return render_template("admin_login.html", error=error)
 

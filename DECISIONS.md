@@ -24,3 +24,10 @@ Rules marked `LOCKED` MUST NOT be refactored or reversed by any agent without ex
 - **Context:** Sebelum ini repo tidak punya satu pun tes otomatis; semua redesign hanya dicek manual dan berisiko merusak pemenang ranking secara diam-diam.
 - **Decision:** `tests/` memakai `unittest` standar (tanpa dependensi baru) dengan 32 tes: halaman publik, API, pagination, jumlah seed, login dan proteksi admin, ubah kriteria/nilai, simulasi, dan regresi pemenang 5 kota. Tes yang menulis memakai salinan sementara database (lihat `tests/base.py`) supaya `spk_wisata.db` yang ter-commit tidak pernah berubah karena tes. GitHub Actions (`.github/workflows/tests.yml`) menjalankan suite yang sama di setiap push ke `main`.
 - **Why not alternatives:** pytest akan menambah dependensi tanpa kebutuhan nyata; tes terhadap database asli akan merusak data resmi.
+
+### ADR-004: Pengerasan keamanan admin tanpa dependensi baru
+- **Date:** 2026-11-24
+- **Status:** LOCKED
+- **Context:** Form admin tidak punya token CSRF, login tanpa batas percobaan, dan edit admin di Vercel diam-diam hilang saat cold start.
+- **Decision:** Token CSRF per sesi dicek di setiap POST `/admin/*` (400 kalau tidak ada atau salah), login dibatasi 5 gagal dalam 15 menit per IP lalu diblokir 15 menit (hitungan di memori per instance, direset saat login benar), cookie sesi HttpOnly + SameSite Lax + Secure saat `SPK_SECRET_KEY` di-set (produksi), dan banner peringatan "tidak permanen" tampil di semua halaman admin saat `VERCEL=1`. Dikunci 8 tes di `tests/test_security.py`.
+- **Why not alternatives:** Flask-WTF akan menambah dependensi hanya untuk CSRF yang bisa dibuat dengan `secrets` + `hmac` standar; rate limit di database akan menambah tabel dan migrasi untuk ancaman yang ditangani cukup di memori.

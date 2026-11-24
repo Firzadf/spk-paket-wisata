@@ -101,6 +101,7 @@
 {% if messages %}{% for m in messages %}<div class="success" role="status">{{ m }}</div>{% endfor %}{% endif %}
 {% endwith %}
 {% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+{% if vercel_demo and request.endpoint and request.endpoint.startswith('admin') %}<div class="notice" role="note">Demo Vercel: perubahan admin di situs ini tidak permanen dan bisa hilang saat server dimulai ulang. Untuk demo edit yang tersimpan, jalankan aplikasi di laptop.</div>{% endif %}
 {% block content %}{% endblock %}
 </main>
 <footer class="site-footer">
