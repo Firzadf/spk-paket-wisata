@@ -18,6 +18,8 @@ Isi:
   dan nilai, serta simulasi bobot admin.
 - `test_security.py` — Token CSRF, batas percobaan login,
   flag cookie sesi, dan peringatan demo Vercel.
+- `test_v5.py` — Rombak v5 Tenang: tidak ada gradient, transform 3D,
+  maskot/logo/ikon 3D, marquee, atau typewriter; font hanya 2 keluarga.
 
 Tes yang menulis (admin) memakai salinan sementara database
 (lihat `base.py`), jadi `aplikasi/spk_wisata.db` yang ter-commit

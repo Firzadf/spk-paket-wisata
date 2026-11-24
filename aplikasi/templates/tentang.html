@@ -2,7 +2,7 @@
 {% block title %}Tentang Kami — TripRank{% endblock %}
 {% block content %}
 <div class="page-head">
-  <figure class="logo-3d"><img src="{{ url_for('static', filename='images/logo-3d.png') }}" width="512" height="341" alt="Logo 3D TripRank, pin hijau bergaya clay dengan huruf T dan grafik ranking"><figcaption>Logo 3D TripRank.</figcaption></figure>
+  <img class="logo-large" src="{{ url_for('static', filename='images/logo.svg') }}" width="72" height="72" alt="Logo TripRank">
   <h1>Tentang TripRank</h1>
   <p class="lede"><strong>TripRank</strong> adalah nama produk aplikasi ini, dibuat oleh kelompok proyek akhir kuliah: Sistem Pendukung Keputusan Rekomendasi Paket Wisata di Kota Besar Indonesia Menggunakan Metode SAW dan TOPSIS. Situs ini bukan situs booking dan bukan perusahaan travel. Tujuannya membantu memilih paket wisata dengan cara yang bisa diperiksa, bukan menjual paket.</p>
 </div>
@@ -11,13 +11,12 @@
   <h2 id="siapa-kami" data-reveal="up">Siapa kami</h2>
   <p>Proyek akhir SPK (Sistem Pendukung Keputusan) kelompok mahasiswa Program Studi Sistem Informasi, Universitas Bina Sarana Informatika.</p>
   <p>Kami tidak memakai nama perusahaan, alamat kantor, nomor telepon, atau klaim afiliasi apa pun, karena memang tidak ada.</p>
-  <figure class="mascot"><img src="{{ url_for('static', filename='images/maskot-3d.png') }}" width="640" height="640" loading="lazy" alt="Maskot traveler TripRank, seorang traveler kecil bergaya 3D clay dengan ransel dan peta"><figcaption>Ilustrasi 3D: maskot traveler TripRank.</figcaption></figure>
 </section>
 
 <section aria-labelledby="tujuan">
   <h2 id="tujuan" data-reveal="up">Tujuan proyek</h2>
   <p>Memilih paket wisata itu sulit karena ada banyak hal yang harus ditimbang sekaligus: harga, fasilitas, akses, popularitas, dan jumlah destinasi. Situs ini menghitung semua itu dengan dua metode, SAW dan TOPSIS, lalu menampilkan tahap hitungannya supaya siapa pun bisa memeriksa kenapa satu paket menang dan paket lain kalah.</p>
-  <p><a class="btn" href="{{ url_for('cara_kerja') }}">Lihat cara kerja SAW dan TOPSIS</a> <a class="btn btn-dark" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+  <p><a class="btn" href="{{ url_for('cara_kerja') }}">Lihat cara kerja SAW dan TOPSIS</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
 </section>
 
 <section aria-labelledby="foto-kota">

@@ -1,44 +1,23 @@
-/* TripRank — v4 (gaya Serein: mewah, serif, tenang, di atas v3).
+/* TripRank — v5 "Tenang" (kembali ke design.md, 24 Nov 2026).
    Nama produk: TripRank. Judul akademik lengkap tetap tercantum di
    Tentang dan footer. Bukan situs booking, bukan perusahaan travel.
    Token dulu: semua warna dan font lewat :root. Tidak ada warna atau
    font-family literal di luar blok token.
-   Penyimpangan design.md yang disengaja, dicatat:
-   - Serif editorial Georgia sebagai display: instruksi tugas v4 meminta
-     arah Serein (serif besar, tenang). Body dan tabel tetap sans.
-   - Ground krem gading hangat + ink hijau gelap: palet Serein, bukan
-     krem-kuning + terracotta yang dilarang design.md; aksen hijau tua.
-   - Jarak antar section 96px desktop (Serein: spasi lega), bukan 40px v3.
-   - Sudut persegi (radius 0) diputuskan sekali untuk seluruh situs v4,
-     menggantikan radius 8px v2/v3.
-   - Radius 6px (perbaikan mobile v4 r2, atas pilihan user): sudut
-     dilembutkan jadi 6px di semua elemen UI, tetap elegan, bukan pill.
-   - Tipografi 6 peran (v4 r2, atas permintaan user): Fraunces untuk
-     headline hero, Playfair Display untuk judul section, Space Grotesk
-     untuk body, Sora untuk tombol/label/nav, IBM Plex Mono untuk angka
-     (Vi/Ci, ranking, statistik), DM Serif Display untuk wordmark dan
-     kalimat brand. Bukan font sistem basic sebagai font utama;
-     Georgia/sans sistem hanya fallback bila font web gagal dimuat.
-   - Header gelap hijau tua + footer 3 kolom (v4 r2, atas permintaan user).
-   - Tombol 3D (23 Nov 2026, atas permintaan user): semua tombol punya
-     bayangan offset bawah yang tegas (efek tombol fisik yang bisa
-     ditekan), naik saat hover, turun saat ditekan. Ini penyimpangan
-     yang disengaja dari larangan shadow di design.md, atas perintah
-     user yang eksplisit ("Button button ini juga bisa ga dibuat 3d
-     aja" / "Keknya bakal lebih bagus ga sih").
-   - Scrim netral di atas foto hero: satu-satunya pengecualian gradien yang
-     diizinkan design.md, dipakai hanya di atas foto agar teks terbaca.
-   - Warna tombol dan gradient (23 Nov 2026, atas permintaan user:
-     "Soal tombol juga jangan monoton di warna putih polos" dan
-     "Sama bisa ga websitenya jadi gradient gradient gitu"): tombol
-     sekunder bukan lagi putih polos, tiap jenis tombol punya warna
-     sendiri (hijau daun, emas, pasir, hijau tua), dan gradient dipakai
-     halus di tombol, hero, Filosofi, footer, dan latar. Ini
-     penyimpangan yang disengaja dari larangan gradien di design.md,
-     atas perintah user yang eksplisit; gradient hanya aksen, teks
-     tetap kontras minimal AA (dihitung: emas #e8b64a dengan ink
-     8,46:1; hijau daun #2e7d5b dengan putih 4,92:1; pasir dengan ink
-     12,75:1; semua warna tombol primer 9,9:1 ke atas). */
+   Yang dihapus dari v4 (atas persetujuan user, karena terbaca AI slop):
+   - 6 keluarga font -> 2 saja: Fraunces (judul/display) + Space Grotesk
+     (semua sisanya, termasuk angka).
+   - Semua gradient (14 kemunculan) dan bayangan offset pada tombol,
+     chip, header-action, pagination. Tombol datar, satu warna isi.
+   - Bentuk melayang di hero dan Filosofi, teks berjalan, teks mengetik,
+     layar muat, transisi antar halaman, tilt kartu dan logo, maskot,
+     logo 3D, ikon 3D clay. Ikon kriteria kembali ke simbol SVG garis
+     buatan sendiri.
+   - Scrim gradien di atas foto hero -> panel datar rgba(18,46,35,0.88)
+     supaya teks tetap terbaca tanpa gradient.
+   - Scroll reveal disederhanakan: fade + naik 8px, 280ms, stagger 60ms.
+   Yang dipertahankan dari v4: arah Serein (serif besar, tenang, ground
+   krem gading, spasi lega 96px), header ala Umano, radius 6px, foto
+   kota asli Wikimedia, section Misi/Filosofi/Janji dan 4 pilar. */
 :root {
   --ground: #faf7f1;
   --surface: #fffdf9;
@@ -51,25 +30,6 @@
   --accent-ink: #fffdf9;
   --accent-deep: #122e23;
   --accent-soft: #e7efe9;
-  --leaf: #2e7d5b;
-  --leaf-deep: #1d5c40;
-  --gold: #c98f2d;
-  --gold-bright: #e8b64a;
-  --gold-deep: #9a6b1a;
-  --gold-soft: #f6e8c8;
-  --sand: #efe6d2;
-  --sand-deep: #e3d3ae;
-  --grad-primary: linear-gradient(135deg, #2e7d5b 0%, #1d4a38 55%, #122e23 100%);
-  --grad-primary-hover: linear-gradient(135deg, #1d4a38 0%, #122e23 70%, #0e2a1e 100%);
-  --grad-gold: linear-gradient(135deg, #e8b64a 0%, #c98f2d 100%);
-  --grad-gold-hover: linear-gradient(135deg, #c98f2d 0%, #9a6b1a 100%);
-  --grad-cream: linear-gradient(135deg, #fffdf9 0%, #f6ead0 100%);
-  --grad-sand: linear-gradient(135deg, #efe6d2 0%, #e3d3ae 100%);
-  --grad-dark: linear-gradient(135deg, #23392e 0%, #122e23 100%);
-  --grad-leaf: linear-gradient(135deg, #2e7d5b 0%, #1d5c40 100%);
-  --grad-ground: linear-gradient(180deg, #faf7f1 0%, #f3ecdd 38%, #faf7f1 100%);
-  --grad-philosophy: linear-gradient(135deg, #1d4a38 0%, #122e23 60%, #0e2a1e 100%);
-  --grad-footer: linear-gradient(180deg, #122e23 0%, #0e2a1e 100%);
   --line: #e3ddd0;
   --line-strong: #cfc6b2;
   --winner: #e7efe9;
@@ -77,11 +37,8 @@
   --danger-field: #fbeae6;
   --ok-field: #e7efe9;
   --display: "Fraunces", Georgia, "Times New Roman", Times, serif;
-  --serif: "Playfair Display", Georgia, "Times New Roman", Times, serif;
+  --serif: "Fraunces", Georgia, "Times New Roman", Times, serif;
   --sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --sans-alt: "Sora", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --brand: "DM Serif Display", Georgia, "Times New Roman", Times, serif;
   --measure: 1120px;
   --measure-wide: 1240px;
   --gap: 24px;
@@ -94,8 +51,7 @@ html { overflow-x: clip; scroll-behavior: smooth; }
 body { overflow-x: clip; }
 body {
   margin: 0;
-  background: var(--grad-ground);
-  background-attachment: fixed;
+  background: var(--ground);
   color: var(--ink);
   font-family: var(--sans);
   font-size: 17px;
@@ -167,7 +123,7 @@ img { max-width: 100%; display: block; height: auto; }
 }
 .wordmark {
   display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--brand); font-size: 24px; font-weight: 400;
+  font-family: var(--serif); font-size: 24px; font-weight: 400;
   letter-spacing: -0.01em; color: var(--ink); text-decoration: none;
   white-space: nowrap;
 }
@@ -187,18 +143,13 @@ img { max-width: 100%; display: block; height: auto; }
 .site-nav a[aria-current="page"] { color: var(--ink); }
 .site-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .site-nav a.nav-login { display: none; }
-/* Tombol Masuk Admin di dropdown mobile: gaya 3D yang sama dengan .btn. */
-.site-nav a.nav-login { box-shadow: 0 4px 0 var(--accent-deep); }
-.site-nav a.nav-login:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
 .header-action {
-  background: var(--grad-gold); color: var(--ink); text-decoration: none;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
   padding: 10px 20px; font-weight: 700; font-size: 16px;
-  white-space: nowrap; border: 1px solid var(--gold-deep); border-radius: 999px;
-  box-shadow: 0 4px 0 var(--gold-deep);
-  transition: background 200ms, color 200ms, border-color 200ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap; border: 1px solid var(--accent-deep); border-radius: 999px;
+  transition: background 200ms, color 200ms, border-color 200ms;
 }
-.header-action:hover { background: var(--grad-gold-hover); color: var(--ink); border-color: var(--gold-deep); transform: translateY(-2px); box-shadow: 0 6px 0 var(--gold-deep); }
-.header-action:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--gold-deep); }
+.header-action:hover { background: var(--accent-deep); color: var(--accent-ink); border-color: var(--accent-deep); }
 /* Tombol hamburger: pil hitam kecil dengan 3 garis putih (ala Umano),
    hanya tampil di layar sempit. Menu bekerja tanpa JavaScript lewat
    checkbox hack: input tersembunyi + label sebagai tombol. */
@@ -208,10 +159,7 @@ img { max-width: 100%; display: block; height: auto; }
   width: 52px; height: 44px; min-height: 44px; padding: 0;
   background: var(--ink); border-radius: 999px;
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  box-shadow: 0 3px 0 rgba(20, 38, 31, 0.35);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.nav-toggle:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(20, 38, 31, 0.35); }
 .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--surface); border-radius: 2px; transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms; }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(2) { opacity: 0; }
@@ -224,7 +172,6 @@ img { max-width: 100%; display: block; height: auto; }
 .hero .hero-body { text-align: center; }
 .hero .hero-body h1 { margin-left: auto; margin-right: auto; }
 .hero .hero-body p { margin-left: auto; margin-right: auto; }
-.hero .hero-body .typewriter { margin-left: auto; margin-right: auto; }
 .hero-banner .hero-body { text-align: center; }
 .hero-banner .hero-body h1, .hero-banner .hero-body p { margin-left: auto; margin-right: auto; }
 .mission { text-align: center; }
@@ -247,17 +194,22 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .hero img { width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; }
 .hero .hero-body {
   position: absolute; inset: auto 0 0 0; padding: 64px 32px 28px; color: var(--surface);
-  background: linear-gradient(to top, rgba(18, 46, 35, 0.85), rgba(18, 46, 35, 0.35) 60%, rgba(18, 46, 35, 0));
+  background: rgba(18, 46, 35, 0.65);
 }
 .hero .hero-body h1 { color: var(--surface); margin: 0 0 10px; }
 .hero .hero-body p { color: var(--surface); opacity: 0.94; margin: 0 0 16px; max-width: 62ch; font-size: 18px; }
 .hero .hero-body a { color: var(--surface); }
 .hero .hero-body .btn, .hero-banner .hero-body .btn { border: 1px solid var(--accent-ink); }
+/* Warna teks tombol di atas panel hero: aturan .hero-body a yang
+   membuat tautan berwarna gading akan menimpa warna teks .btn-quiet,
+   jadi tegaskan di sini (btn primer putih gading, btn-quiet ink). */
+.hero .hero-body .btn, .hero-banner .hero-body .btn { color: var(--accent-ink); }
+.hero .hero-body .btn-quiet, .hero-banner .hero-body .btn-quiet { color: var(--ink); }
 .hero-banner { position: relative; overflow: hidden; margin-bottom: 32px; background: var(--field); }
 .hero-banner img { width: 100%; height: auto; aspect-ratio: 16 / 5; object-fit: cover; }
 .hero-banner .hero-body {
   position: absolute; inset: auto 0 0 0; padding: 48px 32px 20px; color: var(--surface);
-  background: linear-gradient(to top, rgba(18, 46, 35, 0.85), rgba(18, 46, 35, 0.3) 65%, rgba(18, 46, 35, 0));
+  background: rgba(18, 46, 35, 0.65);
 }
 .hero-banner .hero-body h1 { color: var(--surface); margin: 0 0 6px; font-size: clamp(36px, 5vw, 56px); }
 .hero-banner .hero-body p { color: var(--surface); opacity: 0.94; margin: 0; font-size: 18px; }
@@ -267,7 +219,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 /* Misi: pernyataan serif besar, satu momen tenang di tengah halaman. */
 .mission { max-width: 880px; margin-bottom: 96px; }
 .mission .mission-label {
-  font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
+  font-family: var(--sans); font-size: 14px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
   margin: 0 0 16px;
 }
@@ -280,7 +232,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 
 /* Filosofi: satu field hijau gelap penuh, teks gading, tenang. */
 .philosophy {
-  background: var(--grad-philosophy); color: var(--accent-ink);
+  background: var(--accent-deep); color: var(--accent-ink);
   padding: 64px 48px; margin-bottom: 96px;
 }
 .philosophy h2 { color: var(--accent-ink); }
@@ -290,7 +242,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   line-height: 1.3; opacity: 1; max-width: none; margin: 0 0 20px;
 }
 .philosophy .philosophy-label {
-  font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
+  font-family: var(--sans); font-size: 14px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink);
   opacity: 0.75; margin: 0 0 16px;
 }
@@ -314,7 +266,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .facts div { padding: 24px 24px 20px; border-left: 1px solid var(--line); }
 .facts div:first-child { border-left: 0; padding-left: 0; }
 .facts .num {
-  display: block; font-family: var(--mono); font-size: 48px; font-weight: 600;
+  display: block; font-family: var(--sans); font-size: 48px; font-weight: 600;
   letter-spacing: -0.02em; line-height: 1;
   font-variant-numeric: tabular-nums; text-align: left;
 }
@@ -329,9 +281,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .city-cards > li {
   border: 1px solid var(--line); overflow: hidden;
   background: var(--surface); display: flex; flex-direction: column; height: 100%;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.city-cards > li:hover { transform: translateY(-2px); }
 .city-cards img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--field); }
 .city-card-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 .city-card-head { display: flex; align-items: center; gap: 12px; }
@@ -350,8 +300,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   align-items: center; padding: 18px 24px; border-bottom: 1px solid var(--line);
 }
 .city-list li:last-child { border-bottom: 0; }
-.city-list li:hover { background: var(--field); transform: translateX(4px); }
-.city-list li { transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); }
+.city-list li:hover { background: var(--field); }
 .city-list h3 { font-size: 22px; margin: 0; }
 .city-list h3 a { color: var(--ink); text-decoration: none; }
 .city-list h3 a:hover { color: var(--accent); }
@@ -365,7 +314,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 }
 .steps li { border: 1px solid var(--line); background: var(--surface); padding: 22px; }
 .steps .step-no {
-  display: block; font-family: var(--mono); font-size: 28px; font-weight: 600;
+  display: block; font-family: var(--sans); font-size: 28px; font-weight: 600;
   color: var(--accent); line-height: 1; margin-bottom: 10px;
 }
 .steps strong { display: block; margin-bottom: 4px; font-family: var(--serif); font-size: 19px; font-weight: 400; }
@@ -376,68 +325,39 @@ section { margin-bottom: 96px; }
 section > h2 { padding-top: 0; }
 .section-note { color: var(--muted); font-size: 18px; }
 
-/* Tombol, chip, nav, label: Sora (sans kedua, untuk aksi dan label). */
+/* Tombol, chip, nav, label: Space Grotesk, sama seperti body. */
 .btn, button, .chip, .site-nav a, .header-action, .pagination .page-btn,
 .mission-label, .philosophy-label, .footer-col h3, label, .toolbar label,
-.page-info, .illustration-tag { font-family: var(--sans-alt); }
+.page-info, .illustration-tag { font-family: var(--sans); }
 
-/* Tombol v4: persegi, satu isi hijau tua, satu sekunder bergaris ink.
-   Gaya 3D (atas permintaan user, 23 Nov 2026): bayangan offset bawah
-   yang tegas supaya tombol terlihat seperti tombol fisik yang bisa
-   ditekan; naik 2px + bayangan membesar saat hover, turun 2px +
-   bayangan mengecil saat ditekan. Hanya transform (dan bayangan yang
-   mengikutinya), 150-250ms. Radius 6px tetap. */
+/* Tombol v5: datar, satu warna isi. Primer hijau gelap teks putih,
+   sekunder permukaan krem dengan border ink. Tanpa bayangan, tanpa
+   gradient, tanpa gerak naik-turun. Hover hanya ganti warna. */
 .btn, button {
-  background: var(--grad-primary); color: var(--accent-ink); border: 0;
-  padding: 12px 22px; font-family: var(--sans-alt); font-weight: 700; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); border: 0;
+  padding: 12px 22px; font-family: var(--sans); font-weight: 700; cursor: pointer;
   text-decoration: none; display: inline-block; min-height: 48px;
   font-size: 16px; white-space: nowrap;
-  box-shadow: 0 4px 0 var(--accent-deep);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 200ms, color 200ms, border-color 200ms;
 }
-.btn:hover, button:hover { background: var(--grad-primary-hover); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-deep); }
-.btn:active, button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
+.btn:hover, button:hover { background: var(--accent-deep); color: var(--accent-ink); }
 .btn-quiet {
-  background: var(--grad-cream); color: var(--ink);
+  background: var(--surface); color: var(--ink);
   border: 1px solid var(--ink); padding: 11px 21px;
-  box-shadow: 0 4px 0 var(--ink);
 }
-.btn-quiet:hover { background: var(--grad-sand); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
-.btn-quiet:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ink); }
-.btn[aria-pressed="true"] { background: var(--grad-primary); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
-.btn[aria-pressed="true"]:hover { box-shadow: 0 6px 0 var(--accent-deep); }
-.btn[aria-pressed="true"]:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
+.btn-quiet:hover { background: var(--field); color: var(--ink); }
+.btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
 .btn-sm { padding: 10px 16px; min-height: 44px; font-size: 14px; }
 
-/* Varian warna tombol (23 Nov 2026, atas permintaan user): tiap jenis
-   tombol punya warna sendiri, tetap dalam palet TripRank, efek 3D
-   dipertahankan. Kontras dihitung: emas dengan ink 8,46:1, daun
-   dengan putih 4,92:1, pasir dengan ink 12,75:1, gelap dengan putih
-   12,19:1. */
-.btn-leaf { background: var(--grad-leaf); color: var(--accent-ink); box-shadow: 0 4px 0 var(--leaf-deep); }
-.btn-leaf:hover { background: var(--grad-primary); color: var(--accent-ink); box-shadow: 0 6px 0 var(--leaf-deep); }
-.btn-leaf:active { box-shadow: 0 2px 0 var(--leaf-deep); }
-.btn-gold { background: var(--grad-gold); color: var(--ink); box-shadow: 0 4px 0 var(--gold-deep); }
-.btn-gold:hover { background: var(--grad-gold-hover); color: var(--ink); box-shadow: 0 6px 0 var(--gold-deep); }
-.btn-gold:active { box-shadow: 0 2px 0 var(--gold-deep); }
-.btn-sand { background: var(--grad-sand); color: var(--ink); border: 1px solid var(--ink); box-shadow: 0 4px 0 var(--ink); }
-.btn-sand:hover { background: var(--grad-cream); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
-.btn-sand:active { box-shadow: 0 2px 0 var(--ink); }
-.btn-dark { background: var(--grad-dark); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
-.btn-dark:hover { background: var(--grad-primary-hover); color: var(--accent-ink); box-shadow: 0 6px 0 var(--accent-deep); }
-.btn-dark:active { box-shadow: 0 2px 0 var(--accent-deep); }
-
-/* Chip paket di tabel ranking: persegi hijau muda, satu baris, bisa diklik. */
+/* Chip paket di tabel ranking: hijau muda datar, satu baris, bisa diklik. */
 .chip {
   display: inline-block; white-space: nowrap; text-decoration: none;
-  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--gold-soft) 100%); color: var(--accent-deep);
+  background: var(--accent-soft); color: var(--accent-deep);
   border: 1px solid var(--accent);
   padding: 6px 14px; min-height: 36px; line-height: 1.4; font-weight: 700; font-size: 14px;
-  box-shadow: 0 2px 0 var(--accent);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 200ms, color 200ms;
 }
-.chip:hover { background: var(--accent); color: var(--accent-ink); transform: translateY(-1px); box-shadow: 0 3px 0 var(--accent); }
-.chip:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--accent); }
+.chip:hover { background: var(--accent); color: var(--accent-ink); }
 .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Tabel: header field gading, teks 13px semibold, baris 1px. */
@@ -462,10 +382,10 @@ thead th {
 }
 tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover td, tbody tr:hover th { background: var(--field); }
-th[scope="row"] { font-weight: 700; font-family: var(--mono); }
+th[scope="row"] { font-weight: 700; font-family: var(--sans); }
 .winner td, .winner th { background: var(--winner); font-weight: 700; }
 .winner td:first-child::after { content: " · terbaik"; font-weight: 600; color: var(--accent-deep); }
-.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.num { text-align: right; font-family: var(--sans); font-variant-numeric: tabular-nums; }
 th .sort-btn {
   all: unset; display: block; width: 100%; cursor: pointer; color: inherit;
   font: inherit; font-weight: 700; padding: 0; min-height: 24px; white-space: nowrap;
@@ -486,12 +406,10 @@ td.action .btn { white-space: nowrap; }
   min-width: 44px; min-height: 44px; padding: 10px 14px; text-align: center;
   background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong);
   font-weight: 700; text-decoration: none; white-space: nowrap;
-  box-shadow: 0 3px 0 var(--line-strong);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 200ms, color 200ms, border-color 200ms;
 }
-.pagination .page-btn:hover { background: var(--field); color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 0 var(--line-strong); }
-.pagination .page-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-strong); }
-.pagination .page-btn[aria-current="page"] { background: var(--grad-primary); color: var(--accent-ink); border-color: var(--accent-deep); box-shadow: 0 3px 0 var(--accent-deep); }
+.pagination .page-btn:hover { background: var(--field); color: var(--ink); }
+.pagination .page-btn[aria-current="page"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-deep); }
 .pagination .page-btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
 
 /* Panel tahap hitungan: <details> asli, garis 1px. */
@@ -514,7 +432,7 @@ details > .details-body h4 { margin-top: 18px; }
   border: 1px solid var(--line); background: var(--surface); padding: 24px;
 }
 .compare .panel .big {
-  font-family: var(--mono); font-size: 30px; font-weight: 600;
+  font-family: var(--sans); font-size: 30px; font-weight: 600;
   letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
 }
 .compare .panel .big small { font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
@@ -571,7 +489,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .admin-actions span { color: var(--muted); font-size: 14px; }
 .kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 32px; }
 .kv div { padding: 18px 20px; border: 1px solid var(--line); background: var(--surface); }
-.kv .num { display: block; font-family: var(--mono); font-size: 32px; font-weight: 600; letter-spacing: 0; text-align: left; }
+.kv .num { display: block; font-family: var(--sans); font-size: 32px; font-weight: 600; letter-spacing: 0; text-align: left; }
 .kv .lbl { color: var(--muted); font-size: 14px; }
 
 /* Strip foto kota di Tentang: 5 foto kecil, kredit di bawah. */
@@ -589,15 +507,15 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .photo-strip figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
 /* Footer (v4 r2): hijau gelap, wordmark besar, 3 kolom, ikon di tiap tautan. */
-.site-footer { background: var(--grad-footer); color: var(--accent-ink); margin-top: 40px; }
+.site-footer { background: var(--accent-deep); color: var(--accent-ink); margin-top: 40px; }
 .site-footer .footer-inner { max-width: var(--measure-wide); margin: 0 auto; padding: 56px 24px 32px; }
 .site-footer .footer-word {
-  font-family: var(--brand); font-size: clamp(48px, 10vw, 96px); font-weight: 400;
+  font-family: var(--serif); font-size: clamp(48px, 10vw, 96px); font-weight: 400;
   letter-spacing: -0.02em; line-height: 0.95; margin: 0 0 12px;
   overflow-wrap: break-word; min-width: 0;
 }
 .site-footer .footer-tagline {
-  font-family: var(--brand); font-size: clamp(20px, 2.4vw, 26px); line-height: 1.3;
+  font-family: var(--serif); font-size: clamp(20px, 2.4vw, 26px); line-height: 1.3;
   color: var(--accent-ink); opacity: 0.92; margin: 0 0 32px; max-width: none;
 }
 .site-footer .footer-cols {
@@ -605,7 +523,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   padding: 32px 0; border-top: 1px solid rgba(255, 253, 249, 0.2);
 }
 .site-footer .footer-col h3 {
-  font-family: var(--sans-alt); font-size: 13px; font-weight: 700;
+  font-family: var(--sans); font-size: 13px; font-weight: 700;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink);
   opacity: 0.65; margin: 0 0 14px;
 }
@@ -623,23 +541,21 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .site-footer p { color: var(--accent-ink); opacity: 0.88; max-width: 68ch; }
 .site-footer a { color: var(--accent-ink); }
 
-/* Motion v4: tenang, 300-400ms, naik 12px + opacity, stagger 60-90ms.
+/* Motion v5: tenang, 280ms, naik 8px + opacity, stagger 60ms.
    Hanya transform dan opacity. Angka Vi/Ci tidak dianimasikan, baris tabel
    tidak dianimasikan saat muat. Konten tampil penuh tanpa animasi. */
 @media (prefers-reduced-motion: no-preference) {
-  main > * { animation: rise 350ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  main > *:nth-child(2) { animation-delay: 70ms; }
-  main > *:nth-child(3) { animation-delay: 140ms; }
-  main > *:nth-child(4) { animation-delay: 210ms; }
-  main > *:nth-child(5) { animation-delay: 280ms; }
-  .page-head h1 { animation: rise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .facts div { animation: rise 350ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .facts div:nth-child(2) { animation-delay: 70ms; }
-  .facts div:nth-child(3) { animation-delay: 140ms; }
-  .facts div:nth-child(4) { animation-delay: 210ms; }
-  .compare .panel { transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .compare .panel:hover { transform: translateY(-2px); }
-  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  main > * { animation: rise 280ms ease both; }
+  main > *:nth-child(2) { animation-delay: 60ms; }
+  main > *:nth-child(3) { animation-delay: 120ms; }
+  main > *:nth-child(4) { animation-delay: 180ms; }
+  main > *:nth-child(5) { animation-delay: 240ms; }
+  .page-head h1 { animation: rise 280ms ease both; }
+  .facts div { animation: rise 280ms ease both; }
+  .facts div:nth-child(2) { animation-delay: 60ms; }
+  .facts div:nth-child(3) { animation-delay: 120ms; }
+  .facts div:nth-child(4) { animation-delay: 180ms; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -672,143 +588,26 @@ input, select, textarea { border-radius: var(--radius); }
    digeser ke kanan di dalam wrapper-nya. */
 .table-hint { display: none; }
 
-/* Ikon 3D clay (v4 r2): gambar kecil bergaya clay, fallback-nya ikon SVG. */
-.icon-3d { width: 28px; height: 28px; vertical-align: -7px; margin-right: 6px; border-radius: var(--radius); }
+/* Ikon kriteria: simbol SVG garis buatan sendiri, warna mengikuti teks. */
 .criterion-icon { display: inline-flex; align-items: center; }
-.criterion-icon svg { display: none; }
-.criterion-icon.no-img svg { display: inline-block; }
-.logo-3d { margin: 0 0 16px; }
-.logo-3d img { width: 200px; height: auto; border-radius: var(--radius); }
-.logo-3d figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
-.mascot { margin: 0 0 24px; text-align: center; }
-.mascot img { width: 220px; height: auto; margin: 0 auto; border-radius: var(--radius); }
-.mascot figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 
-/* Efek 3D (v4 r2): tilt halus saat hover, hanya di perangkat ber-pointer
-   dan bila motion diizinkan. Di HP tanpa hover tidak ada efek, kartu diam. */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .city-cards { perspective: 1200px; }
-  .city-cards > li { transform-style: preserve-3d; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .city-cards > li:hover { transform: translateY(-4px) rotateX(3deg) rotateY(-3deg); }
-  .wordmark { perspective: 600px; }
-  .wordmark .logo-mark { transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .wordmark:hover .logo-mark { transform: rotateY(18deg) scale(1.06); }
-}
 
-/* Hero headline reveal per baris (v4 r2): line-level, bukan per karakter,
-   supaya screen reader dan copy-paste tetap benar. */
-.hero h1 .line { display: block; overflow: hidden; perspective: 800px; }
-@media (prefers-reduced-motion: no-preference) {
-  .hero h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  .hero h1 .line:nth-child(2) > span { animation-delay: 90ms; }
-  @keyframes lineRise { from { opacity: 0; transform: translateY(110%) rotateX(8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
-}
 
-/* Marquee kota (v4 r2): strip teks berjalan pelan, jeda saat hover.
-   Dekoratif saja, bukan tautan. */
-.marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin: 0 0 96px; }
-.marquee-track { display: flex; width: max-content; }
-.marquee-track span {
-  font-family: var(--serif); font-size: 28px; color: var(--muted);
-  white-space: nowrap; padding-right: 16px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .marquee-track { animation: marquee 36s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-}
 
-/* Typewriter hero (v4 r2): hanya satu kalimat kunci di hero beranda.
-   Teks lengkap ada di HTML, jadi tanpa JS tetap tampil penuh. */
-.typewriter { min-height: 2.6em; }
-.typewriter .cursor {
-  display: inline-block; width: 2px; height: 1.1em; margin-left: 3px;
-  background: currentColor; vertical-align: -2px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .typewriter .cursor { animation: blink 1s steps(1) infinite; }
-  .typewriter .cursor.done { animation: none; opacity: 0; transition: opacity 400ms; }
-  @keyframes blink { 50% { opacity: 0; } }
-}
 
-/* Loading screen (v4 r2): lapisan yang dibuat JavaScript saja, jadi tanpa
-   JS tidak ada yang menutupi halaman. Sekali tampil ~900ms lalu fade. */
-.trip-loader {
-  position: fixed; inset: 0; z-index: 100; background: var(--ground);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-  opacity: 1; transition: opacity 300ms ease;
-}
-.trip-loader.is-hidden { opacity: 0; pointer-events: none; }
-.trip-loader img { width: 96px; height: auto; border-radius: var(--radius); animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-.trip-loader .loader-word { font-family: var(--brand); font-size: 30px; font-weight: 400; animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both; }
-.trip-loader .loader-bar { width: 160px; height: 2px; background: var(--line); overflow: hidden; border-radius: 2px; }
-.trip-loader .loader-bar i { display: block; height: 100%; width: 0; background: var(--grad-gold); animation: loaderBar 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes loaderRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes loaderBar { to { width: 100%; } }
-
-/* Scroll reveal berarah (v4 r2): keadaan tersembunyi hanya saat class .js
-   ada di <html> (ditambah skrip inline di <head>), jadi tanpa JS semua
-   teks langsung tampil penuh. Ganjil dari kiri, genap dari kanan di
-   desktop; di HP semuanya dari kanan. Judul dan paragraf dari bawah. */
-.js [data-reveal] { opacity: 0; }
-.js [data-reveal="up"] { transform: perspective(900px) rotateX(8deg) translateY(28px); filter: blur(6px); }
-.js [data-reveal="left"] { transform: perspective(900px) rotateY(-10deg) translateX(-40px); }
-.js [data-reveal="right"] { transform: perspective(900px) rotateY(10deg) translateX(40px); }
+/* Scroll reveal v5: hanya fade + naik 8px, 280ms, stagger 60ms.
+   Keadaan tersembunyi hanya saat class .js ada di <html> (ditambah
+   skrip inline di <head>), jadi tanpa JS semua teks tampil penuh. */
+.js [data-reveal] { opacity: 0; transform: translateY(8px); }
 .js [data-reveal].is-visible {
-  opacity: 1; transform: none; filter: none;
-  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1; transform: translateY(0);
+  transition: opacity 280ms ease, transform 280ms ease;
 }
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] { opacity: 1; transform: none; filter: none; }
+  .js [data-reveal] { opacity: 1; transform: none; }
 }
 
-/* Background animasi 3D (atas permintaan user, 23 Nov 2026: "Background
-   animasi 3d gitu", karena animasi lama terlalu halus sampai tidak
-   terlihat di HP). Lapisan bentuk geometris CSS 3D yang mengambang
-   dan berputar pelan di belakang hero beranda dan section Filosofi.
-   Dipilih CSS 3D, bukan Three.js, supaya ringan di HP, tanpa CDN,
-   dan tetap jalan tanpa JavaScript (animasi CSS murni, dekoratif;
-   konten tetap lengkap). Parallax mouse digerakkan JavaScript lewat
-   --mx/--my di section; tanpa JS bentuknya tetap beranimasi. Dengan
-   prefers-reduced-motion, lapisan ini disembunyikan. */
-.hero .bg-3d, .philosophy .bg-3d {
-  position: absolute; inset: -20px; z-index: 1; overflow: hidden;
-  pointer-events: none; perspective: 900px;
-  transform: translate3d(calc(var(--mx, 0) * 14px), calc(var(--my, 0) * 10px), 0);
-  transition: transform 500ms ease-out;
-}
-.hero .bg-3d { --shape: rgba(255, 253, 249, 0.65); --shape-fill: rgba(255, 253, 249, 0.4); }
-.philosophy .bg-3d { --shape: rgba(255, 253, 249, 0.35); --shape-fill: rgba(255, 253, 249, 0.2); }
-.hero .hero-body { z-index: 2; }
-.philosophy { position: relative; overflow: hidden; }
-.philosophy > :not(.bg-3d) { position: relative; z-index: 1; }
-.bg-3d i { position: absolute; display: block; }
-.bg-3d i:nth-child(1) { width: 54px; height: 54px; top: 8%; left: 5%; border: 2px solid var(--shape); animation: drift3d-a 16s ease-in-out infinite alternate; }
-.bg-3d i:nth-child(2) { width: 72px; height: 72px; top: 12%; right: 7%; border: 2px solid var(--shape); border-radius: 50%; animation: drift3d-b 20s ease-in-out infinite alternate; }
-.bg-3d i:nth-child(3) { width: 64px; height: 56px; top: 40%; left: 84%; background: var(--shape-fill); clip-path: polygon(50% 0, 100% 100%, 0 100%); animation: drift3d-c 18s ease-in-out infinite alternate; }
-.bg-3d i:nth-child(4) { width: 90px; height: 10px; top: 36%; left: 12%; background: var(--shape-fill); border-radius: 999px; animation: drift3d-b 14s ease-in-out infinite alternate-reverse; }
-.bg-3d i:nth-child(5) { width: 26px; height: 26px; top: 6%; left: 46%; background: var(--shape); border-radius: 50%; animation: drift3d-a 12s ease-in-out infinite alternate-reverse; }
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes drift3d-a { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(45deg); } to { transform: translate3d(16px, -22px, 50px) rotateX(32deg) rotateY(48deg) rotateZ(45deg); } }
-  @keyframes drift3d-b { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg); } to { transform: translate3d(-18px, 16px, 60px) rotateX(-28deg) rotateY(36deg); } }
-  @keyframes drift3d-c { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg); } to { transform: translate3d(12px, 20px, -40px) rotateX(24deg) rotateY(-42deg) rotateZ(120deg); } }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bg-3d { display: none; }
-}
 
-/* Transisi 3D ganti halaman (atas permintaan user, 23 Nov 2026:
-   "Sama transition 3d yg keren"). Halaman baru masuk dengan putaran
-   rotateY kecil + fade (550ms); halaman lama keluar dengan rotateY
-   berlawanan + fade saat tautan internal diklik (400ms, diatur
-   JavaScript di app.js). Tanpa JavaScript, navigasi normal tanpa
-   transisi. Dengan prefers-reduced-motion, semuanya dimatikan oleh
-   aturan reduce global. */
-@media (prefers-reduced-motion: no-preference) {
-  body.page-entering main { animation: pageEnter3d 550ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  @keyframes pageEnter3d { from { opacity: 0; transform: perspective(1200px) rotateY(-7deg) translateY(12px); } to { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateY(0); } }
-  body.page-leaving main { opacity: 0; transform: perspective(1200px) rotateY(8deg) translateX(-24px); transition: opacity 400ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1); }
-}
 
 /* Tablet dan HP: komposisi sendiri, bukan desktop yang dikecilkan. */
 @media (max-width: 900px) {
@@ -850,7 +649,7 @@ input, select, textarea { border-radius: var(--radius); }
   .site-nav a:hover { background: var(--field); }
   .site-nav a[aria-current="page"] { background: var(--accent-soft); }
   .site-nav a.nav-login {
-    display: block; background: var(--grad-gold); color: var(--ink);
+    display: block; background: var(--accent); color: var(--accent-ink);
     text-align: center; font-weight: 700; margin-top: 6px;
   }
   .nav-toggle-input:checked ~ .site-nav { display: flex; }
@@ -883,15 +682,13 @@ input, select, textarea { border-radius: var(--radius); }
   .site-nav a:hover { background: var(--field); }
   .site-nav a[aria-current="page"] { background: var(--accent-soft); }
   .site-nav a.nav-login {
-    display: block; background: var(--grad-gold); color: var(--ink);
+    display: block; background: var(--accent); color: var(--accent-ink);
     text-align: center; font-weight: 700; margin-top: 6px;
   }
   .nav-toggle-input:checked ~ .site-nav { display: flex; }
   .nav-toggle-input:focus-visible + .nav-toggle { outline: 2px solid var(--accent); outline-offset: 2px; }
   .city-list li { grid-template-columns: 1fr; gap: 4px; padding: 18px; }
   .form-row { grid-template-columns: 1fr; }
-  /* Scroll reveal di HP: semua kartu masuk dari kanan, dengan putaran 3D. */
-  .js [data-reveal="left"] { transform: perspective(900px) rotateY(10deg) translateX(40px); }
   /* Footer di HP: satu kolom vertikal menumpuk (perbaikan r3).
      Aturan dasar .site-footer .footer-cols lebih spesifik, jadi aturan
      mobile harus memakai selektor yang sama spesifiknya, kalau tidak
@@ -901,11 +698,6 @@ input, select, textarea { border-radius: var(--radius); }
   .site-footer .footer-col h3 { white-space: nowrap; }
   .site-footer .footer-col li a { white-space: nowrap; }
   .site-footer .footer-col p { max-width: none; }
-  .typewriter { min-height: 4.6em; }
-  .marquee { margin-bottom: 56px; }
-  .marquee-track span { font-size: 22px; }
-  .mascot img { width: 180px; }
-  .logo-3d img { width: 160px; }
   table { min-width: 560px; }
   th, td { padding: 10px 12px; font-size: 14px; }
   /* Tombol metode: stack vertikal, masing-masing lebar penuh. */
@@ -930,7 +722,7 @@ input, select, textarea { border-radius: var(--radius); }
   h1 { font-size: 40px; }
   .hero img { aspect-ratio: 4 / 3; }
   .hero .hero-body, .hero-banner .hero-body {
-    position: static; background: var(--grad-philosophy); padding: 28px 20px 24px;
+    position: static; background: var(--accent-deep); padding: 28px 20px 24px;
   }
   .hero-banner img { aspect-ratio: 4 / 3; }
   .steps { grid-template-columns: 1fr; }
