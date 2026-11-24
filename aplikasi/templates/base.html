@@ -15,7 +15,7 @@
 <script>document.documentElement.classList.add('js');</script>
 <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 <a class="skip-link" href="#konten">Lewati ke konten utama</a>
 {# Ikon dan simbol SVG buatan sendiri (inline <symbol>, bukan emoji, bukan gambar situs lain).
    Dipakai lewat <svg class="icon"><use href="#icon-c1"/></svg> di template. #}
@@ -101,12 +101,12 @@
 {% if messages %}{% for m in messages %}<div class="success" role="status">{{ m }}</div>{% endfor %}{% endif %}
 {% endwith %}
 {% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
-{% if vercel_demo and request.endpoint and request.endpoint.startswith('admin') %}<div class="notice" role="note">Demo Vercel: perubahan admin di situs ini tidak permanen dan bisa hilang saat server dimulai ulang. Untuk demo edit yang tersimpan, jalankan aplikasi di laptop.</div>{% endif %}
+{% if vercel_demo and request.endpoint and request.endpoint.startswith('admin') and request.endpoint != 'admin_login' %}<div class="notice" role="note">Demo Vercel: perubahan admin di situs ini tidak permanen dan bisa hilang saat server dimulai ulang. Untuk demo edit yang tersimpan, jalankan aplikasi di laptop.</div>{% endif %}
 {% block content %}{% endblock %}
 </main>
 <footer class="site-footer">
   <div class="footer-inner">
-    <p class="footer-word"><img class="logo-footer" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="48" height="48" alt=""> TripRank</p>
+    <p class="footer-word"><img class="logo-footer" src="{{ url_for('static', filename='images/logo.svg') }}" width="48" height="48" alt=""> TripRank</p>
     <p class="footer-tagline">Dipilih dengan tenang. Dibuktikan dengan angka.</p>
     <div class="footer-cols">
       <div class="footer-col">
@@ -138,7 +138,7 @@
     </div>
     <div class="footer-bottom">
       <p>Proyek akhir: Sistem Pendukung Keputusan Rekomendasi Paket Wisata di Kota Besar Indonesia Menggunakan Metode SAW dan TOPSIS. Data: 100 paket, 298 tempat, 403 relasi paket dan tempat.</p>
-      <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli. Foto kota: Wikimedia Commons dengan lisensi jelas, bukan milik proyek.</p>
+      <p>Ini proyek akhir kuliah, bukan situs booking. Harga dan skor adalah hasil proyek akademik untuk rekomendasi. Periksa harga resmi ke penyedia paket sebelum membeli. Gambar kota di beranda dibuat untuk proyek ini; foto kota di halaman Tentang berasal dari Wikimedia Commons dengan lisensi jelas, bukan milik proyek.</p>
     </div>
   </div>
 </footer>

@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 {% block title %}TripRank — Pilih Kota{% endblock %}
+{% block body_class %}home-hero{% endblock %}
 {% block content %}
 <section class="hero-pomaii" aria-labelledby="judul-hero">
   <img src="{{ url_for('static', filename='images/pomaii-hero-ai.jpg') }}" width="1920" height="1280" fetchpriority="high" style="object-position: 50% 50%" alt="Monumen Nasional (Monas) di Jakarta">
   <div class="hero-pomaii-body">
-    <p class="hero-eyebrow">Rekomendasi paket wisata</p>
-    <h1 id="judul-hero"><span class="line"><span>Dipilih dengan tenang.</span></span><span class="line"><span>Dibuktikan dengan angka.</span></span></h1>
-    <p class="hero-sub">TripRank merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
-    <p class="hero-cta"><a class="btn btn-cta" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-quiet btn-pill" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
+    <div class="hero-pomaii-panel">
+      <p class="hero-eyebrow">Rekomendasi paket wisata</p>
+      <h1 id="judul-hero"><span class="line"><span>Dipilih dengan tenang.</span></span><span class="line"><span>Dibuktikan dengan angka.</span></span></h1>
+      <p class="hero-sub">TripRank merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
+      <p class="hero-cta"><a class="btn btn-cta" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-quiet btn-pill" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
+    </div>
   </div>
 </section>
 
@@ -56,7 +59,7 @@
     {% set m = city_meta[k.nama] %}
     {% set w = winners[k.nama] %}
     <li data-reveal="{{ 'left' if loop.index is odd else 'right' }}">
-      <img src="{{ url_for('static', filename='images/' + m.file) }}" width="{{ m.width }}" height="{{ m.height }}" loading="lazy" style="object-position: {{ m.position }}" alt="{{ m.subject }}">
+      <img src="{{ url_for('static', filename='images/' + m.card_file) }}" width="{{ m.card_width }}" height="{{ m.card_height }}" loading="lazy" style="object-position: {{ m.card_position }}" alt="{{ m.subject }}">
       <div class="city-card-body">
         <div class="city-card-head">
           <svg class="icon icon-city" aria-hidden="true"><use href="#icon-{{ m.symbol }}"/></svg>
@@ -64,7 +67,6 @@
           <span class="city-count">{{ k.jumlah }} paket</span>
         </div>
         <p class="city-winner">Pemenang SAW: <strong>Paket {{ w.saw_paket }}</strong> (Vi {{ '%.4f'|format(w.saw_vi) }}). Pemenang TOPSIS: <strong>Paket {{ w.topsis_paket }}</strong> (Ci {{ '%.4f'|format(w.topsis_ci) }}).</p>
-        <p class="photo-credit">Foto: {{ m.subject }}, {{ m.photographer }} ({{ m.license }}).</p>
         <span class="city-actions">
           <a class="btn btn-quiet" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
           <a class="btn" href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}">Rekomendasi SAW dan TOPSIS</a>
@@ -80,7 +82,7 @@
   <p class="section-note" data-reveal="up">Lima kriteria, total bobot 1,00. Klik untuk membaca cara kerja tiap kriteria.</p>
   <ul class="criteria-pills">
   {% for k in kriteria %}
-    <li><a href="{{ url_for('cara_kerja') }}"><span class="criterion-icon"><img class="icon-3d" src="{{ url_for('static', filename='images/icon-3d-' + k.kode|lower + '.webp') }}" width="28" height="28" loading="lazy" alt="" onerror="this.remove(); this.parentElement.classList.add('no-img')"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span><strong>{{ k.nama }}</strong><span class="pill-weight">{{ k.kode }} · {{ ('%.2f'|format(k.bobot)).replace('.', ',') }} · {{ k.tipe }}</span></a></li>
+    <li><a href="{{ url_for('cara_kerja') }}"><span class="criterion-icon"><svg class="icon icon-criterion" aria-hidden="true"><use href="#icon-{{ k.kode|lower }}"/></svg></span><strong>{{ k.nama }}</strong><span class="pill-weight">{{ k.kode }} · {{ ('%.2f'|format(k.bobot)).replace('.', ',') }} · {{ k.tipe }}</span></a></li>
   {% endfor %}
   </ul>
 </section>
@@ -139,11 +141,13 @@
   </div>
 </section>
 
-<section aria-labelledby="bukan-booking">
-  <h2 id="bukan-booking" data-reveal="up">Bukan situs booking</h2>
-  <p class="section-note" data-reveal="up">Ini proyek akhir kuliah. Tidak ada pemesanan, tidak ada pembayaran, dan tidak ada data pribadi yang diminta. Ranking dihitung dengan SAW dan TOPSIS, dan tahap hitungannya bisa dibuka.</p>
-  <figure class="mascot"><img src="{{ url_for('static', filename='images/maskot-3d.png') }}" width="640" height="640" loading="lazy" alt="Maskot traveler TripRank, seorang traveler kecil bergaya 3D clay dengan ransel dan peta"><figcaption>Ilustrasi 3D: maskot traveler TripRank.</figcaption></figure>
-  <p><a class="btn" href="{{ url_for('tentang') }}">Tentang kami</a> <a class="btn btn-quiet" href="{{ url_for('cara_kerja') }}">Cara kerja</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+<section class="booking-note" aria-labelledby="bukan-booking">
+  <div class="booking-note-body">
+    <h2 id="bukan-booking" data-reveal="up">Bukan situs booking</h2>
+    <p class="section-note" data-reveal="up">Ini proyek akhir kuliah. Tidak ada pemesanan, tidak ada pembayaran, dan tidak ada data pribadi yang diminta. Ranking dihitung dengan SAW dan TOPSIS, dan tahap hitungannya bisa dibuka.</p>
+    <p><a class="btn" href="{{ url_for('tentang') }}">Tentang kami</a> <a class="btn btn-quiet" href="{{ url_for('cara_kerja') }}">Cara kerja</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+  </div>
+  <img class="booking-mascot" src="{{ url_for('static', filename='images/maskot-garuda-3d.png') }}" width="800" height="1071" loading="lazy" alt="Maskot Garuda traveler TripRank, burung Garuda lucu bergaya 3D clay dengan jaket hijau, ransel, dan peta">
 </section>
 
 <div class="facts" aria-label="Ringkasan data">

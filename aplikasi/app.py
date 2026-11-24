@@ -30,11 +30,15 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = bool(os.environ.get("SPK_SECRET_KEY"))
 
-# Metadata foto kota (Wikimedia Commons, lisensi jelas, file lokal di static/images/).
-# Foto bukan milik proyek; kredit lengkap ditampilkan di halaman Tentang.
+# Metadata foto kota.
+# "file" = foto asli Wikimedia Commons (lisensi jelas, file lokal di static/images/),
+# dipakai di halaman Tentang; kredit lengkap ditampilkan di sana.
+# "card_file" = gambar AI untuk kartu kota di beranda (dibuat untuk proyek ini,
+# landmark ikonik tiap kota); kartu beranda tidak memakai kredit fotografer.
 CITY_META = {
     "Jakarta": {
         "file": "jakarta.jpg", "width": 1280, "height": 800, "position": "50% 42%",
+        "card_file": "pomaii-kota-jakarta.jpg", "card_width": 1920, "card_height": 1280, "card_position": "50% 40%",
         "subject": "Monumen Nasional (Monas), Jakarta",
         "photographer": "Ramayoni", "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -43,6 +47,7 @@ CITY_META = {
     },
     "Yogyakarta": {
         "file": "yogyakarta.jpg", "width": 1280, "height": 800, "position": "50% 55%",
+        "card_file": "pomaii-kota-yogyakarta.jpg", "card_width": 1920, "card_height": 1280, "card_position": "50% 55%",
         "subject": "Candi Borobudur, Jawa Tengah",
         "photographer": "Jakub Ha\u0142un", "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -51,6 +56,7 @@ CITY_META = {
     },
     "Bandung": {
         "file": "bandung.jpg", "width": 1280, "height": 800, "position": "50% 42%",
+        "card_file": "pomaii-kota-bandung.jpg", "card_width": 1920, "card_height": 1280, "card_position": "50% 45%",
         "subject": "Gedung Sate, Bandung",
         "photographer": "Gunawan Kartapranata", "license": "CC BY-SA 3.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -59,6 +65,7 @@ CITY_META = {
     },
     "Semarang": {
         "file": "semarang.jpg", "width": 1280, "height": 800, "position": "50% 42%",
+        "card_file": "pomaii-kota-semarang.jpg", "card_width": 1920, "card_height": 1280, "card_position": "50% 50%",
         "subject": "Lawang Sewu, Semarang",
         "photographer": "Philip Nalangan", "license": "CC BY 4.0",
         "license_url": "https://creativecommons.org/licenses/by/4.0",
@@ -67,6 +74,7 @@ CITY_META = {
     },
     "Surabaya": {
         "file": "surabaya.jpg", "width": 1280, "height": 800, "position": "50% 42%",
+        "card_file": "pomaii-kota-surabaya.jpg", "card_width": 1920, "card_height": 1280, "card_position": "50% 30%",
         "subject": "Tugu Pahlawan, Surabaya",
         "photographer": "Eny Santiati", "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",

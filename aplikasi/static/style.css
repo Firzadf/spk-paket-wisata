@@ -54,7 +54,6 @@
   --mono: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --brand: "Fraunces", Georgia, "Times New Roman", Times, serif;
   --measure: 1120px;
-  --measure-wide: 1240px;
   --gap: 24px;
   --radius: 6px;
   --radius-sm: 6px;
@@ -79,7 +78,6 @@ h1, h2, h3 {
   line-height: 1.08;
   overflow-wrap: break-word;
   min-width: 0;
-  text-wrap: balance;
 }
 h1 { font-family: var(--display); }
 h2, h3 { font-family: var(--serif); }
@@ -132,8 +130,21 @@ img { max-width: 100%; display: block; height: auto; }
   border-bottom: 1px solid var(--line);
   position: sticky; top: 0; z-index: 10;
 }
+/* Header transparan di atas foto (home, desktop, gaya Pomaii, ADR-007):
+   header menumpuk di atas hero full-screen tanpa bar sendiri; saat
+   halaman di-scroll, class is-scrolled (JavaScript di app.js) mengubahnya
+   jadi solid krem. Mobile tetap pil mengambang (aturan <=900px di bawah). */
+@media (min-width: 901px) {
+  body.home-hero .site-header {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: transparent; border-bottom: 0;
+  }
+  body.home-hero .site-header.is-scrolled {
+    background: var(--surface); border-bottom: 1px solid var(--line);
+  }
+}
 .site-header .header-inner {
-  max-width: var(--measure-wide); margin: 0 auto; padding: 12px 24px;
+  max-width: var(--measure); margin: 0 auto; padding: 12px 24px;
   display: flex; align-items: center; gap: 8px 16px;
 }
 .wordmark {
@@ -185,30 +196,23 @@ img { max-width: 100%; display: block; height: auto; }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(2) { opacity: 0; }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Tata letak tengah ala Umano (atas permintaan user, 23 Nov 2026):
-   headline hero di tengah, subheadline di tengah dengan lebar dibatasi,
-   tombol aksi di tengah; judul section dan paragraf section di tengah.
-   Isi teks, warna, dan font tetap TripRank. */
-.hero .hero-body { text-align: center; }
-.hero .hero-body h1 { margin-left: auto; margin-right: auto; }
-.hero .hero-body p { margin-left: auto; margin-right: auto; }
-.hero-banner .hero-body { text-align: center; }
-.hero-banner .hero-body h1, .hero-banner .hero-body p { margin-left: auto; margin-right: auto; }
-.mission { text-align: center; }
-.mission p { margin-left: auto; margin-right: auto; }
-.philosophy { text-align: center; }
-.philosophy p { margin-left: auto; margin-right: auto; }
-main section > h2 { text-align: center; }
-main section > .section-note { text-align: center; margin-left: auto; margin-right: auto; }
-main section > p:has(.btn) { text-align: center; }
+/* Tata letak rata kiri ala Pomaii (24 Nov 2026, ADR-007): semua teks
+   section berbagi satu tepi kiri yang lurus dengan container. Aturan
+   tengah ala Umano dari 23 Nov 2026 dibatalkan karena teks tengah
+   bergerigi di kedua sisi dan posisi elemen tidak sejajar. */
+.hero .hero-body { text-align: left; }
+.hero-banner .hero-body { text-align: left; }
+.mission { text-align: left; }
+.mission p { margin-left: 0; margin-right: auto; }
+.philosophy { text-align: left; }
+.philosophy p { margin-left: 0; margin-right: auto; }
+main section > h2 { text-align: left; }
+main section > .section-note { text-align: left; margin-left: 0; margin-right: auto; }
+main section > p:has(.btn) { text-align: left; }
 main section > p:has(.btn) .btn { margin-bottom: 8px; }
 
 main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .page-head { margin-bottom: 32px; }
-.page-head.center { text-align: center; }
-.page-head.center .lede { margin-left: auto; margin-right: auto; }
-.page-head.center .method-group { justify-content: center; }
-.page-head.center .pagination { justify-content: center; }
 .page-head .lede { font-size: 18px; color: var(--muted); max-width: 62ch; }
 .page-head .lede strong { color: var(--ink); }
 
@@ -222,7 +226,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   background: rgba(18, 46, 35, 0.65);
 }
 .hero .hero-body h1 { color: var(--surface); margin: 0 0 10px; }
-.hero .hero-body p { color: var(--surface); opacity: 0.94; margin: 0 0 16px; max-width: 60ch; font-size: 18px; text-wrap: balance; }
+.hero .hero-body p { color: var(--surface); opacity: 0.94; margin: 0 0 16px; max-width: 60ch; font-size: 18px; }
 .hero .hero-body a { color: var(--surface); }
 .hero .hero-body .btn, .hero-banner .hero-body .btn { border: 1px solid var(--accent-ink); }
 /* Tombol sekunder di hero: teks ink di atas krem. Aturan .hero-body a
@@ -243,13 +247,13 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 
 /* --- Gaya Pomaii (24 Nov 2026) --- */
 
-/* Hero full-bleed: keluar dari container main sampai tepi viewport,
-   foto terang siang hari, teks gelap rata kiri di atas foto. Overlay
-   terang DATAR (bukan gradient) supaya teks terbaca tanpa menggelapkan
-   foto seperti scrim lama. Tanpa typewriter, tanpa bg-3d di atas foto. */
+/* Hero full-bleed ala Pomaii (24 Nov 2026, ADR-007): memenuhi seluruh
+   layar browser (min-height 100svh), foto edge-to-edge, teks gelap rata
+   kiri di atas foto. Overlay terang DATAR tipis (bukan gradient) hanya
+   supaya teks terbaca, foto tetap vivid. Tanpa typewriter, tanpa bg-3d. */
 .hero-pomaii {
   position: relative; overflow: hidden;
-  min-height: 620px; margin: -40px calc(50% - 50vw) 0;
+  min-height: 100vh; min-height: 100svh; margin: -40px calc(50% - 50vw) 0;
   background: var(--field);
 }
 .hero-pomaii img {
@@ -258,13 +262,17 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 }
 .hero-pomaii::before {
   content: ""; position: absolute; inset: 0; z-index: 1;
-  background: rgba(250, 247, 241, 0.55);
+  background: rgba(250, 247, 241, 0.18);
 }
 .hero-pomaii-body {
   position: relative; z-index: 2;
-  max-width: var(--measure-wide); margin: 0 auto; padding: 96px 24px 120px;
+  max-width: var(--measure); margin: 0 auto; padding: 96px 24px 120px;
   display: flex; flex-direction: column; align-items: flex-start;
-  text-align: left; min-height: 620px; justify-content: center;
+  text-align: left; min-height: 100vh; min-height: 100svh; justify-content: center;
+}
+.hero-pomaii-panel {
+  background: rgba(250, 247, 241, 0.88);
+  border-radius: 24px; padding: 36px 40px; max-width: 680px;
 }
 .hero-pomaii-body .hero-eyebrow {
   font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
@@ -276,7 +284,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 }
 .hero-pomaii-body .hero-sub {
   color: var(--ink-soft); font-size: 19px; max-width: 560px;
-  margin: 0 0 28px; text-wrap: balance;
+  margin: 0 0 28px;
 }
 .hero-pomaii-body .hero-sub strong { color: var(--ink); }
 .hero-pomaii-body .hero-cta { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
@@ -375,7 +383,6 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .mission p.statement {
   font-family: var(--serif); font-size: clamp(26px, 3.4vw, 38px);
   line-height: 1.3; color: var(--ink); max-width: none; margin: 0 0 20px;
-  text-wrap: balance;
 }
 .mission p { font-size: 18px; color: var(--muted); }
 .mission p strong { color: var(--ink); }
@@ -390,7 +397,6 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .philosophy p.statement {
   font-family: var(--serif); font-size: clamp(24px, 3vw, 34px);
   line-height: 1.3; opacity: 1; max-width: none; margin: 0 0 20px;
-  text-wrap: balance;
 }
 .philosophy .philosophy-label {
   font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
@@ -404,7 +410,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   margin: 0 0 16px; padding: 32px 0 0; list-style: none;
   border-top: 1px solid var(--line-strong);
 }
-.pillars li { margin: 0; }
+.pillars li { margin: 0; display: flex; flex-direction: column; }
 .pillars h3 { font-size: 24px; margin: 0 0 8px; }
 .pillars p { margin: 0; color: var(--muted); font-size: 16px; max-width: none; }
 
@@ -467,7 +473,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
   margin: 0 0 8px; padding: 0; list-style: none;
 }
-.steps li { border: 1px solid var(--line); background: var(--surface); padding: 22px; border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.steps li { border: 1px solid var(--line); background: var(--surface); padding: 22px; border-radius: var(--radius-card); box-shadow: var(--shadow-card); display: flex; flex-direction: column; }
 .steps .step-no {
   display: block; font-family: var(--mono); font-size: 28px; font-weight: 600;
   color: var(--accent); line-height: 1; margin-bottom: 10px;
@@ -478,7 +484,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 /* Section: spasi lega ala Serein di desktop. */
 section { margin-bottom: 96px; }
 section > h2 { padding-top: 0; }
-.section-note { color: var(--muted); font-size: 18px; text-wrap: balance; }
+.section-note { color: var(--muted); font-size: 18px; }
 
 /* Tombol, chip, nav, label: Sora (sans kedua, untuk aksi dan label). */
 .btn, button, .chip, .site-nav a, .header-action, .pagination .page-btn,
@@ -651,6 +657,11 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   background: #fffbeb; border: 1px solid #d97706;
   color: #7c4a03; padding: 14px 16px; margin-bottom: 18px; font-weight: 700;
 }
+/* Login admin: satu kolom tengah ~480px, logo transparan di atas,
+   heading, lalu kartu form; semua sejajar lurus (24 Nov 2026, ADR-007). */
+.login-wrap { max-width: 480px; margin: 0 auto; }
+.login-wrap .page-head { margin-bottom: 24px; }
+.login-wrap .logo-3d img { width: 120px; }
 .login-box { max-width: 480px; border: 1px solid var(--line); background: var(--surface); padding: 28px; }
 .login-box h2 { margin-top: 0; }
 
@@ -682,9 +693,11 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .illustration-tag { display: inline-block; background: var(--field); border: 1px solid var(--line); padding: 1px 8px; font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 6px; }
 .photo-strip figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
-/* Footer (v4 r2): hijau gelap, wordmark besar, 3 kolom, ikon di tiap tautan. */
-.site-footer { background: var(--accent-deep); color: var(--accent-ink); margin-top: 40px; }
-.site-footer .footer-inner { max-width: var(--measure-wide); margin: 0 auto; padding: 56px 24px 32px; }
+/* Footer terang ala Pomaii (24 Nov 2026, ADR-007): ground krem, teks
+   hijau gelap, wordmark besar, 3 kolom, ikon di tiap tautan. Footer
+   hijau gelap v4 dibatalkan karena beda jauh dari Pomaii. */
+.site-footer { background: var(--surface); color: var(--ink); margin-top: 40px; border-top: 1px solid var(--line); }
+.site-footer .footer-inner { max-width: var(--measure); margin: 0 auto; padding: 56px 24px 32px; }
 .site-footer .footer-word {
   font-family: var(--brand); font-size: clamp(48px, 10vw, 96px); font-weight: 400;
   letter-spacing: -0.02em; line-height: 0.95; margin: 0 0 12px;
@@ -692,30 +705,30 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 }
 .site-footer .footer-tagline {
   font-family: var(--brand); font-size: clamp(20px, 2.4vw, 26px); line-height: 1.3;
-  color: var(--accent-ink); opacity: 0.92; margin: 0 0 32px; max-width: none;
+  color: var(--ink); opacity: 0.92; margin: 0 0 32px; max-width: none;
 }
 .site-footer .footer-cols {
   display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px;
-  padding: 32px 0; border-top: 1px solid rgba(255, 253, 249, 0.2);
+  padding: 32px 0; border-top: 1px solid var(--line);
 }
 .site-footer .footer-col h3 {
   font-family: var(--sans-alt); font-size: 13px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
   opacity: 0.65; margin: 0 0 14px;
 }
-.site-footer .footer-col p { color: var(--accent-ink); opacity: 0.88; margin: 0 0 12px; font-size: 16px; }
+.site-footer .footer-col p { color: var(--ink); opacity: 0.88; margin: 0 0 12px; font-size: 16px; }
 .site-footer .footer-col ul { list-style: none; margin: 0; padding: 0; }
 .site-footer .footer-col li { margin: 0; }
 .site-footer .footer-col li a {
   display: inline-flex; align-items: center; gap: 9px; padding: 6px 0;
-  color: var(--accent-ink); text-decoration: none; opacity: 0.88; font-size: 16px;
+  color: var(--ink); text-decoration: none; opacity: 0.88; font-size: 16px;
 }
 .site-footer .footer-col li a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
 .site-footer .footer-col .icon { width: 18px; height: 18px; vertical-align: -3px; opacity: 0.85; }
-.site-footer .footer-bottom { padding-top: 24px; border-top: 1px solid rgba(255, 253, 249, 0.2); }
-.site-footer .footer-bottom p { color: var(--accent-ink); opacity: 0.72; font-size: 14px; margin: 0 0 10px; max-width: none; }
-.site-footer p { color: var(--accent-ink); opacity: 0.88; max-width: 68ch; }
-.site-footer a { color: var(--accent-ink); }
+.site-footer .footer-bottom { padding-top: 24px; border-top: 1px solid var(--line); }
+.site-footer .footer-bottom p { color: var(--ink); opacity: 0.72; font-size: 14px; margin: 0 0 10px; max-width: none; }
+.site-footer p { color: var(--ink); opacity: 0.88; max-width: 68ch; }
+.site-footer a { color: var(--ink); }
 
 /* Motion v4: tenang, 300-400ms, naik 12px + opacity, stagger 60-90ms.
    Hanya transform dan opacity. Angka Vi/Ci tidak dianimasikan, baris tabel
@@ -767,17 +780,30 @@ input, select, textarea { border-radius: var(--radius); }
    digeser ke kanan di dalam wrapper-nya. */
 .table-hint { display: none; }
 
-/* Ikon 3D clay (v4 r2): gambar kecil bergaya clay, fallback-nya ikon SVG. */
-.icon-3d { width: 28px; height: 28px; vertical-align: -7px; margin-right: 6px; border-radius: var(--radius); }
-.criterion-icon { display: inline-flex; align-items: center; }
-.criterion-icon svg { display: none; }
-.criterion-icon.no-img svg { display: inline-block; }
+/* Ikon kriteria garis bersih ala Pomaii (24 Nov 2026, ADR-007): satu set
+   ikon SVG garis tipis dalam lingkaran lembut. Ikon 3D clay v4 r2
+   dibatalkan; file icon-3d-*.webp tidak lagi dipakai. */
+.criterion-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent-soft); border: 1px solid var(--line); flex: none;
+}
+.criterion-icon svg { display: inline-block; }
+.criterion-icon .icon-criterion { margin: 0; vertical-align: 0; }
 .logo-3d { margin: 0 0 16px; }
-.logo-3d img { width: 200px; height: auto; border-radius: var(--radius); }
-.logo-3d figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
-.mascot { margin: 0 0 24px; text-align: center; }
-.mascot img { width: 220px; height: auto; margin: 0 auto; border-radius: var(--radius); }
-.mascot figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.logo-3d img { width: 200px; height: auto; }
+.mascot { margin: 0 0 24px; }
+.mascot img { width: 220px; height: auto; border-radius: var(--radius-card); }
+
+/* Panel "Bukan situs booking" (24 Nov 2026, ADR-007): dua kolom ala
+   Pomaii, teks rata kiri + maskot Garuda di kanan, tanpa caption. */
+.booking-note {
+  display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  padding: 40px 44px; margin-bottom: 96px; overflow: hidden;
+}
+.booking-mascot { width: 100%; max-width: 300px; height: auto; border-radius: var(--radius-card); justify-self: end; }
 
 /* Efek 3D (v4 r2): tilt halus saat hover, hanya di perangkat ber-pointer
    dan bila motion diizinkan. Di HP tanpa hover tidak ada efek, kartu diam. */
@@ -792,11 +818,11 @@ input, select, textarea { border-radius: var(--radius); }
 
 /* Hero headline reveal per baris (v4 r2): line-level, bukan per karakter,
    supaya screen reader dan copy-paste tetap benar. */
-.hero h1 .line, .hero-pomaii h1 .line { display: block; overflow: hidden; perspective: 800px; }
+.hero h1 .line, .hero-pomaii h1 .line { display: block; overflow: hidden; }
 @media (prefers-reduced-motion: no-preference) {
   .hero h1 .line > span, .hero-pomaii h1 .line > span { display: block; animation: lineRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
   .hero h1 .line:nth-child(2) > span, .hero-pomaii h1 .line:nth-child(2) > span { animation-delay: 90ms; }
-  @keyframes lineRise { from { opacity: 0; transform: translateY(110%) rotateX(8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
+  @keyframes lineRise { from { opacity: 0; transform: translateY(110%); } to { opacity: 1; transform: translateY(0); } }
 }
 
 
@@ -815,17 +841,16 @@ input, select, textarea { border-radius: var(--radius); }
 @keyframes loaderRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes loaderBar { to { width: 100%; } }
 
-/* Scroll reveal berarah (v4 r2): keadaan tersembunyi hanya saat class .js
-   ada di <html> (ditambah skrip inline di <head>), jadi tanpa JS semua
-   teks langsung tampil penuh. Ganjil dari kiri, genap dari kanan di
-   desktop; di HP semuanya dari kanan. Judul dan paragraf dari bawah. */
+/* Scroll reveal tanpa putaran (24 Nov 2026, ADR-007): hanya fade +
+   naik 12px, 400ms. Aturan lama (rotateX/rotateY + blur, dan masuk
+   dari kiri/kanan) dibatalkan karena elemen terlihat miring saat muncul.
+   Keadaan tersembunyi hanya saat class .js ada di <html>, jadi tanpa
+   JS semua teks tampil penuh. */
 .js [data-reveal] { opacity: 0; }
-.js [data-reveal="up"] { transform: perspective(900px) rotateX(8deg) translateY(28px); filter: blur(6px); }
-.js [data-reveal="left"] { transform: perspective(900px) rotateY(-10deg) translateX(-40px); }
-.js [data-reveal="right"] { transform: perspective(900px) rotateY(10deg) translateX(40px); }
+.js [data-reveal="up"], .js [data-reveal="left"], .js [data-reveal="right"] { transform: translateY(12px); }
 .js [data-reveal].is-visible {
-  opacity: 1; transform: none; filter: none;
-  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1; transform: none;
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal] { opacity: 1; transform: none; filter: none; }
@@ -901,6 +926,9 @@ input, select, textarea { border-radius: var(--radius); }
   .mission { margin-bottom: 64px; }
   .philosophy { margin-bottom: 64px; }
   .facts { margin-bottom: 64px; }
+  /* Panel booking di tablet: satu kolom, maskot di bawah teks. */
+  .booking-note { grid-template-columns: 1fr; padding: 32px 24px; }
+  .booking-mascot { max-width: 260px; justify-self: start; }
   /* Header pil di tablet: sama seperti HP, logo + hamburger di pil,
      nav di panel dropdown di bawah pil. Pil mengambang hanya di
      layar <=900px; desktop tetap bar penuh (koreksi Umano). */
@@ -963,8 +991,6 @@ input, select, textarea { border-radius: var(--radius); }
   .nav-toggle-input:focus-visible + .nav-toggle { outline: 2px solid var(--accent); outline-offset: 2px; }
   .city-list li { grid-template-columns: 1fr; gap: 4px; padding: 18px; }
   .form-row { grid-template-columns: 1fr; }
-  /* Scroll reveal di HP: semua kartu masuk dari kanan, dengan putaran 3D. */
-  .js [data-reveal="left"] { transform: perspective(900px) rotateY(10deg) translateX(40px); }
   /* Footer di HP: satu kolom vertikal menumpuk (perbaikan r3).
      Aturan dasar .site-footer .footer-cols lebih spesifik, jadi aturan
      mobile harus memakai selektor yang sama spesifiknya, kalau tidak
@@ -1009,9 +1035,10 @@ input, select, textarea { border-radius: var(--radius); }
   /* Gaya Pomaii di HP: hero tetap foto dengan teks di atasnya, filter
      bar menumpuk vertikal, trust strip 2 kolom, stories dan banner Lab
      satu kolom. */
-  .hero-pomaii, .hero-pomaii-body { min-height: 560px; }
+  .hero-pomaii, .hero-pomaii-body { min-height: 100vh; min-height: 100svh; }
   .hero-pomaii { margin-top: -28px; }
   .hero-pomaii-body { padding: 72px 20px 96px; }
+  .hero-pomaii-panel { padding: 24px 20px; border-radius: 20px; }
   .hero-pomaii-body h1 { font-size: clamp(36px, 10vw, 44px); }
   .hero-pomaii-body .hero-sub { font-size: 17px; }
   .hero-pomaii-body .hero-cta .btn { width: 100%; text-align: center; }

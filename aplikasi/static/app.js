@@ -97,8 +97,8 @@
   updateTotal();
 })();
 
-/* Loading screen dan scroll reveal berarah (v4 r2). Typewriter DIHAPUS
-   pada redesign Pomaii (24 Nov 2026). Semua ini lapisan di atas konten:
+/* Loading screen dan scroll reveal (v4 r2; reveal tanpa putaran sejak
+   ADR-007). Typewriter DIHAPUS pada redesign Pomaii (24 Nov 2026). Semua ini lapisan di atas konten:
    tanpa JavaScript, konten tetap tampil penuh; dengan
    prefers-reduced-motion, semuanya dimatikan. */
 (function () {
@@ -191,7 +191,7 @@
     });
   }
 
-  /* --- Scroll reveal berarah: IntersectionObserver, stagger per grup. --- */
+  /* --- Scroll reveal: IntersectionObserver, stagger per grup. --- */
   var targets = document.querySelectorAll("[data-reveal]");
   if (targets.length && !reduced && "IntersectionObserver" in window) {
     var groups = {};
@@ -221,4 +221,19 @@
   } else if (targets.length) {
     targets.forEach(function (el) { el.classList.add("is-visible"); });
   }
+})();
+
+/* Header transparan di atas hero (home, desktop, gaya Pomaii): saat
+   halaman di-scroll, header berubah jadi solid krem. Hanya aktif bila
+   body.home-hero ada; tanpa JavaScript header tetap transparan di atas
+   foto dan teks tetap terbaca karena foto bagian atas terang. */
+(function () {
+  "use strict";
+  var header = document.querySelector("body.home-hero .site-header");
+  if (!header) return;
+  function onScroll() {
+    header.classList.toggle("is-scrolled", window.scrollY > 24);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 })();

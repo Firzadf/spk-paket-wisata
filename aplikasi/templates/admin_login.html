@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Login Admin — TripRank{% endblock %}
 {% block content %}
+<div class="login-wrap">
 <div class="page-head">
-  <figure class="logo-3d"><img src="{{ url_for('static', filename='images/logo-3d.png') }}" width="512" height="341" alt="Logo 3D TripRank, pin hijau bergaya clay dengan huruf T dan grafik ranking"><figcaption>Logo 3D TripRank.</figcaption></figure>
+  <figure class="logo-3d"><img src="{{ url_for('static', filename='images/logo-3d.png') }}" width="120" height="80" alt="Logo 3D TripRank, pin hijau bergaya clay dengan huruf T dan grafik ranking"></figure>
   <h1>Masuk Admin</h1>
   <p class="lede">Halaman ini hanya untuk pengelola. Pengunjung biasa tidak perlu masuk.</p>
 </div>
@@ -21,5 +22,6 @@
     <p><button type="submit">Masuk</button></p>
   </form>
   <p class="hint">Akun demo: admin / admin123. Ganti sebelum pemakaian nyata.</p>
+</div>
 </div>
 {% endblock %}

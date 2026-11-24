@@ -45,9 +45,12 @@ class V41HtmlTest(TripRankTestCase):
         self.assertIn("bg-3d", html)
         self.assertNotIn("data-typewriter", html)
 
-    def test_rekomendasi_page_head_rata_tengah(self):
+    def test_rekomendasi_page_head_rata_kiri(self):
+        # ADR-007 (24 Nov 2026): perataan tengah v4.1 dibatalkan, halaman
+        # rekomendasi kembali rata kiri ala Pomaii.
         html = self.client.get(
             "/rekomendasi?kota=Jakarta&metode=keduanya").get_data(as_text=True)
-        self.assertIn('class="page-head center"', html)
+        self.assertNotIn('class="page-head center"', html)
+        self.assertIn('class="page-head"', html)
         self.assertIn("Hanya SAW", html)
         self.assertIn("Keduanya", html)

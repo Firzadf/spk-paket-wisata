@@ -55,9 +55,12 @@ class TestPomaii(TripRankTestCase):
         self.assertIn("20 paket", html)
 
     def test_home_kredit_wikimedia_foto_asli_tanpa_label_ai(self):
-        # Foto kota tetap asli Wikimedia (kredit tetap, syarat lisensi),
-        # hero dan gambar traveler/danau hasil generate AI dan tidak
-        # memakai label "Ilustrasi AI" (aturan final user 24 Nov 2026).
+        # ADR-007 (24 Nov 2026): kartu kota di beranda kini memakai gambar
+        # AI (pomaii-kota-*.jpg) atas perintah user, jadi foto asli tidak
+        # lagi tampil di beranda. Kredit Wikimedia tetap ada: kalimat
+        # footer menjelaskan foto asli dipakai di halaman Tentang, dan
+        # halaman Tentang tetap menampilkan foto asli + kredit lengkap.
+        # Tidak ada label "Ilustrasi AI" (aturan final user 24 Nov 2026).
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("Wikimedia Commons", html)
         self.assertNotIn("Ilustrasi AI", html)
@@ -65,8 +68,13 @@ class TestPomaii(TripRankTestCase):
         self.assertIn("pomaii-stories-1.jpg", html)
         self.assertIn("pomaii-stories-2.jpg", html)
         self.assertIn("pomaii-lab.jpg", html)
-        # Kartu Jakarta tetap memakai foto asli yang digrading.
-        self.assertIn("jakarta.jpg", html)
+        # Kartu kota memakai gambar AI, bukan foto asli.
+        for slug in ("jakarta", "yogyakarta", "bandung", "semarang", "surabaya"):
+            self.assertIn("pomaii-kota-%s.jpg" % slug, html)
+        self.assertNotIn("/static/images/jakarta.jpg", html)
+        tentang = self.client.get("/tentang").get_data(as_text=True)
+        self.assertIn("/static/images/jakarta.jpg", tentang)
+        self.assertIn("Wikimedia Commons", tentang)
 
     def test_home_punya_pill_kriteria_dan_banner_lab(self):
         html = self.client.get("/").get_data(as_text=True)
