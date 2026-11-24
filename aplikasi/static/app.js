@@ -156,10 +156,14 @@
         setTimeout(function () { location.href = a.href; }, 420);
       });
     });
+    /* pageshow: bersihkan kelas hanya saat kembali dari cache
+       (e.persisted). Di muat awal JANGAN hapus page-entering, karena
+       itu membatalkan animasi masuk 3D sebelum sempat tampil
+       (bug v4: kelas ditambah lalu langsung dihapus 38ms kemudian). */
     window.addEventListener("pageshow", function (e) {
       document.body.classList.remove("page-leaving");
-      document.body.classList.remove("page-entering");
       if (e.persisted) {
+        document.body.classList.remove("page-entering");
         var old = document.querySelector(".trip-loader");
         if (old && old.parentNode) old.parentNode.removeChild(old);
       }

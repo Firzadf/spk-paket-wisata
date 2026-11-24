@@ -18,6 +18,9 @@ Isi:
   dan nilai, serta simulasi bobot admin.
 - `test_security.py` — Token CSRF, batas percobaan login,
   flag cookie sesi, dan peringatan demo Vercel.
+- `test_v41.py` — Polish v4.1: 0 gradient dan 0 warna emas di CSS,
+  marquee hilang, animasi 3D tetap ada, halaman rekomendasi
+  rata tengah.
 
 Tes yang menulis (admin) memakai salinan sementara database
 (lihat `base.py`), jadi `aplikasi/spk_wisata.db` yang ter-commit

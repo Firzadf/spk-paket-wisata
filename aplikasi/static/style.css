@@ -28,17 +28,16 @@
      aja" / "Keknya bakal lebih bagus ga sih").
    - Scrim netral di atas foto hero: satu-satunya pengecualian gradien yang
      diizinkan design.md, dipakai hanya di atas foto agar teks terbaca.
-   - Warna tombol dan gradient (23 Nov 2026, atas permintaan user:
-     "Soal tombol juga jangan monoton di warna putih polos" dan
-     "Sama bisa ga websitenya jadi gradient gradient gitu"): tombol
-     sekunder bukan lagi putih polos, tiap jenis tombol punya warna
-     sendiri (hijau daun, emas, pasir, hijau tua), dan gradient dipakai
-     halus di tombol, hero, Filosofi, footer, dan latar. Ini
-     penyimpangan yang disengaja dari larangan gradien di design.md,
-     atas perintah user yang eksplisit; gradient hanya aksen, teks
-     tetap kontras minimal AA (dihitung: emas #e8b64a dengan ink
-     8,46:1; hijau daun #2e7d5b dengan putih 4,92:1; pasir dengan ink
-     12,75:1; semua warna tombol primer 9,9:1 ke atas). */
+   - Warna tombol dan gradient (23 Nov 2026, atas permintaan user)
+     sempat dipakai: tombol emas, hijau daun, pasir, dan gradient di
+     tombol, hero, Filosofi, footer, dan latar.
+   - Polish v4.1 (24 Nov 2026, atas permintaan user: warna tombol dan
+     font norak, tampilan tombol norak): SEMUA gradient dan warna emas
+     dihapus; tombol hanya dua (primer hijau gelap datar, sekunder krem
+     datar ber-border ink), bayangan offset 3D diganti bayangan lembut
+     saat hover. Animasi 3D dan transisi yang disukai user tetap ada:
+     bg-3d melayang, loading screen, typewriter, transisi 3D halaman,
+     scroll reveal 3D, tilt kartu. */
 :root {
   --ground: #faf7f1;
   --surface: #fffdf9;
@@ -51,25 +50,6 @@
   --accent-ink: #fffdf9;
   --accent-deep: #122e23;
   --accent-soft: #e7efe9;
-  --leaf: #2e7d5b;
-  --leaf-deep: #1d5c40;
-  --gold: #c98f2d;
-  --gold-bright: #e8b64a;
-  --gold-deep: #9a6b1a;
-  --gold-soft: #f6e8c8;
-  --sand: #efe6d2;
-  --sand-deep: #e3d3ae;
-  --grad-primary: linear-gradient(135deg, #2e7d5b 0%, #1d4a38 55%, #122e23 100%);
-  --grad-primary-hover: linear-gradient(135deg, #1d4a38 0%, #122e23 70%, #0e2a1e 100%);
-  --grad-gold: linear-gradient(135deg, #e8b64a 0%, #c98f2d 100%);
-  --grad-gold-hover: linear-gradient(135deg, #c98f2d 0%, #9a6b1a 100%);
-  --grad-cream: linear-gradient(135deg, #fffdf9 0%, #f6ead0 100%);
-  --grad-sand: linear-gradient(135deg, #efe6d2 0%, #e3d3ae 100%);
-  --grad-dark: linear-gradient(135deg, #23392e 0%, #122e23 100%);
-  --grad-leaf: linear-gradient(135deg, #2e7d5b 0%, #1d5c40 100%);
-  --grad-ground: linear-gradient(180deg, #faf7f1 0%, #f3ecdd 38%, #faf7f1 100%);
-  --grad-philosophy: linear-gradient(135deg, #1d4a38 0%, #122e23 60%, #0e2a1e 100%);
-  --grad-footer: linear-gradient(180deg, #122e23 0%, #0e2a1e 100%);
   --line: #e3ddd0;
   --line-strong: #cfc6b2;
   --winner: #e7efe9;
@@ -94,8 +74,7 @@ html { overflow-x: clip; scroll-behavior: smooth; }
 body { overflow-x: clip; }
 body {
   margin: 0;
-  background: var(--grad-ground);
-  background-attachment: fixed;
+  background: var(--ground);
   color: var(--ink);
   font-family: var(--sans);
   font-size: 17px;
@@ -109,6 +88,7 @@ h1, h2, h3 {
   line-height: 1.08;
   overflow-wrap: break-word;
   min-width: 0;
+  text-wrap: balance;
 }
 h1 { font-family: var(--display); }
 h2, h3 { font-family: var(--serif); }
@@ -187,18 +167,16 @@ img { max-width: 100%; display: block; height: auto; }
 .site-nav a[aria-current="page"] { color: var(--ink); }
 .site-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .site-nav a.nav-login { display: none; }
-/* Tombol Masuk Admin di dropdown mobile: gaya 3D yang sama dengan .btn. */
-.site-nav a.nav-login { box-shadow: 0 4px 0 var(--accent-deep); }
-.site-nav a.nav-login:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
+/* Tombol Masuk Admin di dropdown mobile: primer datar, sama dengan .btn. */
+.site-nav a.nav-login:active { transform: translateY(1px); }
 .header-action {
-  background: var(--grad-gold); color: var(--ink); text-decoration: none;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
   padding: 10px 20px; font-weight: 700; font-size: 16px;
-  white-space: nowrap; border: 1px solid var(--gold-deep); border-radius: 999px;
-  box-shadow: 0 4px 0 var(--gold-deep);
+  white-space: nowrap; border: 1px solid var(--accent-deep); border-radius: 999px;
   transition: background 200ms, color 200ms, border-color 200ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.header-action:hover { background: var(--grad-gold-hover); color: var(--ink); border-color: var(--gold-deep); transform: translateY(-2px); box-shadow: 0 6px 0 var(--gold-deep); }
-.header-action:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--gold-deep); }
+.header-action:hover { background: var(--accent-deep); color: var(--accent-ink); border-color: var(--accent-deep); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(20, 38, 31, 0.18); }
+.header-action:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(20, 38, 31, 0.18); }
 /* Tombol hamburger: pil hitam kecil dengan 3 garis putih (ala Umano),
    hanya tampil di layar sempit. Menu bekerja tanpa JavaScript lewat
    checkbox hack: input tersembunyi + label sebagai tombol. */
@@ -208,10 +186,9 @@ img { max-width: 100%; display: block; height: auto; }
   width: 52px; height: 44px; min-height: 44px; padding: 0;
   background: var(--ink); border-radius: 999px;
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  box-shadow: 0 3px 0 rgba(20, 38, 31, 0.35);
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.nav-toggle:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(20, 38, 31, 0.35); }
+.nav-toggle:active { transform: translateY(1px); }
 .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--surface); border-radius: 2px; transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms; }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle-input:checked + .nav-toggle span:nth-child(2) { opacity: 0; }
@@ -238,26 +215,36 @@ main section > p:has(.btn) .btn { margin-bottom: 8px; }
 
 main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .page-head { margin-bottom: 32px; }
+.page-head.center { text-align: center; }
+.page-head.center .lede { margin-left: auto; margin-right: auto; }
+.page-head.center .method-group { justify-content: center; }
+.page-head.center .pagination { justify-content: center; }
 .page-head .lede { font-size: 18px; color: var(--muted); max-width: 62ch; }
 .page-head .lede strong { color: var(--ink); }
 
-/* Hero foto: gambar nyata, teks serif di atas scrim netral (pengecualian
-   gradien design.md, hanya di atas foto). Rasio tetap supaya tidak lompat. */
+/* Hero foto: gambar nyata, teks serif di atas panel datar hijau gelap
+   tembus pandang (v4.1: scrim gradient diganti panel datar supaya teks
+   tetap terbaca tanpa gradient). Rasio tetap supaya tidak lompat. */
 .hero { position: relative; overflow: hidden; margin-bottom: 32px; background: var(--field); }
 .hero img { width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; }
 .hero .hero-body {
   position: absolute; inset: auto 0 0 0; padding: 64px 32px 28px; color: var(--surface);
-  background: linear-gradient(to top, rgba(18, 46, 35, 0.85), rgba(18, 46, 35, 0.35) 60%, rgba(18, 46, 35, 0));
+  background: rgba(18, 46, 35, 0.65);
 }
 .hero .hero-body h1 { color: var(--surface); margin: 0 0 10px; }
-.hero .hero-body p { color: var(--surface); opacity: 0.94; margin: 0 0 16px; max-width: 62ch; font-size: 18px; }
+.hero .hero-body p { color: var(--surface); opacity: 0.94; margin: 0 0 16px; max-width: 60ch; font-size: 18px; text-wrap: balance; }
 .hero .hero-body a { color: var(--surface); }
 .hero .hero-body .btn, .hero-banner .hero-body .btn { border: 1px solid var(--accent-ink); }
+/* Tombol sekunder di hero: teks ink di atas krem. Aturan .hero-body a
+   (putih) lebih spesifik dari .btn-quiet, jadi warna teks harus
+   ditegaskan di sini supaya tidak putih di atas krem. */
+.hero .hero-body .btn-quiet, .hero-banner .hero-body .btn-quiet { color: var(--ink); }
+.hero .hero-body .btn-quiet:hover, .hero-banner .hero-body .btn-quiet:hover { color: var(--ink); }
 .hero-banner { position: relative; overflow: hidden; margin-bottom: 32px; background: var(--field); }
 .hero-banner img { width: 100%; height: auto; aspect-ratio: 16 / 5; object-fit: cover; }
 .hero-banner .hero-body {
   position: absolute; inset: auto 0 0 0; padding: 48px 32px 20px; color: var(--surface);
-  background: linear-gradient(to top, rgba(18, 46, 35, 0.85), rgba(18, 46, 35, 0.3) 65%, rgba(18, 46, 35, 0));
+  background: rgba(18, 46, 35, 0.65);
 }
 .hero-banner .hero-body h1 { color: var(--surface); margin: 0 0 6px; font-size: clamp(36px, 5vw, 56px); }
 .hero-banner .hero-body p { color: var(--surface); opacity: 0.94; margin: 0; font-size: 18px; }
@@ -274,13 +261,14 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .mission p.statement {
   font-family: var(--serif); font-size: clamp(26px, 3.4vw, 38px);
   line-height: 1.3; color: var(--ink); max-width: none; margin: 0 0 20px;
+  text-wrap: balance;
 }
 .mission p { font-size: 18px; color: var(--muted); }
 .mission p strong { color: var(--ink); }
 
 /* Filosofi: satu field hijau gelap penuh, teks gading, tenang. */
 .philosophy {
-  background: var(--grad-philosophy); color: var(--accent-ink);
+  background: var(--accent); color: var(--accent-ink);
   padding: 64px 48px; margin-bottom: 96px;
 }
 .philosophy h2 { color: var(--accent-ink); }
@@ -288,6 +276,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 .philosophy p.statement {
   font-family: var(--serif); font-size: clamp(24px, 3vw, 34px);
   line-height: 1.3; opacity: 1; max-width: none; margin: 0 0 20px;
+  text-wrap: balance;
 }
 .philosophy .philosophy-label {
   font-family: var(--sans-alt); font-size: 14px; font-weight: 700;
@@ -374,70 +363,50 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
 /* Section: spasi lega ala Serein di desktop. */
 section { margin-bottom: 96px; }
 section > h2 { padding-top: 0; }
-.section-note { color: var(--muted); font-size: 18px; }
+.section-note { color: var(--muted); font-size: 18px; text-wrap: balance; }
 
 /* Tombol, chip, nav, label: Sora (sans kedua, untuk aksi dan label). */
 .btn, button, .chip, .site-nav a, .header-action, .pagination .page-btn,
 .mission-label, .philosophy-label, .footer-col h3, label, .toolbar label,
 .page-info, .illustration-tag { font-family: var(--sans-alt); }
 
-/* Tombol v4: persegi, satu isi hijau tua, satu sekunder bergaris ink.
-   Gaya 3D (atas permintaan user, 23 Nov 2026): bayangan offset bawah
-   yang tegas supaya tombol terlihat seperti tombol fisik yang bisa
-   ditekan; naik 2px + bayangan membesar saat hover, turun 2px +
-   bayangan mengecil saat ditekan. Hanya transform (dan bayangan yang
+/* Tombol v4.1 (24 Nov 2026): satu sistem, dua warna, tanpa gradient
+   dan tanpa emas. Primer hijau gelap datar teks putih; sekunder krem
+   datar ber-border ink teks ink. Tetap terasa fisik tapi halus: tanpa
+   bayangan offset solid; hover naik 2px dengan bayangan lembut satu
+   warna, ditekan turun kembali. Hanya transform (dan bayangan yang
    mengikutinya), 150-250ms. Radius 6px tetap. */
 .btn, button {
-  background: var(--grad-primary); color: var(--accent-ink); border: 0;
+  background: var(--accent); color: var(--accent-ink); border: 0;
   padding: 12px 22px; font-family: var(--sans-alt); font-weight: 700; cursor: pointer;
   text-decoration: none; display: inline-block; min-height: 48px;
   font-size: 16px; white-space: nowrap;
-  box-shadow: 0 4px 0 var(--accent-deep);
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.btn:hover, button:hover { background: var(--grad-primary-hover); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-deep); }
-.btn:active, button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
+.btn:hover, button:hover { background: var(--accent-deep); color: var(--accent-ink); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(20, 38, 31, 0.18); }
+.btn:active, button:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(20, 38, 31, 0.18); }
 .btn-quiet {
-  background: var(--grad-cream); color: var(--ink);
+  background: var(--surface); color: var(--ink);
   border: 1px solid var(--ink); padding: 11px 21px;
-  box-shadow: 0 4px 0 var(--ink);
 }
-.btn-quiet:hover { background: var(--grad-sand); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
-.btn-quiet:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ink); }
-.btn[aria-pressed="true"] { background: var(--grad-primary); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
-.btn[aria-pressed="true"]:hover { box-shadow: 0 6px 0 var(--accent-deep); }
-.btn[aria-pressed="true"]:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-deep); }
+.btn-quiet:hover { background: var(--field); color: var(--ink); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(20, 38, 31, 0.18); }
+.btn-quiet:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(20, 38, 31, 0.18); }
+.btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.btn[aria-pressed="true"]:hover { background: var(--accent-deep); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(20, 38, 31, 0.18); }
+.btn[aria-pressed="true"]:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(20, 38, 31, 0.18); }
 .btn-sm { padding: 10px 16px; min-height: 44px; font-size: 14px; }
 
-/* Varian warna tombol (23 Nov 2026, atas permintaan user): tiap jenis
-   tombol punya warna sendiri, tetap dalam palet TripRank, efek 3D
-   dipertahankan. Kontras dihitung: emas dengan ink 8,46:1, daun
-   dengan putih 4,92:1, pasir dengan ink 12,75:1, gelap dengan putih
-   12,19:1. */
-.btn-leaf { background: var(--grad-leaf); color: var(--accent-ink); box-shadow: 0 4px 0 var(--leaf-deep); }
-.btn-leaf:hover { background: var(--grad-primary); color: var(--accent-ink); box-shadow: 0 6px 0 var(--leaf-deep); }
-.btn-leaf:active { box-shadow: 0 2px 0 var(--leaf-deep); }
-.btn-gold { background: var(--grad-gold); color: var(--ink); box-shadow: 0 4px 0 var(--gold-deep); }
-.btn-gold:hover { background: var(--grad-gold-hover); color: var(--ink); box-shadow: 0 6px 0 var(--gold-deep); }
-.btn-gold:active { box-shadow: 0 2px 0 var(--gold-deep); }
-.btn-sand { background: var(--grad-sand); color: var(--ink); border: 1px solid var(--ink); box-shadow: 0 4px 0 var(--ink); }
-.btn-sand:hover { background: var(--grad-cream); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
-.btn-sand:active { box-shadow: 0 2px 0 var(--ink); }
-.btn-dark { background: var(--grad-dark); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
-.btn-dark:hover { background: var(--grad-primary-hover); color: var(--accent-ink); box-shadow: 0 6px 0 var(--accent-deep); }
-.btn-dark:active { box-shadow: 0 2px 0 var(--accent-deep); }
 
 /* Chip paket di tabel ranking: persegi hijau muda, satu baris, bisa diklik. */
 .chip {
   display: inline-block; white-space: nowrap; text-decoration: none;
-  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--gold-soft) 100%); color: var(--accent-deep);
+  background: var(--accent-soft); color: var(--accent-deep);
   border: 1px solid var(--accent);
   padding: 6px 14px; min-height: 36px; line-height: 1.4; font-weight: 700; font-size: 14px;
-  box-shadow: 0 2px 0 var(--accent);
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.chip:hover { background: var(--accent); color: var(--accent-ink); transform: translateY(-1px); box-shadow: 0 3px 0 var(--accent); }
-.chip:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--accent); }
+.chip:hover { background: var(--accent); color: var(--accent-ink); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(20, 38, 31, 0.18); }
+.chip:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(20, 38, 31, 0.18); }
 .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Tabel: header field gading, teks 13px semibold, baris 1px. */
@@ -480,18 +449,17 @@ td.action { white-space: nowrap; width: 1%; }
 td.action .btn { white-space: nowrap; }
 
 /* Pagination: tombol nomor dan Sebelumnya/Berikutnya, tanpa JS. */
-.pagination { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 24px; }
+.pagination { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin: 0 0 24px; }
 .pagination .page-info { color: var(--muted); font-size: 14px; margin-right: 8px; }
 .pagination .page-btn {
   min-width: 44px; min-height: 44px; padding: 10px 14px; text-align: center;
   background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong);
   font-weight: 700; text-decoration: none; white-space: nowrap;
-  box-shadow: 0 3px 0 var(--line-strong);
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background 200ms, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.pagination .page-btn:hover { background: var(--field); color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 0 var(--line-strong); }
-.pagination .page-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-strong); }
-.pagination .page-btn[aria-current="page"] { background: var(--grad-primary); color: var(--accent-ink); border-color: var(--accent-deep); box-shadow: 0 3px 0 var(--accent-deep); }
+.pagination .page-btn:hover { background: var(--field); color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(20, 38, 31, 0.14); }
+.pagination .page-btn:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(20, 38, 31, 0.14); }
+.pagination .page-btn[aria-current="page"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-deep); }
 .pagination .page-btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
 
 /* Panel tahap hitungan: <details> asli, garis 1px. */
@@ -589,7 +557,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 .photo-strip figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
 /* Footer (v4 r2): hijau gelap, wordmark besar, 3 kolom, ikon di tiap tautan. */
-.site-footer { background: var(--grad-footer); color: var(--accent-ink); margin-top: 40px; }
+.site-footer { background: var(--accent-deep); color: var(--accent-ink); margin-top: 40px; }
 .site-footer .footer-inner { max-width: var(--measure-wide); margin: 0 auto; padding: 56px 24px 32px; }
 .site-footer .footer-word {
   font-family: var(--brand); font-size: clamp(48px, 10vw, 96px); font-weight: 400;
@@ -704,23 +672,12 @@ input, select, textarea { border-radius: var(--radius); }
   @keyframes lineRise { from { opacity: 0; transform: translateY(110%) rotateX(8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
 }
 
-/* Marquee kota (v4 r2): strip teks berjalan pelan, jeda saat hover.
-   Dekoratif saja, bukan tautan. */
-.marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; margin: 0 0 96px; }
-.marquee-track { display: flex; width: max-content; }
-.marquee-track span {
-  font-family: var(--serif); font-size: 28px; color: var(--muted);
-  white-space: nowrap; padding-right: 16px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .marquee-track { animation: marquee 36s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-}
 
 /* Typewriter hero (v4 r2): hanya satu kalimat kunci di hero beranda.
    Teks lengkap ada di HTML, jadi tanpa JS tetap tampil penuh. */
-.typewriter { min-height: 2.6em; }
+/* Typewriter: tinggi dicadangkan 2 baris penuh supaya layout tidak
+   lompat saat mengetik dan teks tidak terpotong di tengah kata. */
+.typewriter { min-height: 3.2em; }
 .typewriter .cursor {
   display: inline-block; width: 2px; height: 1.1em; margin-left: 3px;
   background: currentColor; vertical-align: -2px;
@@ -742,7 +699,7 @@ input, select, textarea { border-radius: var(--radius); }
 .trip-loader img { width: 96px; height: auto; border-radius: var(--radius); animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 .trip-loader .loader-word { font-family: var(--brand); font-size: 30px; font-weight: 400; animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both; }
 .trip-loader .loader-bar { width: 160px; height: 2px; background: var(--line); overflow: hidden; border-radius: 2px; }
-.trip-loader .loader-bar i { display: block; height: 100%; width: 0; background: var(--grad-gold); animation: loaderBar 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.trip-loader .loader-bar i { display: block; height: 100%; width: 0; background: var(--accent); animation: loaderBar 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @keyframes loaderRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes loaderBar { to { width: 100%; } }
 
@@ -772,22 +729,22 @@ input, select, textarea { border-radius: var(--radius); }
    --mx/--my di section; tanpa JS bentuknya tetap beranimasi. Dengan
    prefers-reduced-motion, lapisan ini disembunyikan. */
 .hero .bg-3d, .philosophy .bg-3d {
-  position: absolute; inset: -20px; z-index: 1; overflow: hidden;
+  position: absolute; inset: 0; z-index: 1; overflow: hidden;
   pointer-events: none; perspective: 900px;
   transform: translate3d(calc(var(--mx, 0) * 14px), calc(var(--my, 0) * 10px), 0);
   transition: transform 500ms ease-out;
 }
-.hero .bg-3d { --shape: rgba(255, 253, 249, 0.65); --shape-fill: rgba(255, 253, 249, 0.4); }
-.philosophy .bg-3d { --shape: rgba(255, 253, 249, 0.35); --shape-fill: rgba(255, 253, 249, 0.2); }
+.hero .bg-3d { --shape: rgba(255, 253, 249, 0.45); --shape-fill: rgba(255, 253, 249, 0.25); }
+.philosophy .bg-3d { --shape: rgba(255, 253, 249, 0.25); --shape-fill: rgba(255, 253, 249, 0.12); }
 .hero .hero-body { z-index: 2; }
 .philosophy { position: relative; overflow: hidden; }
 .philosophy > :not(.bg-3d) { position: relative; z-index: 1; }
 .bg-3d i { position: absolute; display: block; }
 .bg-3d i:nth-child(1) { width: 54px; height: 54px; top: 8%; left: 5%; border: 2px solid var(--shape); animation: drift3d-a 16s ease-in-out infinite alternate; }
 .bg-3d i:nth-child(2) { width: 72px; height: 72px; top: 12%; right: 7%; border: 2px solid var(--shape); border-radius: 50%; animation: drift3d-b 20s ease-in-out infinite alternate; }
-.bg-3d i:nth-child(3) { width: 64px; height: 56px; top: 40%; left: 84%; background: var(--shape-fill); clip-path: polygon(50% 0, 100% 100%, 0 100%); animation: drift3d-c 18s ease-in-out infinite alternate; }
-.bg-3d i:nth-child(4) { width: 90px; height: 10px; top: 36%; left: 12%; background: var(--shape-fill); border-radius: 999px; animation: drift3d-b 14s ease-in-out infinite alternate-reverse; }
-.bg-3d i:nth-child(5) { width: 26px; height: 26px; top: 6%; left: 46%; background: var(--shape); border-radius: 50%; animation: drift3d-a 12s ease-in-out infinite alternate-reverse; }
+.bg-3d i:nth-child(3) { width: 64px; height: 56px; top: 70%; left: auto; right: 5%; background: var(--shape-fill); clip-path: polygon(50% 0, 100% 100%, 0 100%); animation: drift3d-c 18s ease-in-out infinite alternate; }
+.bg-3d i:nth-child(4) { width: 90px; height: 10px; top: 80%; left: 8%; background: var(--shape-fill); border-radius: 999px; animation: drift3d-b 14s ease-in-out infinite alternate-reverse; }
+.bg-3d i:nth-child(5) { width: 26px; height: 26px; top: 84%; left: 46%; background: var(--shape); border-radius: 50%; animation: drift3d-a 12s ease-in-out infinite alternate-reverse; }
 @media (prefers-reduced-motion: no-preference) {
   @keyframes drift3d-a { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(45deg); } to { transform: translate3d(16px, -22px, 50px) rotateX(32deg) rotateY(48deg) rotateZ(45deg); } }
   @keyframes drift3d-b { from { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg); } to { transform: translate3d(-18px, 16px, 60px) rotateX(-28deg) rotateY(36deg); } }
@@ -850,7 +807,7 @@ input, select, textarea { border-radius: var(--radius); }
   .site-nav a:hover { background: var(--field); }
   .site-nav a[aria-current="page"] { background: var(--accent-soft); }
   .site-nav a.nav-login {
-    display: block; background: var(--grad-gold); color: var(--ink);
+    display: block; background: var(--accent); color: var(--accent-ink);
     text-align: center; font-weight: 700; margin-top: 6px;
   }
   .nav-toggle-input:checked ~ .site-nav { display: flex; }
@@ -883,7 +840,7 @@ input, select, textarea { border-radius: var(--radius); }
   .site-nav a:hover { background: var(--field); }
   .site-nav a[aria-current="page"] { background: var(--accent-soft); }
   .site-nav a.nav-login {
-    display: block; background: var(--grad-gold); color: var(--ink);
+    display: block; background: var(--accent); color: var(--accent-ink);
     text-align: center; font-weight: 700; margin-top: 6px;
   }
   .nav-toggle-input:checked ~ .site-nav { display: flex; }
@@ -901,9 +858,7 @@ input, select, textarea { border-radius: var(--radius); }
   .site-footer .footer-col h3 { white-space: nowrap; }
   .site-footer .footer-col li a { white-space: nowrap; }
   .site-footer .footer-col p { max-width: none; }
-  .typewriter { min-height: 4.6em; }
-  .marquee { margin-bottom: 56px; }
-  .marquee-track span { font-size: 22px; }
+  .typewriter { min-height: 4.8em; }
   .mascot img { width: 180px; }
   .logo-3d img { width: 160px; }
   table { min-width: 560px; }
@@ -930,7 +885,7 @@ input, select, textarea { border-radius: var(--radius); }
   h1 { font-size: 40px; }
   .hero img { aspect-ratio: 4 / 3; }
   .hero .hero-body, .hero-banner .hero-body {
-    position: static; background: var(--grad-philosophy); padding: 28px 20px 24px;
+    position: static; background: var(--accent); padding: 28px 20px 24px;
   }
   .hero-banner img { aspect-ratio: 4 / 3; }
   .steps { grid-template-columns: 1fr; }

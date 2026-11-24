@@ -8,7 +8,7 @@
     <h1 id="judul-hero"><span class="line"><span>Dipilih dengan tenang.</span></span><span class="line"><span>Dibuktikan dengan angka.</span></span></h1>
     <p>TripRank merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
     <p class="typewriter" data-typewriter>TripRank menimbang harga, fasilitas, akses, popularitas, dan jumlah destinasi. Lalu menunjukkan paket terbaiknya.</p>
-    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-gold" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
+    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-quiet" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
   </div>
 </section>
 <p class="photo-credit">Foto hero: {{ city_meta['Jakarta'].subject }}, foto oleh {{ city_meta['Jakarta'].photographer }} ({{ city_meta['Jakarta'].license }}), via <a href="{{ city_meta['Jakarta'].commons_url }}">Wikimedia Commons</a>.</p>
@@ -18,7 +18,6 @@
   <div><span class="num">298</span><span class="lbl">tempat wisata</span></div>
   <div><span class="num">403</span><span class="lbl">relasi paket dan tempat</span></div>
 </div>
-<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Jakarta &bull; Yogyakarta &bull; Bandung &bull; Semarang &bull; Surabaya &bull;&nbsp;</span><span>Jakarta &bull; Yogyakarta &bull; Bandung &bull; Semarang &bull; Surabaya &bull;&nbsp;</span></div></div>
 <section class="mission" aria-labelledby="misi">
   <p class="mission-label">Misi kami</p>
   <h2 id="misi" class="visually-hidden">Misi kami</h2>
@@ -58,7 +57,7 @@
         <p class="city-winner">Pemenang SAW: <strong>Paket {{ w.saw_paket }}</strong> (Vi {{ '%.4f'|format(w.saw_vi) }}). Pemenang TOPSIS: <strong>Paket {{ w.topsis_paket }}</strong> (Ci {{ '%.4f'|format(w.topsis_ci) }}).</p>
         <p class="photo-credit">Foto: {{ m.subject }}, {{ m.photographer }} ({{ m.license }}).</p>
         <span class="city-actions">
-          <a class="btn btn-leaf" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
+          <a class="btn btn-quiet" href="{{ url_for('kota_page', nama_kota=k.nama) }}">Lihat paket</a>
           <a class="btn" href="{{ url_for('rekomendasi', kota=k.nama, metode='keduanya') }}">Rekomendasi SAW dan TOPSIS</a>
         </span>
       </div>
@@ -74,13 +73,13 @@
     <li data-reveal="left"><span class="step-no">3</span><strong>Bandingkan SAW dan TOPSIS</strong><p>Dua metode, dua sudut pandang yang sama-sama bisa diperiksa.</p></li>
     <li data-reveal="right"><span class="step-no">4</span><strong>Periksa tahap hitungannya</strong><p>Matriks, normalisasi, dan solusi ideal dibuka semua.</p></li>
   </ol>
-  <p><a class="btn btn-gold" href="{{ url_for('cara_kerja') }}">Baca cara kerja lengkap</a></p>
+  <p><a class="btn" href="{{ url_for('cara_kerja') }}">Baca cara kerja lengkap</a></p>
 </section>
 <section aria-labelledby="bukan-booking">
   <h2 id="bukan-booking" data-reveal="up">Bukan situs booking</h2>
   <p class="section-note" data-reveal="up">Ini proyek akhir kuliah. Tidak ada pemesanan, tidak ada pembayaran, dan tidak ada data pribadi yang diminta. Ranking dihitung dengan SAW dan TOPSIS, dan tahap hitungannya bisa dibuka.</p>
   <figure class="mascot"><img src="{{ url_for('static', filename='images/maskot-3d.png') }}" width="640" height="640" loading="lazy" alt="Maskot traveler TripRank, seorang traveler kecil bergaya 3D clay dengan ransel dan peta"><figcaption>Ilustrasi 3D: maskot traveler TripRank.</figcaption></figure>
-  <p><a class="btn btn-quiet" href="{{ url_for('tentang') }}">Tentang kami</a> <a class="btn btn-sand" href="{{ url_for('cara_kerja') }}">Cara kerja</a> <a class="btn btn-dark" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
+  <p><a class="btn btn-quiet" href="{{ url_for('tentang') }}">Tentang kami</a> <a class="btn btn-quiet" href="{{ url_for('cara_kerja') }}">Cara kerja</a> <a class="btn btn-quiet" href="https://github.com/Firzadf/spk-paket-wisata">Kode sumber di GitHub</a></p>
 </section>
 <section aria-labelledby="kriteria-bobot">
   <h2 id="kriteria-bobot" data-reveal="up">Kriteria dan Bobot</h2>
