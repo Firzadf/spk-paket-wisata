@@ -131,6 +131,19 @@ def paginate(total, per_page=10):
     return page, total_pages, start, end
 
 
+def render_index_404(nama_kota):
+    """Halaman beranda dengan pesan kota tidak ditemukan (404).
+
+    index.html butuh winners dan city_meta; kalau tidak dikirim,
+    template gagal render (pernah jadi bug 500 di jalur 404)."""
+    kota = database.get_kota_list()
+    winners = {k["nama"]: city_winners(k["nama"]) for k in kota}
+    return render_template("index.html", kota=kota,
+                           kriteria=database.get_kriteria(),
+                           winners=winners, city_meta=CITY_META,
+                           error=f"Kota {nama_kota} tidak ditemukan."), 404
+
+
 @app.route("/")
 def index():
     kota = database.get_kota_list()
@@ -155,7 +168,7 @@ def cara_kerja():
 def kota_page(nama_kota):
     packages = database.get_paket_by_kota(nama_kota)
     if not packages:
-        return render_template("index.html", kota=database.get_kota_list(), kriteria=database.get_kriteria(), error=f"Kota {nama_kota} tidak ditemukan."), 404
+        return render_index_404(nama_kota)
     # Pagination server-side: 10 paket per halaman, tanpa JavaScript.
     page, total_pages, start, end = paginate(len(packages))
     return render_template("kota.html", kota=nama_kota, packages=packages[start:end],
@@ -172,7 +185,7 @@ def rekomendasi():
         metode = "keduanya"
     data = compute_city(nama_kota)
     if data is None:
-        return render_template("index.html", kota=database.get_kota_list(), kriteria=database.get_kriteria(), error=f"Kota {nama_kota} tidak ditemukan."), 404
+        return render_index_404(nama_kota)
     # Pagination server-side: 10 paket per halaman, tanpa JavaScript.
     # Satu nomor halaman berlaku untuk tabel SAW dan TOPSIS sekaligus,
     # supaya keduanya menampilkan 10 baris yang sama. Ganti metode
@@ -182,6 +195,49 @@ def rekomendasi():
                            meta=city_meta(nama_kota), page=page, total_pages=total_pages,
                            total=len(data["packages"]), start=start + 1 if data["packages"] else 0,
                            end=end, slice_start=start, slice_end=end, **data)
+
+
+DEFAULT_WEIGHTS = [0.30, 0.25, 0.20, 0.15, 0.10]
+
+
+@app.route("/lab")
+def lab():
+    """Lab Simulasi Bobot, terbuka untuk semua pengunjung tanpa login.
+
+    Sama seperti simulasi admin, tapi lewat GET supaya tautan hasil bisa
+    dibagikan, dan tanpa menyimpan apa pun. Bobot default sama dengan
+    bobot resmi proyek. Jalan tanpa JavaScript; JavaScript hanya
+    memperbarui tampilan total bobot saat mengetik."""
+    kota_list = [k["nama"] for k in database.get_kota_list()]
+    kota_dipilih = request.args.get("kota", "Jakarta")
+    if kota_dipilih not in kota_list:
+        return render_index_404(kota_dipilih)
+    weights = []
+    error = None
+    for i in range(1, 6):
+        raw = request.args.get(f"bobot_C{i}")
+        if raw is None or raw == "":
+            weights.append(DEFAULT_WEIGHTS[i - 1])
+            continue
+        try:
+            w = float(raw)
+        except ValueError:
+            weights.append(DEFAULT_WEIGHTS[i - 1])
+            error = "Bobot harus angka."
+            continue
+        if w < 0 or w > 1:
+            error = "Bobot harus antara 0 dan 1."
+        weights.append(w)
+    hasil = None
+    if error is None and abs(sum(weights) - 1.0) > 0.001:
+        error = (f"Total kelima bobot harus 1,00. "
+                 f"Total saat ini: {sum(weights):.4f}.")
+    elif error is None:
+        _, types_default, _ = database.get_weights_and_types()
+        hasil = compute_city(kota_dipilih, weights=weights, types=types_default)
+    return render_template("lab.html", kota=kota_dipilih, kota_list=kota_list,
+                           weights=weights, kriteria=database.get_kriteria(),
+                           hasil=hasil, error=error)
 
 
 @app.route("/paket/<int:paket_id>")

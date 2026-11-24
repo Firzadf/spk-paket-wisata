@@ -8,7 +8,7 @@
     <h1 id="judul-hero"><span class="line"><span>Dipilih dengan tenang.</span></span><span class="line"><span>Dibuktikan dengan angka.</span></span></h1>
     <p>TripRank merekomendasikan paket wisata dengan dua metode. <strong>SAW</strong> menjumlahkan skor terbobot, <strong>TOPSIS</strong> mengukur jarak ke solusi ideal. Pilih kota dulu, lalu lihat rankingnya.</p>
     <p class="typewriter" data-typewriter>TripRank menimbang harga, fasilitas, akses, popularitas, dan jumlah destinasi. Lalu menunjukkan paket terbaiknya.</p>
-    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a></p>
+    <p><a class="btn" href="{{ url_for('rekomendasi', kota='Jakarta', metode='keduanya') }}">Lihat rekomendasi Jakarta</a> <a class="btn btn-gold" href="{{ url_for('lab') }}">Coba Lab Simulasi</a></p>
   </div>
 </section>
 <p class="photo-credit">Foto hero: {{ city_meta['Jakarta'].subject }}, foto oleh {{ city_meta['Jakarta'].photographer }} ({{ city_meta['Jakarta'].license }}), via <a href="{{ city_meta['Jakarta'].commons_url }}">Wikimedia Commons</a>.</p>

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Lab Simulasi Bobot — TripRank{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Lab Simulasi Bobot</h1>
+  <p class="lede">Ubah bobot kelima kriteria, lalu lihat ranking SAW dan TOPSIS berubah. Terbuka untuk semua pengunjung, tanpa login. <strong>Bobot tidak disimpan</strong>, dan hasil di sini adalah simulasi, bukan ranking resmi proyek.</p>
+</div>
+<form method="get" action="{{ url_for('lab') }}">
+  <p class="field">
+    <label for="kota">Kota</label>
+    <select id="kota" name="kota">{% for nama in kota_list %}<option value="{{ nama }}" {% if kota==nama %}selected{% endif %}>{{ nama }}</option>{% endfor %}</select>
+  </p>
+  <div class="form-row">
+  {% for i in range(1,6) %}
+    <p class="field">
+      <label for="bobot_C{{ i }}">Bobot C{{ i }} ({{ kriteria[i-1].nama }})</label>
+      <input type="number" step="0.01" min="0" max="1" id="bobot_C{{ i }}" name="bobot_C{{ i }}" value="{{ weights[i-1] }}" required aria-describedby="lab-total">
+    </p>
+  {% endfor %}
+  </div>
+  <p class="hint" id="lab-total">Total kelima bobot harus 1,00. Total saat ini: {{ '%.2f'|format(weights|sum) }}.</p>
+  <p><button type="submit">Hitung ranking</button> <a class="btn btn-quiet" href="{{ url_for('lab') }}">Kembali ke bobot resmi</a></p>
+</form>
+{% if hasil %}
+{% set saw_top = hasil.packages[hasil.saw.order[0]] %}
+{% set topsis_top = hasil.packages[hasil.topsis.order[0]] %}
+<section aria-labelledby="hasil-lab">
+  <h2 id="hasil-lab">Hasil simulasi: {{ kota }}</h2>
+  <p class="section-note">Bobot simulasi: {{ weights|join(', ') }}. Bobot resmi proyek: 0,30, 0,25, 0,20, 0,15, 0,10.</p>
+  <div class="success" role="status">Pemenang SAW: Paket {{ saw_top.nomor_paket }} (Vi {{ '%.4f'|format(hasil.saw['values'][hasil.saw.order[0]]) }}). Pemenang TOPSIS: Paket {{ topsis_top.nomor_paket }} (Ci {{ '%.4f'|format(hasil.topsis['values'][hasil.topsis.order[0]]) }}).</div>
+  <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="lab-caption">
+  <table data-sortable>
+    <caption id="lab-caption">Hasil simulasi {{ kota }} dengan bobot {{ weights|join(', ') }}</caption>
+    <thead><tr>
+      <th scope="col" data-type="number">Paket</th>
+      <th scope="col" data-type="number">Ranking SAW</th>
+      <th scope="col" data-type="number">Vi</th>
+      <th scope="col" data-type="number">Ranking TOPSIS</th>
+      <th scope="col" data-type="number">Ci</th>
+    </tr></thead>
+    <tbody>
+    {% for i in range(hasil.packages|length) %}
+    <tr>
+      <th scope="row" data-value="{{ hasil.packages[i].nomor_paket }}"><a class="chip" href="{{ url_for('paket_detail', paket_id=hasil.packages[i].id) }}">Paket {{ hasil.packages[i].nomor_paket }}</a></th>
+      <td class="num" data-value="{{ hasil.saw.ranks[i] }}">{{ hasil.saw.ranks[i] }}</td>
+      <td class="num" data-value="{{ hasil.saw['values'][i] }}">{{ '%.4f'|format(hasil.saw['values'][i]) }}</td>
+      <td class="num" data-value="{{ hasil.topsis.ranks[i] }}">{{ hasil.topsis.ranks[i] }}</td>
+      <td class="num" data-value="{{ hasil.topsis['values'][i] }}">{{ '%.4f'|format(hasil.topsis['values'][i]) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="visually-hidden" data-sort-status role="status"></p>
+  </div>
+  <p class="table-hint">Geser tabel ke kanan untuk melihat semua kolom →</p>
+  <p class="section-note">Coba naikkan bobot C1 (Harga Paket) dan lihat paket murah naik ke atas, atau naikkan bobot C2 (Fasilitas) dan lihat paket lengkap naik. Ini cara paling cepat memeriksa bahwa ranking memang mengikuti bobot, bukan angka yang sudah ditentukan.</p>
+  <p><a class="btn btn-gold" href="{{ url_for('cara_kerja') }}">Baca cara kerja lengkap</a></p>
+</section>
+{% endif %}
+{% endblock %}

@@ -83,6 +83,7 @@
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Beranda</a>
       <a href="{{ url_for('tentang') }}" {% if request.endpoint == 'tentang' %}aria-current="page"{% endif %}>Tentang</a>
       <a href="{{ url_for('cara_kerja') }}" {% if request.endpoint == 'cara_kerja' %}aria-current="page"{% endif %}>Cara Kerja</a>
+      <a href="{{ url_for('lab') }}" {% if request.endpoint == 'lab' %}aria-current="page"{% endif %}>Lab Simulasi</a>
       <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint and request.endpoint.startswith('admin') %}aria-current="page"{% endif %}>Admin</a>
       {% if session.get('admin') %}
       <a href="{{ url_for('admin_logout') }}">Keluar ({{ session.get('admin') }})</a>
@@ -118,6 +119,7 @@
           <li><a href="{{ url_for('index') }}"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg> Beranda</a></li>
           <li><a href="{{ url_for('tentang') }}"><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg> Tentang</a></li>
           <li><a href="{{ url_for('cara_kerja') }}"><svg class="icon" aria-hidden="true"><use href="#icon-list"/></svg> Cara Kerja</a></li>
+          <li><a href="{{ url_for('lab') }}"><svg class="icon" aria-hidden="true"><use href="#icon-c4"/></svg> Lab Simulasi</a></li>
           <li><a href="{{ url_for('admin_dashboard') }}"><svg class="icon" aria-hidden="true"><use href="#icon-key"/></svg> Admin</a></li>
           <li><a href="https://github.com/Firzadf/spk-paket-wisata"><svg class="icon" aria-hidden="true"><use href="#icon-code"/></svg> Kode sumber di GitHub</a></li>
         </ul>

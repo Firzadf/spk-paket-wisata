@@ -69,6 +69,34 @@
   }
 })();
 
+/* --- Lab Simulasi: tampilkan total bobot saat mengetik.
+   Server tetap memvalidasi total 1,00; ini hanya tampilan. --- */
+(function () {
+  "use strict";
+  var totalEl = document.getElementById("lab-total");
+  if (!totalEl) return;
+  var inputs = [];
+  for (var i = 1; i <= 5; i++) {
+    var input = document.getElementById("bobot_C" + i);
+    if (input) inputs.push(input);
+  }
+  if (!inputs.length) return;
+  function updateTotal() {
+    var sum = 0;
+    var ok = true;
+    inputs.forEach(function (input) {
+      var v = parseFloat(input.value);
+      if (isNaN(v)) { ok = false; return; }
+      sum += v;
+    });
+    totalEl.textContent = ok
+      ? "Total kelima bobot harus 1,00. Total saat ini: " + sum.toFixed(2) + "."
+      : "Total kelima bobot harus 1,00. Isi semua bobot dengan angka.";
+  }
+  inputs.forEach(function (input) { input.addEventListener("input", updateTotal); });
+  updateTotal();
+})();
+
 /* Loading screen, typewriter hero, dan scroll reveal berarah (v4 r2).
    Semua ini lapisan di atas konten: tanpa JavaScript, konten tetap
    tampil penuh; dengan prefers-reduced-motion, semuanya dimatikan. */
