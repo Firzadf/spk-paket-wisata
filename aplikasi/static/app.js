@@ -105,26 +105,11 @@
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* --- Loading screen TripRank --- */
-  function buildLoader() {
-    var loader = document.createElement("div");
-    loader.className = "trip-loader";
-    loader.setAttribute("aria-hidden", "true");
-    var img = document.createElement("img");
-    img.src = "/static/images/logo-3d.png";
-    img.alt = "";
-    img.width = 96;
-    var word = document.createElement("div");
-    word.className = "loader-word";
-    word.textContent = "TripRank";
-    var bar = document.createElement("div");
-    bar.className = "loader-bar";
-    bar.appendChild(document.createElement("i"));
-    loader.appendChild(img);
-    loader.appendChild(word);
-    loader.appendChild(bar);
-    return loader;
-  }
+  /* --- Loading screen TripRank (ADR-010) ---
+     Loader dirender server di base.html supaya sudah menutupi layar
+     sejak paint pertama; dulu dibuat di sini setelah halaman tampil,
+     jadi halaman tujuan sempat ke-paint dulu baru loader muncul.
+     JavaScript sekarang hanya menyembunyikannya. */
   function hideLoader(loader, after) {
     setTimeout(function () {
       loader.classList.add("is-hidden");
@@ -135,9 +120,8 @@
   if (!reduced) {
     var viaNav = false;
     try { viaNav = sessionStorage.getItem("triprank-nav") === "1"; sessionStorage.removeItem("triprank-nav"); } catch (e) {}
-    var loader = buildLoader();
-    document.body.appendChild(loader);
-    hideLoader(loader, viaNav ? 450 : 900);
+    var loader = document.querySelector(".trip-loader");
+    if (loader) hideLoader(loader, viaNav ? 450 : 900);
     /* Transisi 3D ganti halaman (v4 r3): halaman masuk dengan rotateY
        kecil (class page-entering, dilepas setelah animasi selesai supaya
        transisi keluar nanti tidak tertahan fill mode animasi), halaman
@@ -221,19 +205,4 @@
   } else if (targets.length) {
     targets.forEach(function (el) { el.classList.add("is-visible"); });
   }
-})();
-
-/* Header transparan di atas hero (home, desktop, gaya Pomaii): saat
-   halaman di-scroll, header berubah jadi solid krem. Hanya aktif bila
-   body.home-hero ada; tanpa JavaScript header tetap transparan di atas
-   foto dan teks tetap terbaca karena foto bagian atas terang. */
-(function () {
-  "use strict";
-  var header = document.querySelector("body.home-hero .site-header");
-  if (!header) return;
-  function onScroll() {
-    header.classList.toggle("is-scrolled", window.scrollY > 24);
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
 })();

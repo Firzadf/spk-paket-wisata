@@ -71,13 +71,15 @@ class TestPomaii(TripRankTestCase):
         # footer menjelaskan foto asli dipakai di halaman Tentang, dan
         # halaman Tentang tetap menampilkan foto asli + kredit lengkap.
         # Tidak ada label "Ilustrasi AI" (aturan final user 24 Nov 2026).
-        # ADR-009: hero foto lima landmark (pomaii-hero-lima-kota.jpg)
-        # dan 2 gambar cerita tidak lagi dirujuk di beranda; beranda
-        # memakai hero gelap + panel kota AI + banner Lab.
+        # ADR-010: hero foto lima landmark kembali dipakai sebagai
+        # background CSS hero (.hero-dark), bukan <img> di HTML; 2
+        # gambar cerita tetap tidak dirujuk di beranda.
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("Wikimedia Commons", html)
         self.assertNotIn("Ilustrasi AI", html)
         self.assertNotIn("pomaii-hero-lima-kota.jpg", html)
+        css = self.client.get("/static/style.css").get_data(as_text=True)
+        self.assertIn('url("images/pomaii-hero-lima-kota.jpg")', css)
         self.assertNotIn("pomaii-stories-1.jpg", html)
         self.assertNotIn("pomaii-stories-2.jpg", html)
         self.assertIn("pomaii-lab.jpg", html)

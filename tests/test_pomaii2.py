@@ -32,7 +32,9 @@ class TataLetakKiriTest(TripRankTestCase):
         # jadi tepi kiri teks lurus dari atas sampai bawah.
         css = read_css()
         self.assertIn(".site-header .header-inner {\n  max-width: var(--measure);", css)
-        self.assertIn("max-width: var(--measure); margin: 0 auto; padding: 88px 24px 64px;", css)
+        # ADR-010: padding atas hero 120px supaya eyebrow tidak
+        # tertutup pil header desktop yang mengambang.
+        self.assertIn("max-width: var(--measure); margin: 0 auto; padding: 120px 24px 64px;", css)
         self.assertIn(".site-footer .footer-inner { max-width: var(--measure);", css)
         self.assertNotIn("var(--measure-wide)", css)
 
@@ -81,19 +83,22 @@ class GambarDanMaskotTest(TripRankTestCase):
 
 
 class HeaderFooterPomaiiTest(TripRankTestCase):
-    def test_header_transparan_di_home_di_atas_hero_gelap(self):
-        # ADR-009: hero bukan lagi foto full-screen; hero gelap datar.
-        # Header tetap transparan di atasnya dengan logo putih + teks
-        # terang sebelum di-scroll, lalu solid krem setelah di-scroll.
+    def test_header_pil_mengambang_di_desktop(self):
+        # ADR-010: header desktop kini pil mengambang seperti HP (logo +
+        # nav lengkap + Masuk Admin di dalam satu pil krem). Tidak ada
+        # lagi header transparan, logo putih, atau is-scrolled.
         css = read_css()
-        self.assertIn("body.home-hero .site-header {", css)
-        self.assertIn("position: fixed;", css)
-        self.assertIn("background: transparent;", css)
-        self.assertIn("body.home-hero .site-header.is-scrolled {", css)
-        self.assertIn("body.home-hero .site-header:not(.is-scrolled) .logo-light { display: inline-block; }", css)
+        self.assertIn("body.home-hero .site-header { position: fixed; top: 10px; left: 0; right: 0; }", css)
+        self.assertIn("position: sticky; top: 10px;", css)
+        self.assertIn("border-radius: 999px;", css)
+        self.assertNotIn("body.home-hero .site-header.is-scrolled {", css)
+        self.assertNotIn("body.home-hero .site-header:not(.is-scrolled)", css)
+        self.assertNotIn(".logo-light", css)
         self.assertNotIn("min-height: 100vh; min-height: 100svh;", css)
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn('class="home-hero"', html)
+        self.assertNotIn("logo-putih.svg", html)
+        self.assertIn("/static/images/logo.svg", html)
 
     def test_footer_terang(self):
         css = read_css()
@@ -103,11 +108,9 @@ class HeaderFooterPomaiiTest(TripRankTestCase):
         self.assertNotIn("accent-deep", footer.group(0))
         html = self.client.get("/").get_data(as_text=True)
         self.assertIn("/static/images/logo.svg", html)
-        # ADR-009: logo putih ada di header (untuk hero gelap), bukan
-        # di footer yang tetap terang.
-        self.assertIn("logo-putih.svg", html)
-        resp = self.client.get("/static/images/logo-putih.svg")
-        self.assertEqual(resp.status_code, 200)
+        # ADR-010: logo putih tidak lagi dipakai di mana pun (header
+        # kini pil krem dengan logo gelap).
+        self.assertNotIn("logo-putih.svg", html)
 
 
 class LoginAdminRapiTest(TripRankTestCase):

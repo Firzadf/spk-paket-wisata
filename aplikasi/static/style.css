@@ -115,9 +115,6 @@ img { max-width: 100%; display: block; height: auto; }
 
 /* Logo TripRank: mark SVG asli (pin + T + grafik ranking menaik). */
 .logo-mark { display: inline-block; width: 32px; height: 32px; vertical-align: -9px; }
-/* Logo putih: hanya tampil di header transparan atas hero gelap
-   (ADR-009); di semua tempat lain logo gelap yang dipakai. */
-.logo-light { display: none; }
 .logo-footer { width: 48px; height: 48px; vertical-align: -10px; }
 .logo-large { width: 72px; height: 72px; margin-bottom: 16px; }
 
@@ -128,10 +125,10 @@ img { max-width: 100%; display: block; height: auto; }
 .icon-criterion { width: 20px; height: 20px; color: var(--accent); vertical-align: -4px; margin-right: 6px; }
 
 /* Header ala Umano (atas permintaan user, 23 Nov 2026; dikoreksi dari
-   pengecekan langsung situs Umano):
-   - DESKTOP: bar penuh satu baris yang menempel di atas, latar krem
-     terang, logo TripRank di kiri, nav di tengah, tombol aksi gelap
-     berbentuk pil di kanan, sticky saat scroll.
+   pengecekan langsung situs Umano; pil desktop sejak ADR-010):
+   - DESKTOP: pil mengambang krem (logo, nav lengkap, tombol aksi pil
+     di kanan), fixed di atas hero pada beranda, sticky di halaman
+     lain; tidak ada lagi bar penuh atau header transparan.
    - MOBILE/TABLET (<=900px): pil mengambang besar dengan sudut bulat
      penuh, logo di kiri, tombol hamburger pil hitam di kanan, menu
      terbuka di panel di bawah pil saat diklik.
@@ -143,30 +140,23 @@ img { max-width: 100%; display: block; height: auto; }
   border-bottom: 1px solid var(--line);
   position: sticky; top: 0; z-index: 10;
 }
-/* Header transparan di atas foto (home, desktop, gaya Pomaii, ADR-007):
-   header menumpuk di atas hero full-screen tanpa bar sendiri; saat
-   halaman di-scroll, class is-scrolled (JavaScript di app.js) mengubahnya
-   jadi solid krem. Mobile tetap pil mengambang (aturan <=900px di bawah). */
+/* Header pil mengambang di desktop (permintaan user, 24 Nov 2026,
+   ADR-010): sama seperti pil HP, tapi versi desktop — logo + nav
+   lengkap + tombol Masuk Admin di dalam satu pil krem yang
+   mengambang. Di beranda pil menumpuk di atas hero (fixed); di
+   halaman lain pil menempel saat scroll (sticky). Tidak ada lagi
+   header transparan atau logo terang: pil selalu krem dengan teks
+   ink, jadi aturan lama untuk mode scroll dan logo terang dihapus. */
 @media (min-width: 901px) {
-  body.home-hero .site-header {
-    position: fixed; top: 0; left: 0; right: 0;
-    background: transparent; border-bottom: 0;
+  .site-header {
+    position: sticky; top: 10px; z-index: 10;
+    background: transparent; border-bottom: 0; padding: 12px 24px 0;
   }
-  body.home-hero .site-header.is-scrolled {
-    background: var(--surface); border-bottom: 1px solid var(--line);
+  body.home-hero .site-header { position: fixed; top: 10px; left: 0; right: 0; }
+  .site-header .header-inner {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    box-shadow: 0 10px 32px rgba(20, 38, 31, 0.14), 0 2px 8px rgba(20, 38, 31, 0.08);
   }
-  /* Header transparan di atas hero GELAP (ADR-009): nav dan wordmark
-     terang + logo putih sebelum di-scroll; tombol Masuk Admin jadi pil
-     krem supaya terbaca di atas hijau gelap. Saat is-scrolled (solid
-     krem), kembali ke logo gelap + teks ink. */
-  body.home-hero .site-header:not(.is-scrolled) .site-nav a { color: var(--surface); }
-  body.home-hero .site-header:not(.is-scrolled) .site-nav a:hover { color: var(--surface); }
-  body.home-hero .site-header:not(.is-scrolled) .site-nav a[aria-current="page"] { color: var(--surface); }
-  body.home-hero .site-header:not(.is-scrolled) .wordmark { color: var(--surface); }
-  body.home-hero .site-header:not(.is-scrolled) .logo-dark { display: none; }
-  body.home-hero .site-header:not(.is-scrolled) .logo-light { display: inline-block; }
-  body.home-hero .site-header:not(.is-scrolled) .header-action { background: var(--surface); color: var(--ink); border-color: var(--surface); }
-  body.home-hero .site-header:not(.is-scrolled) .header-action:hover { background: var(--field); color: var(--ink); }
 }
 .site-header .header-inner {
   max-width: var(--measure); margin: 0 auto; padding: 12px 24px;
@@ -203,6 +193,35 @@ img { max-width: 100%; display: block; height: auto; }
   transition: background 200ms, color 200ms, border-color 200ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .header-action:hover { background: var(--accent-deep); color: var(--accent-ink); border-color: var(--accent-deep); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(20, 38, 31, 0.18); }
+/* Menu profil admin (permintaan user, 24 Nov 2026, ADR-010): avatar
+   lingkaran berisi huruf awal username, diklik membuka dropdown
+   (Dasbor Admin, Keluar). Menggantikan tautan "Keluar (admin)" di
+   nav. Mekanisme checkbox sama seperti toggle nav mobile, jadi
+   jalan tanpa JavaScript. */
+.profile-menu { position: relative; flex: none; }
+.profile-toggle-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.profile-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 700; font-size: 17px; line-height: 1;
+  border: 1px solid var(--accent-deep);
+  transition: background 200ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.profile-avatar:hover { background: var(--accent-deep); transform: translateY(-1px); }
+.profile-toggle-input:focus-visible + .profile-avatar { outline: 2px solid var(--accent); outline-offset: 2px; }
+.profile-dropdown {
+  display: none; position: absolute; top: calc(100% + 10px); right: 0; z-index: 20;
+  min-width: 220px; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: 0 14px 36px rgba(20, 38, 31, 0.18); padding: 8px;
+}
+.profile-toggle-input:checked ~ .profile-dropdown { display: block; }
+.profile-who { margin: 0 0 6px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.profile-who strong { display: block; font-size: 15px; }
+.profile-who span { font-size: 13px; color: var(--muted); }
+.profile-dropdown a { display: block; padding: 10px 12px; border-radius: 12px; color: var(--ink); text-decoration: none; font-weight: 600; }
+.profile-dropdown a:hover { background: var(--field); color: var(--ink); }
 .header-action:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(20, 38, 31, 0.18); }
 /* Tombol hamburger: pil hitam kecil dengan 3 garis putih (ala Umano),
    hanya tampil di layar sempit. Menu bekerja tanpa JavaScript lewat
@@ -277,17 +296,25 @@ main { max-width: var(--measure); margin: 0 auto; padding: 40px 24px 80px; }
    @media (min-width: 901px) di bawah, supaya pil header HP yang
    berlatar krem tetap memakai logo gelap + teks ink. */
 
-/* Hero gelap ala desain pen.dev (24 Nov 2026, ADR-009): field hijau
-   gelap DATAR (bukan gradient, bukan foto), headline serif besar rata
-   kiri, 5 panel kota berfoto, strip statistik angka nyata. Filter bar
-   duduk di bawah hero dalam alur normal (bukan menumpuk), supaya
-   selalu terlihat utuh saat landing. */
+/* Hero foto lima landmark (permintaan user, 24 Nov 2026, ADR-010):
+   latar foto realistic 5 landmark (pomaii-hero-lima-kota.jpg, sama
+   seperti hero Pomaii 3) dengan overlay hijau gelap DATAR (bukan
+   gradient) supaya teks putih tetap terbaca; headline serif besar
+   rata kiri, 5 panel kota berfoto, strip statistik angka nyata.
+   Filter bar duduk di bawah hero dalam alur normal (bukan
+   menumpuk), supaya selalu terlihat utuh saat landing. */
 .hero-dark {
-  background: var(--accent-deep); color: var(--accent-ink);
+  background: var(--accent-deep) url("images/pomaii-hero-lima-kota.jpg") center 30%/cover no-repeat;
+  color: var(--accent-ink);
   margin: -40px calc(50% - 50vw) 0;
+  position: relative; isolation: isolate;
+}
+.hero-dark::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(18, 46, 35, 0.68);
 }
 .hero-dark-inner {
-  max-width: var(--measure); margin: 0 auto; padding: 88px 24px 64px;
+  max-width: var(--measure); margin: 0 auto; padding: 120px 24px 64px;
   text-align: left;
 }
 .hero-dark .hero-eyebrow {
@@ -899,13 +926,19 @@ input, select, textarea { border-radius: var(--radius); }
 }
 
 
-/* Loading screen (v4 r2): lapisan yang dibuat JavaScript saja, jadi tanpa
-   JS tidak ada yang menutupi halaman. Sekali tampil ~900ms lalu fade. */
+/* Loading screen (v4 r2; dirender server sejak ADR-010): lapisan ini
+   ada di base.html supaya menutupi layar sejak paint pertama — dulu
+   dibuat JavaScript setelah halaman tampil, jadi halaman tujuan sempat
+   ke-paint dulu baru loader muncul (bug dilaporkan user 24 Nov 2026).
+   Tanpa JS (tanpa class .js) atau dengan prefers-reduced-motion,
+   loader tidak pernah tampil. Sekali tampil ~900ms lalu fade. */
 .trip-loader {
   position: fixed; inset: 0; z-index: 100; background: var(--ground);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
   opacity: 1; transition: opacity 300ms ease;
 }
+.js .trip-loader { display: flex; }
+@media (prefers-reduced-motion: reduce) { .js .trip-loader { display: none; } }
 .trip-loader.is-hidden { opacity: 0; pointer-events: none; }
 .trip-loader img { width: 96px; height: auto; border-radius: var(--radius); animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 .trip-loader .loader-word { font-family: var(--brand); font-size: 30px; font-weight: 400; animation: loaderRise 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both; }
@@ -1014,7 +1047,10 @@ input, select, textarea { border-radius: var(--radius); }
     background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
     box-shadow: 0 10px 32px rgba(20, 38, 31, 0.14), 0 2px 8px rgba(20, 38, 31, 0.08);
   }
-  .nav-toggle { display: flex; }
+  /* Avatar profil di pil HP/tablet: di kiri hamburger (urutan: logo,
+     avatar, hamburger). Tanpa order, avatar jatuh di kanan hamburger. */
+  .profile-menu { order: 2; }
+  .nav-toggle { display: flex; order: 3; }
   .header-action { display: none; }
   .site-nav {
     display: none; position: absolute; top: calc(100% + 10px); left: 0; right: 0;

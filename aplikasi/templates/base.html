@@ -17,6 +17,8 @@
 </head>
 <body class="{% block body_class %}{% endblock %}">
 <a class="skip-link" href="#konten">Lewati ke konten utama</a>
+{# Loading screen TripRank (ADR-010): dirender server supaya menutupi layar sejak paint pertama. Tanpa JS tidak tampil (CSS, tanpa class .js); JS hanya menyembunyikannya. #}
+<div class="trip-loader" aria-hidden="true"><img src="{{ url_for('static', filename='images/logo-3d.png') }}" alt="" width="96"><div class="loader-word">TripRank</div><div class="loader-bar"><i></i></div></div>
 {# Ikon dan simbol SVG buatan sendiri (inline <symbol>, bukan emoji, bukan gambar situs lain).
    Dipakai lewat <svg class="icon"><use href="#icon-c1"/></svg> di template. #}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -76,7 +78,7 @@
 </svg>
 <header class="site-header">
   <div class="header-inner">
-    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark logo-dark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""><img class="logo-mark logo-light" src="{{ url_for('static', filename='images/logo-putih.svg') }}" width="32" height="32" alt="" aria-hidden="true"> TripRank</a>
+    <a class="wordmark" href="{{ url_for('index') }}"><img class="logo-mark" src="{{ url_for('static', filename='images/logo.svg') }}" width="32" height="32" alt=""> TripRank</a>
     <input class="nav-toggle-input" type="checkbox" id="nav-toggle" aria-hidden="true" tabindex="-1">
     <label class="nav-toggle" for="nav-toggle" aria-label="Buka menu navigasi"><span></span><span></span><span></span></label>
     <nav class="site-nav" aria-label="Utama">
@@ -85,13 +87,21 @@
       <a href="{{ url_for('cara_kerja') }}" {% if request.endpoint == 'cara_kerja' %}aria-current="page"{% endif %}>Cara Kerja</a>
       <a href="{{ url_for('lab') }}" {% if request.endpoint == 'lab' %}aria-current="page"{% endif %}>Lab Simulasi</a>
       <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint and request.endpoint.startswith('admin') %}aria-current="page"{% endif %}>Admin</a>
-      {% if session.get('admin') %}
-      <a href="{{ url_for('admin_logout') }}">Keluar ({{ session.get('admin') }})</a>
-      {% else %}
+      {% if not session.get('admin') %}
       <a class="nav-login" href="{{ url_for('admin_login') }}">Masuk Admin</a>
       {% endif %}
     </nav>
-    {% if not session.get('admin') %}
+    {% if session.get('admin') %}
+    <div class="profile-menu">
+      <input class="profile-toggle-input" type="checkbox" id="profile-toggle" aria-hidden="true" tabindex="-1">
+      <label class="profile-avatar" for="profile-toggle" aria-label="Menu profil admin"><span aria-hidden="true">{{ session.get('admin')[:1]|upper }}</span></label>
+      <div class="profile-dropdown">
+        <p class="profile-who"><strong>{{ session.get('admin') }}</strong><span>Admin TripRank</span></p>
+        <a href="{{ url_for('admin_dashboard') }}">Dasbor Admin</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </div>
+    </div>
+    {% else %}
     <a class="header-action" href="{{ url_for('admin_login') }}">Masuk Admin</a>
     {% endif %}
   </div>
