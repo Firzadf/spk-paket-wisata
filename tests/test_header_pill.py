@@ -11,6 +11,8 @@ CSS_PATH = os.path.join(REPO, "aplikasi", "static", "style.css")
 JS_PATH = os.path.join(REPO, "aplikasi", "static", "app.js")
 IMG_PATH = os.path.join(REPO, "aplikasi", "static", "images",
                         "pomaii-hero-lima-kota.jpg")
+IMG_PORTRAIT_PATH = os.path.join(REPO, "aplikasi", "static", "images",
+                                "pomaii-hero-lima-kota-9x16.jpg")
 
 
 def read_css():
@@ -53,6 +55,19 @@ class HeroFotoTest(TripRankTestCase):
         self.assertLess(os.path.getsize(IMG_PATH), 500 * 1024)
         resp = self.client.get("/static/images/pomaii-hero-lima-kota.jpg")
         self.assertEqual(resp.status_code, 200)
+
+    def test_gambar_hero_portrait_untuk_hp_ada_dan_terkompresi(self):
+        self.assertTrue(os.path.exists(IMG_PORTRAIT_PATH))
+        self.assertLess(os.path.getsize(IMG_PORTRAIT_PATH), 500 * 1024)
+        resp = self.client.get("/static/images/pomaii-hero-lima-kota-9x16.jpg")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_hero_hp_pakai_gambar_portrait_dan_judul_lebih_kecil(self):
+        css = read_css()
+        self.assertIn('url("images/pomaii-hero-lima-kota-9x16.jpg")', css)
+        # Judul HP dikecilkan supaya kata "pertanggungjawabkan." muat
+        # di lebar teks 280px pada HP 320px (diukur: butuh 291px di 32px).
+        self.assertIn(".hero-dark h1 { font-size: clamp(28px, 8vw, 36px); }", css)
 
 
 class MenuProfilAdminTest(TripRankTestCase):

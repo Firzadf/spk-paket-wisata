@@ -1147,9 +1147,16 @@ input, select, textarea { border-radius: var(--radius); }
   /* Hero gelap di HP (ADR-009): panel kota jadi baris thumb + teks,
      filter bar dalam alur normal (tanpa tumpangan negatif), kartu
      pemenang dan kriteria satu kolom. */
-  .hero-dark { margin-top: -28px; }
+  /* Hero di HP pakai gambar portrait 9:16 (ADR-011): gambar landscape
+     yang di-crop cover di layar tegak hanya menampilkan potongan
+     sempit lalu di-upscale ~3x di layar DPR tinggi, jadi blur. */
+  .hero-dark { margin-top: -28px; background-image: url("images/pomaii-hero-lima-kota-9x16.jpg"); background-position: center 25%; }
   .hero-dark-inner { padding: 88px 20px 48px; }
-  .hero-dark h1 { font-size: clamp(32px, 9vw, 44px); }
+  /* Headline HP dikecilkan (ADR-011): diukur langsung, kata
+     "pertanggungjawabkan." butuh 291px pada 32px, sementara lebar
+     teks di HP 320px cuma 280px — kata patah jadi "n." sendirian.
+     Pada 28px kata butuh 254px, muat di semua lebar HP. */
+  .hero-dark h1 { font-size: clamp(28px, 8vw, 36px); }
   .hero-dark .hero-sub { font-size: 16px; }
   .hero-dark .hero-cta .btn { width: 100%; text-align: center; }
   .hero-city-panels { grid-template-columns: 1fr; gap: 10px; }
